@@ -1,0 +1,25 @@
+{
+  "name": "cachoviva-squad",
+  "version": "1.0.0",
+  "description": "Backend do Squad CachoViva - Automação e gestão de redes sociais",
+  "main": "src/index.js",
+  "scripts": {
+    "start": "node --watch src/index.js",
+    "dev": "node --watch src/index.js",
+    "setup": "node src/setup.js"
+  },
+  "dependencies": {
+    "@google/generative-ai": "^0.24.1",
+    "axios": "^1.6.7",
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "dotenv": "^16.4.1",
+    "express": "^4.18.2",
+    "form-data": "^4.0.0",
+    "jsonwebtoken": "^9.0.2",
+    "node-cron": "^3.0.3",
+    "nodemailer": "^6.9.16",
+    "sql.js": "^1.10.3",
+    "uuid": "^9.0.0"
+  }
+}

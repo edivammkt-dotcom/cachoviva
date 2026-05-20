@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Squad CachoViva</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <aside class="sidebar" id="sidebar">
+      <div class="brand">
+        <span class="brand-icon">✦</span>
+        <span>CachoViva</span>
+      </div>
+      <nav class="stages-nav" id="stagesNav">
+        <button class="stage-btn active" data-view="dashboard">
+          <span class="stage-icon">📊</span>
+          <span class="stage-label">Dashboard</span>
+        </button>
+        <button class="stage-btn" data-view="pesquisar">
+          <span class="stage-icon">🔍</span>
+          <span class="stage-label">Pesquisar</span>
+          <span class="stage-count" id="count-pesquisar">0</span>
+        </button>
+        <button class="stage-btn" data-view="planejar">
+          <span class="stage-icon">📅</span>
+          <span class="stage-label">Planejar</span>
+          <span class="stage-count" id="count-planejar">0</span>
+        </button>
+        <button class="stage-btn" data-view="criar">
+          <span class="stage-icon">✍️</span>
+          <span class="stage-label">Criar</span>
+          <span class="stage-count" id="count-criar">0</span>
+        </button>
+        <button class="stage-btn" data-view="editar">
+          <span class="stage-icon">📝</span>
+          <span class="stage-label">Editar</span>
+          <span class="stage-count" id="count-editar">0</span>
+        </button>
+        <button class="stage-btn" data-view="validar">
+          <span class="stage-icon">✅</span>
+          <span class="stage-label">Validar</span>
+          <span class="stage-count" id="count-validar">0</span>
+        </button>
+        <button class="stage-btn" data-view="aprovar">
+          <span class="stage-icon">👍</span>
+          <span class="stage-label">Aprovar</span>
+          <span class="stage-count" id="count-aprovar">0</span>
+        </button>
+        <button class="stage-btn" data-view="publicar">
+          <span class="stage-icon">🚀</span>
+          <span class="stage-label">Publicar</span>
+          <span class="stage-count" id="count-publicar">0</span>
+        </button>
+        <button class="stage-btn" data-view="medir">
+          <span class="stage-icon">📈</span>
+          <span class="stage-label">Medir</span>
+          <span class="stage-count" id="count-medir">0</span>
+        </button>
+      </nav>
+      <div class="sidebar-footer">
+        <button class="btn-config" id="btnConfig">⚙️</button>
+      </div>
+    </aside>
+    <main class="main-content" id="mainContent">
+      <header class="topbar">
+        <button class="menu-toggle" id="menuToggle">☰</button>
+        <h1 class="page-title" id="pageTitle">Dashboard</h1>
+        <div class="topbar-actions">
+          <span class="current-date" id="currentDate"></span>
+          <button class="btn-primary" id="btnNewPost">+ Novo</button>
+        </div>
+      </header>
+      <div id="pipelineBar" class="pipeline-bar"></div>
+      <div class="content-area" id="contentArea">
+      </div>
+    </main>
+  </div>
+
+  <div class="modal-overlay hidden" id="modalOverlay">
+    <div class="modal" id="modal">
+      <div class="modal-header">
+        <h2 id="modalTitle">Novo Conteúdo</h2>
+        <button class="modal-close" id="modalClose">&times;</button>
+      </div>
+      <div class="modal-body" id="modalBody">
+      </div>
+    </div>
+  </div>
+
+  <script src="js/api.js"></script>
+  <script src="js/data.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>

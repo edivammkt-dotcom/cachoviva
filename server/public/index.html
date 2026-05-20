@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Diagnóstico Capilar CachoViva</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <div id="app">
+
+    <!-- ====== HERO ====== -->
+    <section class="screen active" id="screen-hero">
+      <div class="hero-bg-gradient"></div>
+      <div class="hero-blobs">
+        <div class="hero-blob hero-blob--1"></div>
+        <div class="hero-blob hero-blob--2"></div>
+        <div class="hero-blob hero-blob--3"></div>
+        <div class="hero-blob hero-blob--4"></div>
+      </div>
+      <div class="container">
+        <div class="hero-inner">
+          <div class="hero-content">
+            <div class="hero-logo-wrap">
+              <img src="assets/logomarca.png" alt="CachoViva">
+            </div>
+            <div class="hero-badge"><i data-lucide="sparkles" style="width:14px;height:14px"></i> GRATUITO</div>
+            <h1 class="hero-title">
+              Descubra o que seus<br>
+              <span>cachos realmente precisam</span>
+            </h1>
+            <div class="hero-divider"></div>
+            <p class="hero-sub">
+              Responda 8 perguntas rápidas e receba um <strong>diagnóstico capilar personalizado</strong> com dicas exclusivas para transformar a saúde e a beleza dos seus fios.
+            </p>
+            <button class="btn-primary btn-hero" onclick="startQuiz()">
+              RECEBER DIAGNÓSTICO
+              <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+            <div class="hero-note">
+              <i data-lucide="smartphone" style="width:13px;height:13px;stroke:currentColor"></i>
+              <span>Resultado enviado no <strong>seu WhatsApp</strong></span>
+            </div>
+            <p class="hero-sub--small">
+              <i data-lucide="lightbulb" style="width:13px;height:13px;stroke:currentColor;flex-shrink:0;margin-right:4px"></i>
+              Em 30 dias, algo especial vai chegar — e seu diagnóstico vai te preparar para aproveitar ao máximo.
+            </p>
+          </div>
+          <div class="hero-visual">
+            <img src="assets/teaser.png" alt="Em breve CachoViva" class="hero-visual-img">
+            <div class="social-proof">
+              <span class="sp-stars">★★★★★</span>
+              <span class="sp-text">+230 diagnósticos realizados</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== QUIZ ====== -->
+    <section class="screen" id="screen-quiz">
+      <div class="quiz-topbar">
+        <div class="container">
+          <div class="quiz-header">
+            <img src="assets/logomarca.png" alt="CachoViva" class="quiz-logo" style="mix-blend-mode: multiply;">
+            <div class="quiz-progress">
+              <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+              </div>
+              <span class="progress-text" id="progressText">1 de 8</span>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="quiz-card">
+          <div class="quiz-body" id="quizBody"></div>
+        </div>
+        <div class="quiz-footer">
+          <button class="btn-nav" id="btnPrev" onclick="prevQuestion()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M19 12H5M12 19l-7-7 7-7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            Voltar
+          </button>
+          <button class="btn-primary" id="btnNext" onclick="nextQuestion()">
+            Próximo
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== FORM ====== -->
+    <section class="screen" id="screen-form">
+      <div class="container">
+        <div class="form-box">
+          <div class="form-icon"><i data-lucide="sparkles" style="width:44px;height:44px;stroke:var(--gold);stroke-width:1.5;display:block;margin:0 auto"></i></div>
+          <h2 class="form-title">Quase lá!</h2>
+          <p class="form-sub">
+            Seu diagnóstico capilar personalizado<br>
+            está pronto. Deixe seus dados para recebê-lo.
+          </p>
+          <form id="leadForm" onsubmit="submitForm(event)">
+            <div class="form-group">
+              <label>Nome</label>
+              <input type="text" id="fieldName" placeholder="Seu nome completo" required>
+            </div>
+            <div class="form-group">
+              <label>WhatsApp</label>
+              <input type="tel" id="fieldWhatsapp" placeholder="(11) 99999-9999" required>
+            </div>
+            <div class="form-group">
+              <label>E-mail</label>
+              <input type="email" id="fieldEmail" placeholder="seu@email.com" required>
+            </div>
+            <div class="form-checkbox">
+              <input type="checkbox" id="fieldConsent" required>
+              <label for="fieldConsent">Aceito receber dicas e novidades da CachoViva</label>
+            </div>
+            <button type="submit" class="btn-primary btn-full">
+              RECEBER DIAGNÓSTICO
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+            </button>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== RESULT + LAUNCH TEASER ====== -->
+    <section class="screen" id="screen-result">
+      <div class="result-topbar">
+        <div class="container">
+          <div class="result-header">
+            <img src="assets/logomarca.png" alt="CachoViva" class="result-logo">
+            <span class="result-header-label">SEU DIAGNÓSTICO</span>
+          </div>
+        </div>
+      </div>
+      <div class="container">
+        <div class="result-box">
+          <div class="result-badge" id="resultBadge"></div>
+          <h2 class="result-title" id="resultTitle">Diagnóstico completo</h2>
+          <p class="result-sub" id="resultSub">Seu resultado personalizado</p>
+
+          <div class="result-card">
+            <div class="result-icon" id="resultIcon"></div>
+            <h3 class="result-name" id="resultName">Cabelo Equilibrado</h3>
+            <p class="result-desc" id="resultDesc">Seus cachos estão no caminho certo!</p>
+          </div>
+
+          <div class="result-details">
+            <div class="rd-section">
+              <h4><i data-lucide="clipboard-list" style="width:18px;height:18px;vertical-align:middle;margin-right:6px"></i> O que isso significa?</h4>
+              <p id="resultMeaning"></p>
+            </div>
+            <div class="rd-section">
+              <h4><i data-lucide="calendar" style="width:18px;height:18px;vertical-align:middle;margin-right:6px"></i> Calendário capilar recomendado</h4>
+              <div class="result-calendar" id="resultCalendar"></div>
+            </div>
+            <div class="rd-section">
+              <h4><i data-lucide="lightbulb" style="width:18px;height:18px;vertical-align:middle;margin-right:6px"></i> Dicas rápidas</h4>
+              <ul id="resultTips"></ul>
+            </div>
+          </div>
+
+          <!-- LAUNCH TEASER -->
+          <div class="launch-teaser">
+            <div class="launch-teaser-icon"><i data-lucide="flame" style="width:42px;height:42px;stroke:var(--gold-light);fill:var(--gold-light);stroke-width:1.5;display:block;margin:0 auto"></i></div>
+            <h3>Algo especial está chegando</h3>
+            <p>
+              Seu diagnóstico é o primeiro passo. Em <span class="highlight">30 dias</span>, vamos apresentar algo que vai transformar seus cachos.
+            </p>
+            <p>
+              Fique de olho no <span class="highlight">WhatsApp</span> — enviaremos conteúdos exclusivos para preparar você.
+            </p>
+          </div>
+
+          <div class="result-actions">
+            <button class="btn-whatsapp" onclick="shareWhatsapp()">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Enviar para meu WhatsApp
+            </button>
+            <button class="btn-link" onclick="restartQuiz()">Refazer diagnóstico</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== FAQ ====== -->
+    <section id="screen-faq">
+      <div class="container">
+        <div class="faq-box">
+          <h2 class="faq-title">Dúvidas frequentes</h2>
+          <div class="faq-list">
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>Como funciona o diagnóstico capilar?</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="faq-answer">
+                <p>Você responde 8 perguntas rápidas sobre sua rotina capilar. Com base nas suas respostas, nosso sistema identifica o perfil dos seus fios e gera um diagnóstico personalizado com dicas e recomendações.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>O diagnóstico é gratuito?</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="faq-answer">
+                <p>Sim! O diagnóstico é 100% gratuito. Você só precisa informar seus dados básicos para receber o resultado completo no seu WhatsApp e no seu e-mail.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>O que vou receber no meu WhatsApp?</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="faq-answer">
+                <p>Você receberá seu diagnóstico completo com dicas exclusivas para sua rotina capilar. Além disso, enviaremos conteúdos especiais para preparar você para o que está por vir.</p>
+              </div>
+            </div>
+            <div class="faq-item">
+              <button class="faq-question" onclick="toggleFaq(this)">
+                <span>Posso compartilhar meu resultado?</span>
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </button>
+              <div class="faq-answer">
+                <p>Claro! Você pode compartilhar seu diagnóstico com as amigas pelo WhatsApp. Quem mais fizer o diagnóstico também receberá dicas personalizadas.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ====== FOOTER ====== -->
+    <footer id="site-footer">
+      <div class="container">
+        <div class="footer-inner">
+          <div class="footer-brand">
+            <img src="assets/logomarca.png" alt="CachoViva" class="footer-logo">
+          </div>
+          <div class="footer-info">
+            <p>© 2026 Maynard Distribuidora e Atacadista de Cosméticos e Perfumaria Ltda.</p>
+            <p class="footer-cnpj">CNPJ: 66.781.714/0001-92</p>
+            <a href="https://wa.me/5579996728260" target="_blank" rel="noopener" class="footer-whatsapp">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              Central de Atendimento 79 - 99672-8260
+            </a>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+  </div>
+
+  <div class="loading-overlay hidden" id="loadingOverlay">
+    <div class="loading-spinner"></div>
+    <p>Analisando seus cachos...</p>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
