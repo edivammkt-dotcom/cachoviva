@@ -121,25 +121,32 @@ body {
   animation: fadeIn 0.7s ease;
 }
 
-/* Eleva logo e faixa de urgência acima do gradiente escuro */
-#faixa-urgencia,
 .hero-logo-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+  width: 100%;
   position: relative;
   z-index: 1;
-}
-
-/* LOGO — vidro fosco premium */
-.hero-logo-wrap {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  margin-bottom: 4px;
 }
 
 .hero-logo-wrap img {
   height: 120px;
   width: auto;
   display: block;
+}
+
+.hero-brand-sub {
+  font-family: var(--font-display);
+  font-size: 0.85rem;
+  font-weight: 400;
+  font-style: italic;
+  color: var(--gold-light);
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  margin-top: 8px;
+  opacity: 0.7;
 }
 
 .hero-badge {
@@ -1206,8 +1213,9 @@ body {
 
   .hero-inner { padding: 4px 0 16px; }
 
-  .hero-logo-wrap { padding: 10px 16px; }
-  .hero-logo-wrap img { height: 70px; }
+  .hero-logo-wrap { margin-bottom: 12px; }
+  .hero-logo-wrap img { height: 80px; }
+  .hero-brand-sub { font-size: 0.7rem; letter-spacing: 0.25em; }
 
   .hero-badge {
     font-size: 0.65rem;
