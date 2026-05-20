@@ -469,11 +469,11 @@ async function submitForm(e) {
 
   if (!valid) return;
 
+  const diagnosis = calcDiagnosis();
   limparProgresso();
   gaEvent('submit_form', diagnosis ? diagnosis.id : 'unknown');
 
   leadData = { name, phone, email };
-  const diagnosis = calcDiagnosis();
 
   document.getElementById('loadingOverlay').classList.remove('hidden');
 
@@ -517,6 +517,27 @@ async function submitForm(e) {
 
   document.getElementById('loadingOverlay').classList.add('hidden');
   showResult(diagnosis);
+
+  // Envia diagnóstico via WhatsApp automaticamente
+  try {
+    var phoneClean = phone.replace(/\D/g, '');
+    if (phoneClean.length >= 10) {
+      if (!phoneClean.startsWith('55')) phoneClean = '55' + phoneClean;
+      var nomeResultado = (mapaResultados[diagnosis.name] && mapaResultados[diagnosis.name].nome) || diagnosis.name;
+      var msg =
+        '🧴 *MEU DIAGNÓSTICO CAPILAR CACHOVIVA*%0A%0A' +
+        '👤 *' + name + '*%0A' +
+        '📋 Tipo: *' + nomeResultado + '*%0A%0A' +
+        '📝 *O que significa:*%0A' + diagnosis.meaning + '%0A%0A' +
+        '📅 *Calendário recomendado:*%0A' +
+        diagnosis.calendar.map(function(d) { return '  - ' + d.day + ': ' + d.treatment; }).join('%0A') + '%0A%0A' +
+        '💡 *Dicas rápidas:*%0A' +
+        diagnosis.tips.map(function(t) { return '  - ' + t; }).join('%0A') + '%0A%0A' +
+        '👇 Faça o seu diagnóstico grátis:%0A' +
+        'https://cachoviva.onrender.com';
+      window.open('https://wa.me/' + phoneClean + '?text=' + msg, '_blank');
+    }
+  } catch(e) {}
 }
 
 function shareWhatsapp() {
