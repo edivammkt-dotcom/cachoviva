@@ -47,13 +47,8 @@
             </h1>
             <div class="hero-divider"></div>
 
-            <p class="hero-sub">
-              8 perguntas. 2 minutos. Você vai entender por que seu cacho
-              não dura o segundo dia — e o que mudar a partir de hoje.
-            </p>
-
             <button class="btn-primary btn-hero" onclick="startQuiz()">
-              Quero descobrir meu diagnóstico grátis →
+              QUERO DESCOBRIR MEU DIAGNÓSTICO GRÁTIS →
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
 
@@ -158,12 +153,13 @@
               <span class="progress-text" id="progressText">1 de 8</span>
               <!-- MUDANÇA 11 -->
               <p id="encorajamento-quiz" style="
-                font-size: 12px;
+                font-size: 15px;
                 color: #B8541A;
-                font-style: italic;
+                font-weight: 600;
                 text-align: center;
-                margin-top: 6px;
+                margin-top: 8px;
                 display: none;
+                line-height: 1.5;
               ">
               </p>
             </div>
@@ -190,10 +186,11 @@
     <!-- ====== FORM ====== -->
     <section class="screen" id="screen-form">
       <div class="container">
-        <div class="form-box">
-          <div class="form-icon"><i data-lucide="sparkles" style="width:44px;height:44px;stroke:var(--gold);stroke-width:1.5;display:block;margin:0 auto"></i></div>
-          <!-- MUDANÇA 8 -->
-          <h2 class="form-title">Seu diagnóstico está pronto! 🎉</h2>
+          <div class="form-box">
+            <div style="text-align:center;margin-bottom:16px;">
+              <img src="assets/logomarca.png" alt="CachoViva" style="height:56px;width:auto;display:inline-block;">
+            </div>
+            <h2 class="form-title">Seu diagnóstico está pronto! 🎉</h2>
           <p class="form-sub">Só falta saber para onde enviar 👇</p>
           <form id="leadForm" onsubmit="submitForm(event)">
             <div class="form-group">
@@ -205,15 +202,6 @@
               <input type="tel" id="fieldWhatsapp" placeholder="(11) 99999-9999" required>
               <span class="form-wpp-hint" id="wppHint"></span>
             </div>
-            <!-- MUDANÇA 9a -->
-            <div class="form-group">
-              <label>E-mail</label>
-              <input type="email" id="fieldEmail" placeholder="E-mail (opcional)">
-            </div>
-            <!-- MUDANÇA 9b -->
-            <p style="font-size:11px;color:#bbb;margin-top:-6px;margin-bottom:10px;">
-              Opcional — útil para receber o resultado também por e-mail
-            </p>
             <div class="form-checkbox">
               <input type="checkbox" id="fieldConsent" required>
               <label for="fieldConsent">Aceito receber dicas e novidades da CachoViva</label>

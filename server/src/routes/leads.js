@@ -10,7 +10,7 @@ function initLeadsTable() {
     id TEXT PRIMARY KEY,
     name TEXT NOT NULL,
     phone TEXT NOT NULL,
-    email TEXT NOT NULL,
+    email TEXT DEFAULT '',
     diagnosis TEXT NOT NULL,
     diagnosis_name TEXT DEFAULT '',
     scores TEXT DEFAULT '{}',
@@ -27,8 +27,8 @@ router.post('/', (req, res) => {
   try {
     const { name, phone, email, diagnosis, diagnosis_name, scores, answers, diagnosis_details } = req.body;
 
-    if (!name || !phone || !email || !diagnosis) {
-      return res.status(400).json({ error: 'Campos obrigatórios: name, phone, email, diagnosis' });
+    if (!name || !phone || !diagnosis) {
+      return res.status(400).json({ error: 'Campos obrigatórios: name, phone, diagnosis' });
     }
 
     const id = uuidv4();
