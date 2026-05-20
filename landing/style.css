@@ -133,13 +133,7 @@ body {
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  margin-bottom: 28px;
-  padding: 20px 32px;
-  background: rgba(249, 244, 234, 0.12);
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  border-radius: 20px;
-  border: 1px solid rgba(197, 165, 90, 0.25);
+  margin-bottom: 4px;
 }
 
 .hero-logo-wrap img {
