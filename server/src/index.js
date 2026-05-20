@@ -47,6 +47,12 @@ app.get('/api/platforms', (req, res) => {
   res.json(['instagram', 'tiktok', 'youtube', 'twitter', 'linkedin', 'facebook']);
 });
 
+app.get('/api/launch', (req, res) => {
+  // Data fixa de lançamento: 30 dias após 20/05/2026
+  const launch = new Date('2026-06-19T00:00:00-03:00');
+  res.json({ launch: launch.toISOString(), now: new Date().toISOString() });
+});
+
 async function startServer() {
   await initDatabase();
   await initOrchestrator();

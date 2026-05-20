@@ -393,6 +393,107 @@ body {
 
 .btn-full { width: 100%; justify-content: center; }
 
+/* ====== INLINE→CLASSES ====== */
+.urgency-bar {
+  background: #B8541A; color: #fff; text-align: center;
+  padding: 10px 16px; font-size: 13px; font-weight: 600;
+  letter-spacing: 0.3px; border-radius: 8px; margin: 14px 0 10px;
+}
+.emotional-hook {
+  display: inline-block;
+  background: rgba(255,243,232,0.15);
+  border: 1px solid rgba(240,192,144,0.3);
+  color: #f5d4a8; font-size: 14px; font-weight: 600;
+  padding: 8px 18px; border-radius: 30px; margin-bottom: 16px; text-align: center;
+}
+.trust-micro { font-size: 12px; color: rgba(232,220,196,0.45); margin-top: 10px; margin-bottom: 0; }
+.teaser-title { font-size: 15px; font-weight: 700; color: #E4D49B; margin-bottom: 4px; margin-top: 10px; }
+.teaser-sub { font-size: 13px; color: rgba(232,220,196,0.6); line-height: 1.6; }
+
+.countdown-wrap {
+  background: #1a1a1a; border-radius: 12px; padding: 14px 20px;
+  margin: 16px auto 0; max-width: 320px; text-align: center;
+}
+.countdown-display {
+  display: flex; justify-content: center; gap: 12px;
+  color: #F5C37A; font-size: 22px; font-weight: 700; font-variant-numeric: tabular-nums;
+}
+.countdown-label { font-size: 10px; font-weight: 400; color: #aaa; }
+
+.testimonials-section {
+  padding: 32px 24px;
+  background: linear-gradient(170deg, #C5A55A 0%, #E4D49B 30%, #F5EFE1 60%, #F9F4EA 100%);
+  position: relative;
+}
+.testimonials-section::before {
+  content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px;
+  background: linear-gradient(90deg, transparent, var(--gold-dark), var(--gold), var(--gold-light), var(--gold-dark), transparent);
+}
+.testimonials-title { font-size: 18px; font-weight: 700; text-align: center; margin-bottom: 20px; color: #1a1a1a; }
+.testimonials-track {
+  display: flex; gap: 14px; overflow-x: auto; scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch; padding-bottom: 8px; scrollbar-width: none;
+}
+.testimonial-card {
+  min-width: 272px; max-width: 290px; background: #fff;
+  border: 1px solid #e8ddd4; border-radius: 14px; padding: 18px;
+  scroll-snap-align: start; flex-shrink: 0;
+}
+.testimonial-card-header {
+  display: flex; align-items: center; gap: 10px; margin-bottom: 12px;
+}
+.testimonial-avatar {
+  width: 40px; height: 40px; border-radius: 50%; color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 16px; font-weight: 700; flex-shrink: 0;
+}
+.testimonial-name { font-size: 14px; font-weight: 700; color: #1a1a1a; }
+.testimonial-location { font-size: 12px; color: #999; }
+.testimonial-stars { margin-left: auto; color: #F5A623; font-size: 13px; }
+.testimonial-text {
+  font-size: 13px; color: #444; line-height: 1.7; font-style: italic;
+}
+.testimonials-footer { text-align: center; font-size: 12px; color: #aaa; margin-top: 14px; }
+
+.emotional-bridge {
+  background: #fff3e8; border-left: 4px solid #B8541A;
+  border-radius: 0 8px 8px 0; padding: 16px 18px;
+  margin: 20px 0; font-size: 15px; line-height: 1.7; color: #5a2e0e;
+}
+.btn-share-outline {
+  display: block; width: 100%; max-width: 360px; margin: 12px auto 0;
+  padding: 14px 24px; background: transparent; color: #0F6E56;
+  border: 2px solid #0F6E56; border-radius: 50px; font-size: 15px;
+  font-weight: 700; cursor: pointer; text-align: center; font-family: var(--font-body);
+  transition: all 0.3s ease;
+}
+.btn-share-outline:hover { background: rgba(15,110,86,0.06); transform: translateY(-2px); }
+
+.footer-seals {
+  display: flex; flex-wrap: wrap; justify-content: center;
+  gap: 16px; padding: 14px 20px; border-top: 1px solid #e8ddd4; margin-bottom: 12px;
+}
+.footer-seal-item { font-size: 12px; color: #aaa; }
+
+.lazy-img { opacity: 0; transition: opacity 0.3s ease; }
+.lazy-img.loaded { opacity: 1; }
+
+.exit-intent-overlay {
+  position: fixed; inset: 0; background: rgba(0,0,0,0.6);
+  z-index: 9999; display: none; align-items: center; justify-content: center;
+  backdrop-filter: blur(4px);
+}
+.exit-intent-overlay.active { display: flex; }
+.exit-intent-modal {
+  background: #fff; border-radius: 20px; padding: 48px 36px;
+  max-width: 420px; width: 90%; text-align: center;
+  box-shadow: 0 20px 60px rgba(0,0,0,0.3); animation: fadeScale 0.3s ease;
+}
+.exit-intent-modal h2 { font-family: var(--font-display); font-size: 1.5rem; color: var(--text); margin-bottom: 12px; }
+.exit-intent-modal p { font-size: 0.95rem; color: var(--bronze); line-height: 1.7; margin-bottom: 24px; }
+.exit-intent-close { margin-top: 16px; background: none; border: none; color: var(--gray-400); font-size: 0.85rem; cursor: pointer; font-family: var(--font-body); }
+.exit-intent-close:hover { color: var(--text); }
+
 @keyframes pulse { 0%, 100% { transform: scale(1); } 50% { transform: scale(1.04); } }
 
 /* ====== QUIZ ====== */

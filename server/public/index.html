@@ -5,9 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Diagnóstico Capilar CachoViva</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://unpkg.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
-  <script src="https://unpkg.com/lucide@latest"></script>
+  <script src="https://unpkg.com/lucide@latest" defer></script>
   <link rel="stylesheet" href="style.css">
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
 </head>
 <body>
 
@@ -24,46 +27,23 @@
       </div>
       <div class="container">
 
-        <!-- MUDANÇA 1 — Full width, centered (FORA do grid) -->
-        <div id="faixa-urgencia" style="
-          background: #B8541A;
-          color: #fff;
-          text-align: center;
-          padding: 10px 16px;
-          font-size: 13px;
-          font-weight: 600;
-          letter-spacing: 0.3px;
-          border-radius: 8px;
-          margin: 14px 0 10px;
-        ">
-          🔥 +230 mulheres já descobriram o segredo do cacho que dura — e você?
-        </div>
-
-        <!-- Logo — full width, centered (FORA do grid) -->
+        <!-- Logo — full width, centered -->
         <div style="text-align:center;margin-bottom:6px;">
           <div class="hero-logo-wrap" style="display:inline-flex;margin-bottom:0;">
-            <img src="assets/logomarca.png" alt="CachoViva">
+            <img src="assets/logomarca.png" alt="CachoViva" loading="lazy">
           </div>
         </div>
 
         <div class="hero-inner">
           <div class="hero-content">
 
+            <div class="urgency-bar">
+              🔥 +230 mulheres já descobriram o segredo do cacho que dura — e você?
+            </div>
+
             <div class="hero-badge"><i data-lucide="sparkles" style="width:14px;height:14px"></i> GRATUITO</div>
 
-            <!-- MUDANÇA 2 — Gancho emocional -->
-            <div style="
-              display: inline-block;
-              background: rgba(255,243,232,0.15);
-              border: 1px solid rgba(240,192,144,0.3);
-              color: #f5d4a8;
-              font-size: 14px;
-              font-weight: 600;
-              padding: 8px 18px;
-              border-radius: 30px;
-              margin-bottom: 16px;
-              text-align: center;
-            ">
+            <div class="emotional-hook">
               😔 Seu cacho fica bonito só no dia da lavagem?
             </div>
 
@@ -73,8 +53,7 @@
             </h1>
             <div class="hero-divider"></div>
 
-            <!-- MUDANÇA 3 — Subheadline (cor clara legível no fundo escuro) -->
-            <p style="font-size: 16px; color: rgba(232,220,196,0.8); max-width: 460px; margin: 0 0 24px; line-height: 1.7;">
+            <p class="hero-sub">
               8 perguntas. 2 minutos. Você vai entender por que seu cacho
               não dura o segundo dia — e o que mudar a partir de hoje.
             </p>
@@ -93,8 +72,7 @@
               <svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M5 12h14M12 5l7 7-7 7" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
             </button>
 
-            <!-- MUDANÇA 5 — Micro-copy de confiança -->
-            <p style="font-size: 12px; color: rgba(232,220,196,0.45); margin-top: 10px; margin-bottom: 0;">
+            <p class="trust-micro">
               ✓ 100% gratuito &nbsp;·&nbsp; ✓ Resultado no WhatsApp &nbsp;·&nbsp; ✓ Sem spam
             </p>
 
@@ -103,174 +81,86 @@
               <span>Resultado enviado no <strong>seu WhatsApp</strong></span>
             </div>
 
-            <!-- MUDANÇA 6 — Teaser (cores claras no fundo escuro) -->
-            <p style="font-size: 15px; font-weight: 700; color: #E4D49B; margin-bottom: 4px; margin-top: 10px;">
+            <p class="teaser-title">
               Em 30 dias, o kit para o seu tipo de cacho.
             </p>
-            <p style="font-size: 13px; color: rgba(232,220,196,0.6); line-height: 1.6;">
+            <p class="teaser-sub">
               Você está entre as primeiras a saber. Quem fez o diagnóstico recebe acesso
               e condições exclusivas antes de todo mundo.
             </p>
 
           </div>
           <div class="hero-visual">
-            <img src="assets/teaser2.png" alt="Em breve CachoViva" class="hero-visual-img" style="width:100%;height:auto;max-width:400px;object-fit:contain;">
+            <img src="assets/teaser2.png" alt="Em breve CachoViva" class="hero-visual-img" loading="lazy">
 
-            <!-- MUDANÇA 6 — contador regressivo -->
-            <div id="contador-wrap" style="
-              background: #1a1a1a;
-              border-radius: 12px;
-              padding: 14px 20px;
-              margin: 16px auto 0;
-              max-width: 320px;
-              text-align: center;
-            ">
-              <div id="contador" style="
-                display: flex;
-                justify-content: center;
-                gap: 12px;
-                color: #F5C37A;
-                font-size: 22px;
-                font-weight: 700;
-                font-variant-numeric: tabular-nums;
-              ">
-                <span><span id="c-dias">30</span><br><small style="font-size:10px;font-weight:400;color:#aaa;">dias</small></span>
+            <div id="contador-wrap" class="countdown-wrap">
+              <div id="contador" class="countdown-display">
+                <span><span id="c-dias">30</span><br><small class="countdown-label">dias</small></span>
                 <span style="padding-top:2px;">:</span>
-                <span><span id="c-horas">00</span><br><small style="font-size:10px;font-weight:400;color:#aaa;">horas</small></span>
+                <span><span id="c-horas">00</span><br><small class="countdown-label">horas</small></span>
                 <span style="padding-top:2px;">:</span>
-                <span><span id="c-min">00</span><br><small style="font-size:10px;font-weight:400;color:#aaa;">min</small></span>
+                <span><span id="c-min">00</span><br><small class="countdown-label">min</small></span>
                 <span style="padding-top:2px;">:</span>
-                <span><span id="c-seg">00</span><br><small style="font-size:10px;font-weight:400;color:#aaa;">seg</small></span>
+                <span><span id="c-seg">00</span><br><small class="countdown-label">seg</small></span>
               </div>
               <p style="font-size:11px;color:#888;margin-top:8px;letter-spacing:0.5px;">ATÉ O LANÇAMENTO EXCLUSIVO</p>
             </div>
 
-            <script>
-            (function() {
-              var KEY = 'cachoviva_launch';
-              var stored = localStorage.getItem(KEY);
-              var launch;
-              if (stored) {
-                launch = new Date(stored);
-              } else {
-                launch = new Date();
-                launch.setDate(launch.getDate() + 30);
-                localStorage.setItem(KEY, launch.toISOString());
-              }
-              function pad(n) { return String(n).padStart(2,'0'); }
-              function tick() {
-                var now = new Date();
-                var diff = Math.max(0, launch - now);
-                var dias  = Math.floor(diff / 86400000);
-                var horas = Math.floor((diff % 86400000) / 3600000);
-                var min   = Math.floor((diff % 3600000) / 60000);
-                var seg   = Math.floor((diff % 60000) / 1000);
-                var d = document;
-                if(d.getElementById('c-dias'))  d.getElementById('c-dias').textContent  = pad(dias);
-                if(d.getElementById('c-horas')) d.getElementById('c-horas').textContent = pad(horas);
-                if(d.getElementById('c-min'))   d.getElementById('c-min').textContent   = pad(min);
-                if(d.getElementById('c-seg'))   d.getElementById('c-seg').textContent   = pad(seg);
-              }
-              tick();
-              setInterval(tick, 1000);
-            })();
-            </script>
-
-            <!-- MUDANÇA 7 — Prova social com depoimentos -->
-            <section style="padding: 24px 16px; background: rgba(255,248,240,0.95); border-radius: 16px; margin-top: 16px; width: 100%; max-width: 420px;">
-
-              <h2 style="font-size: 17px; font-weight: 700; text-align: center; margin-bottom: 16px; color: #1a1a1a;">
-                O que as meninas estão dizendo
-              </h2>
-
-              <div style="
-                display: flex;
-                gap: 12px;
-                overflow-x: auto;
-                scroll-snap-type: x mandatory;
-                -webkit-overflow-scrolling: touch;
-                padding-bottom: 6px;
-                scrollbar-width: none;
-              ">
-
-                <!-- Card 1 -->
-                <div style="
-                  min-width: 260px; max-width: 280px;
-                  background: #fff;
-                  border: 1px solid #e8ddd4;
-                  border-radius: 14px;
-                  padding: 16px;
-                  scroll-snap-align: start;
-                  flex-shrink: 0;
-                ">
-                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                    <div style="width:36px;height:36px;border-radius:50%;background:#B8541A;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">J</div>
-                    <div>
-                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Jamile S.</div>
-                      <div style="font-size:11px;color:#999;">Salvador, BA</div>
-                    </div>
-                    <div style="margin-left:auto;color:#F5A623;font-size:12px;">★★★★★</div>
-                  </div>
-                  <p style="font-size:12px;color:#444;line-height:1.6;font-style:italic;">
-                    "Fiz o diagnóstico achando que era mais um quiz. Mas o resultado foi certeiro — identificou exatamente o meu problema com ressecamento. Mal posso esperar pelo kit!"
-                  </p>
-                </div>
-
-                <!-- Card 2 -->
-                <div style="
-                  min-width: 260px; max-width: 280px;
-                  background: #fff;
-                  border: 1px solid #e8ddd4;
-                  border-radius: 14px;
-                  padding: 16px;
-                  scroll-snap-align: start;
-                  flex-shrink: 0;
-                ">
-                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                    <div style="width:36px;height:36px;border-radius:50%;background:#0F6E56;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">R</div>
-                    <div>
-                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Renata M.</div>
-                      <div style="font-size:11px;color:#999;">Aracaju, SE</div>
-                    </div>
-                    <div style="margin-left:auto;color:#F5A623;font-size:12px;">★★★★★</div>
-                  </div>
-                  <p style="font-size:12px;color:#444;line-height:1.6;font-style:italic;">
-                    "Em 2 minutinhos recebi o diagnóstico no WhatsApp com tudo explicado. Meu cacho sempre murcha no segundo dia e agora entendi o porquê. Tô na lista de espera!"
-                  </p>
-                </div>
-
-                <!-- Card 3 -->
-                <div style="
-                  min-width: 260px; max-width: 280px;
-                  background: #fff;
-                  border: 1px solid #e8ddd4;
-                  border-radius: 14px;
-                  padding: 16px;
-                  scroll-snap-align: start;
-                  flex-shrink: 0;
-                ">
-                  <div style="display:flex;align-items:center;gap:10px;margin-bottom:10px;">
-                    <div style="width:36px;height:36px;border-radius:50%;background:#7A3B1E;color:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0;">T</div>
-                    <div>
-                      <div style="font-size:13px;font-weight:700;color:#1a1a1a;">Tainá C.</div>
-                      <div style="font-size:11px;color:#999;">Feira de Santana, BA</div>
-                    </div>
-                    <div style="margin-left:auto;color:#F5A623;font-size:12px;">★★★★★</div>
-                  </div>
-                  <p style="font-size:12px;color:#444;line-height:1.6;font-style:italic;">
-                    "Super personalizado! As dicas já ajudaram minha rotina. Quando lançar o kit eu compro na hora sem pensar duas vezes."
-                  </p>
-                </div>
-
-              </div>
-
-              <p style="text-align:center;font-size:12px;color:#aaa;margin-top:12px;">
-                ★★★★★ &nbsp;+230 diagnósticos realizados em Sergipe e Bahia
-              </p>
-
-            </section>
           </div>
         </div>
+      </div>
+    </section>
+
+    <!-- ====== TESTIMONIALS ====== -->
+    <section class="testimonials-section" id="screen-testimonials">
+      <div class="container">
+        <h2 class="testimonials-title">O que as meninas estão dizendo</h2>
+        <div class="testimonials-track">
+
+          <div class="testimonial-card">
+            <div class="testimonial-card-header">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#B8541A,#D4752A);">J</div>
+              <div>
+                <div class="testimonial-name">Jamile S.</div>
+                <div class="testimonial-location">Salvador, BA</div>
+              </div>
+              <div class="testimonial-stars">★★★★★</div>
+            </div>
+            <p class="testimonial-text">
+              "Fiz o diagnóstico achando que era mais um quiz. Mas o resultado foi certeiro — identificou exatamente o meu problema com ressecamento. Mal posso esperar pelo kit!"
+            </p>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-card-header">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#0F6E56,#1AA37A);">R</div>
+              <div>
+                <div class="testimonial-name">Renata M.</div>
+                <div class="testimonial-location">Aracaju, SE</div>
+              </div>
+              <div class="testimonial-stars">★★★★★</div>
+            </div>
+            <p class="testimonial-text">
+              "Em 2 minutinhos recebi o diagnóstico no WhatsApp com tudo explicado. Meu cacho sempre murcha no segundo dia e agora entendi o porquê. Tô na lista de espera!"
+            </p>
+          </div>
+
+          <div class="testimonial-card">
+            <div class="testimonial-card-header">
+              <div class="testimonial-avatar" style="background:linear-gradient(135deg,#7A3B1E,#A85A2E);">T</div>
+              <div>
+                <div class="testimonial-name">Tainá C.</div>
+                <div class="testimonial-location">Feira de Santana, BA</div>
+              </div>
+              <div class="testimonial-stars">★★★★★</div>
+            </div>
+            <p class="testimonial-text">
+              "Super personalizado! As dicas já ajudaram minha rotina. Quando lançar o kit eu compro na hora sem pensar duas vezes."
+            </p>
+          </div>
+
+        </div>
+        <p class="testimonials-footer">★★★★★ &nbsp;+230 diagnósticos realizados em Sergipe e Bahia</p>
       </div>
     </section>
 
@@ -398,17 +288,7 @@
             </div>
           </div>
 
-          <!-- MUDANÇA 13 -->
-          <div style="
-            background: #fff3e8;
-            border-left: 4px solid #B8541A;
-            border-radius: 0 8px 8px 0;
-            padding: 16px 18px;
-            margin: 20px 0;
-            font-size: 15px;
-            line-height: 1.7;
-            color: #5a2e0e;
-          ">
+          <div class="emotional-bridge">
             Seu diagnóstico identificou o perfil dos seus cachos.
             Em 30 dias, lançamos um kit desenvolvido <strong>exatamente para esse perfil</strong> —
             com os produtos certos, na ordem certa, para o seu tipo de cacho.
@@ -431,25 +311,10 @@
               <svg width="20" height="20" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               Enviar para meu WhatsApp
             </button>
-            <!-- MUDANÇA 15 -->
             <button
               id="btn-compartilhar"
               onclick="compartilharResultado()"
-              style="
-                display: block;
-                width: 100%;
-                max-width: 360px;
-                margin: 12px auto 0;
-                padding: 14px 24px;
-                background: transparent;
-                color: #0F6E56;
-                border: 2px solid #0F6E56;
-                border-radius: 50px;
-                font-size: 15px;
-                font-weight: 700;
-                cursor: pointer;
-                text-align: center;
-              "
+              class="btn-share-outline"
             >
               💬 Compartilhar meu resultado com as amigas
             </button>
@@ -534,19 +399,10 @@
             <img src="assets/logomarca.png" alt="CachoViva" class="footer-logo">
           </div>
           <div class="footer-info">
-            <!-- MUDANÇA 17 -->
-            <div style="
-              display: flex;
-              flex-wrap: wrap;
-              justify-content: center;
-              gap: 16px;
-              padding: 14px 20px;
-              border-top: 1px solid #e8ddd4;
-              margin-bottom: 12px;
-            ">
-              <span style="font-size:12px;color:#aaa;">🔒 Dados protegidos pela LGPD</span>
-              <span style="font-size:12px;color:#aaa;">✅ Empresa registrada · CNPJ 66.781.714/0001-92</span>
-              <span style="font-size:12px;color:#aaa;">📦 Produto em produção</span>
+            <div class="footer-seals">
+              <span class="footer-seal-item">🔒 Dados protegidos pela LGPD</span>
+              <span class="footer-seal-item">✅ Empresa registrada · CNPJ 66.781.714/0001-92</span>
+              <span class="footer-seal-item">📦 Produto em produção</span>
             </div>
             <p>© 2026 Maynard Distribuidora e Atacadista de Cosméticos e Perfumaria Ltda.</p>
             <p class="footer-cnpj">CNPJ: 66.781.714/0001-92</p>
@@ -559,6 +415,19 @@
       </div>
     </footer>
 
+  </div>
+
+  <!-- EXIT-INTENT -->
+  <div class="exit-intent-overlay" id="exitIntentOverlay">
+    <div class="exit-intent-modal">
+      <div class="form-icon"><i data-lucide="sparkles" style="width:40px;height:40px;stroke:var(--gold);stroke-width:1.5;display:block;margin:0 auto"></i></div>
+      <h2>Espere! Seu diagnóstico está pronto 🎯</h2>
+      <p>8 perguntinhas rápidas e você descobre exatamente o que seus cachos precisam — de graça.</p>
+      <button class="btn-primary btn-full" onclick="fecharExitIntent();startQuiz();">
+        Quero meu diagnóstico grátis →
+      </button>
+      <button class="exit-intent-close" onclick="fecharExitIntent()">Não quero, obrigada</button>
+    </div>
   </div>
 
   <div class="loading-overlay hidden" id="loadingOverlay">

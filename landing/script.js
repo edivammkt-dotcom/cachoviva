@@ -220,6 +220,43 @@ const encouragements = [
   'Última! Vamos nessa!',
 ];
 
+const GA_ID = 'G-XXXXXXXXXX';
+
+function gaEvent(action, label) {
+  try {
+    if (typeof gtag === 'function') {
+      gtag('event', action, { event_category: 'engagement', event_label: label });
+    }
+  } catch(e) {}
+}
+
+function salvarProgresso() {
+  try {
+    sessionStorage.setItem('cv_quiz_current', JSON.stringify(currentQuestion));
+    sessionStorage.setItem('cv_quiz_answers', JSON.stringify(answers));
+  } catch(e) {}
+}
+
+function carregarProgresso() {
+  try {
+    var q = sessionStorage.getItem('cv_quiz_current');
+    var a = sessionStorage.getItem('cv_quiz_answers');
+    if (q !== null && a !== null) {
+      currentQuestion = JSON.parse(q);
+      answers = JSON.parse(a);
+      if (Array.isArray(answers) && answers.length > 0) return true;
+    }
+  } catch(e) {}
+  return false;
+}
+
+function limparProgresso() {
+  try {
+    sessionStorage.removeItem('cv_quiz_current');
+    sessionStorage.removeItem('cv_quiz_answers');
+  } catch(e) {}
+}
+
 let currentQuestion = 0;
 let answers = [];
 let leadData = null;
@@ -231,8 +268,11 @@ function showScreen(id) {
 }
 
 function startQuiz() {
-  currentQuestion = 0;
-  answers = [];
+  gaEvent('start_quiz', 'hero_cta');
+  if (!carregarProgresso()) {
+    currentQuestion = 0;
+    answers = [];
+  }
   showScreen('screen-quiz');
   renderQuestion();
 }
@@ -289,12 +329,14 @@ function renderQuestion() {
 
 function selectOption(index) {
   answers[currentQuestion] = index;
+  gaEvent('answer_question', 'q' + (currentQuestion + 1));
   document.querySelectorAll('.option-btn').forEach((btn, i) => {
     btn.classList.toggle('selected', i === index);
   });
   const nextBtn = document.getElementById('btnNext');
   nextBtn.disabled = false;
   nextBtn.style.opacity = '1';
+  salvarProgresso();
 }
 
 function nextQuestion() {
@@ -427,6 +469,9 @@ async function submitForm(e) {
 
   if (!valid) return;
 
+  limparProgresso();
+  gaEvent('submit_form', diagnosis ? diagnosis.id : 'unknown');
+
   leadData = { name, phone, email };
   const diagnosis = calcDiagnosis();
 
@@ -482,26 +527,48 @@ function shareWhatsapp() {
   window.open(`https://wa.me/?text=${text}`, '_blank');
 }
 
-// MUDANÇA 15
 function compartilharResultado() {
-  var nomeResultado = document.querySelector('[data-resultado-nome]')?.textContent
-    || document.querySelector('#resultName')?.textContent
-    || 'Cacho Equilibrado';
-  var texto = encodeURIComponent(
+  gaEvent('share_result', 'compartilhar_btn');
+  var nomeResultado = document.querySelector('#resultName')?.textContent || 'Cacho Equilibrado';
+  var texto =
     'Fiz o diagnóstico capilar da CachoViva e descobri que meu cacho é ' +
     nomeResultado + '! 🌀\n\n' +
     'Você sabe o que o SEU cacho precisa? Faz o teste grátis (2 minutinhos) 👇\n' +
-    'https://cachoviva.onrender.com'
-  );
-  window.open('https://wa.me/?text=' + texto, '_blank');
+    'https://cachoviva.onrender.com';
+  var encoded = encodeURIComponent(texto);
+  var win = window.open('https://wa.me/?text=' + encoded, '_blank');
+  if (!win || win.closed || typeof win.closed === 'undefined') {
+    navigator.clipboard.writeText(texto.replace(/%0A%0A/g, '\n\n').replace(/%20/g, ' ')).then(function() {
+      alert('Link copiado para a área de transferência! Cole no WhatsApp 💬');
+    }).catch(function() {
+      prompt('Copie o link abaixo e compartilhe no WhatsApp:', 'https://cachoviva.onrender.com');
+    });
+  }
 }
 
 function restartQuiz() {
+  limparProgresso();
   currentQuestion = 0;
   answers = [];
   leadData = null;
   showScreen('screen-hero');
 }
+
+// Exit-intent
+var exitIntentFired = false;
+function fecharExitIntent() {
+  document.getElementById('exitIntentOverlay').classList.remove('active');
+}
+document.addEventListener('mouseleave', function(e) {
+  if (exitIntentFired) return;
+  if (e.clientY > 0) return;
+  var hero = document.getElementById('screen-hero');
+  if (hero && hero.classList.contains('active')) {
+    exitIntentFired = true;
+    document.getElementById('exitIntentOverlay').classList.add('active');
+    gaEvent('exit_intent', 'showed');
+  }
+});
 
 // MUDANÇA 11
 function atualizarEncorajamento(perguntaAtual) {
@@ -544,9 +611,47 @@ function toggleFaq(btn) {
   btn.classList.toggle('open');
 }
 
+function iniciarContador() {
+  var launchDate = new Date('2026-06-19T00:00:00-03:00');
+  var tentouServidor = false;
+
+  function pad(n) { return String(n).padStart(2,'0'); }
+  function tick() {
+    var diff = Math.max(0, launchDate - new Date());
+    var d = document;
+    if (d.getElementById('c-dias'))  d.getElementById('c-dias').textContent  = pad(Math.floor(diff / 86400000));
+    if (d.getElementById('c-horas')) d.getElementById('c-horas').textContent = pad(Math.floor((diff % 86400000) / 3600000));
+    if (d.getElementById('c-min'))   d.getElementById('c-min').textContent   = pad(Math.floor((diff % 3600000) / 60000));
+    if (d.getElementById('c-seg'))   d.getElementById('c-seg').textContent   = pad(Math.floor((diff % 60000) / 1000));
+  }
+  tick();
+  setInterval(tick, 1000);
+
+  if (!tentouServidor) {
+    tentouServidor = true;
+    fetch(API_BASE + '/launch').then(function(r) { return r.json(); }).then(function(data) {
+      if (data && data.launch) {
+        launchDate = new Date(data.launch);
+        tick();
+      }
+    }).catch(function() {});
+  }
+}
+
 document.addEventListener('DOMContentLoaded', () => {
   const wppField = document.getElementById('fieldWhatsapp');
-  wppField.addEventListener('input', formatPhone);
-  wppField.addEventListener('blur', () => validateWppField(wppField.value));
+  if (wppField) {
+    wppField.addEventListener('input', formatPhone);
+    wppField.addEventListener('blur', () => validateWppField(wppField.value));
+  }
+  iniciarContador();
+
+  var lazyImages = document.querySelectorAll('.hero-visual-img, .hero-logo-wrap img');
+  lazyImages.forEach(function(img) {
+    if (img.complete) { img.classList.add('loaded'); }
+    else { img.addEventListener('load', function() { img.classList.add('loaded'); }); img.addEventListener('error', function() { img.classList.add('loaded'); }); }
+  });
+
   if (typeof lucide !== 'undefined') lucide.createIcons();
+  gaEvent('page_view', 'landing_page');
 });
