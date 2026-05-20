@@ -210,6 +210,16 @@ const diagnoses = [
 ];
 
 const letters = ['A', 'B', 'C', 'D'];
+const encouragements = [
+  'Ótimo! Já sabemos mais sobre seus fios.',
+  'Boa! Continue que está quase lá.',
+  'Perfeito! Mais algumas e seu diagnóstico fica pronto.',
+  'Show! Você está entendendo seu cabelo como nunca.',
+  'Mandou bem! Só mais algumas perguntas.',
+  'Que legal! Seu diagnóstico vai ser incrível.',
+  'Última! Vamos nessa!',
+];
+
 let currentQuestion = 0;
 let answers = [];
 let leadData = null;
@@ -251,6 +261,21 @@ function renderQuestion() {
   `;
 
   document.getElementById('btnPrev').classList.toggle('hidden', currentQuestion === 0);
+
+  const encouragementEl = document.getElementById('quizEncouragement') || document.createElement('p');
+  if (!encouragementEl.id) {
+    encouragementEl.id = 'quizEncouragement';
+    encouragementEl.className = 'quiz-encouragement';
+    document.querySelector('.quiz-card').appendChild(encouragementEl);
+  }
+  if (currentQuestion < questions.length - 1) {
+    encouragementEl.textContent = encouragements[currentQuestion] || '';
+  } else {
+    encouragementEl.textContent = '⚡ Última pergunta!';
+  }
+
+  // MUDANÇA 11
+  atualizarEncorajamento(currentQuestion + 1);
 
   const nextBtn = document.getElementById('btnNext');
   if (currentQuestion < total - 1) {
@@ -321,8 +346,15 @@ function showResult(diagnosis) {
   document.getElementById('resultTitle').textContent = 'Diagnóstico Completo';
   document.getElementById('resultSub').textContent = leadData ? `Para ${leadData.name}` : 'Seu diagnóstico capilar personalizado';
   document.getElementById('resultIcon').innerHTML = `<i data-lucide="${diagnosis.icon_name}" style="width:52px;height:52px;stroke:var(--gold-dark);stroke-width:1.5;display:block;margin:0 auto"></i>`;
-  document.getElementById('resultName').textContent = diagnosis.name;
-  document.getElementById('resultDesc').textContent = diagnosis.desc;
+  // MUDANÇA 12 — aplicar nome com identidade
+  var nomePersonalizado = mapaResultados[diagnosis.name];
+  if (nomePersonalizado) {
+    document.getElementById('resultName').textContent = nomePersonalizado.nome;
+    document.getElementById('resultDesc').textContent = nomePersonalizado.sub;
+  } else {
+    document.getElementById('resultName').textContent = diagnosis.name;
+    document.getElementById('resultDesc').textContent = diagnosis.desc;
+  }
   document.getElementById('resultMeaning').textContent = diagnosis.meaning;
 
   const cal = document.getElementById('resultCalendar');
@@ -347,23 +379,42 @@ function validatePhone(phone) {
   return cleaned.length >= 10 && cleaned.length <= 11;
 }
 
-function validateEmail(email) {
-  return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-}
-
 function formatPhone(e) {
   let v = e.target.value.replace(/\D/g, '');
   if (v.length > 11) v = v.slice(0, 11);
   if (v.length > 2) v = `(${v.slice(0, 2)}) ${v.slice(2)}`;
   if (v.length > 10) v = `${v.slice(0, 10)}-${v.slice(10)}`;
   e.target.value = v;
+  validateWppField(v);
+}
+
+function validateWppField(value) {
+  const hint = document.getElementById('wppHint');
+  const cleaned = value.replace(/\D/g, '');
+  const input = document.getElementById('fieldWhatsapp');
+  if (cleaned.length === 0) {
+    hint.textContent = '';
+    input.classList.remove('valid', 'error');
+    return;
+  }
+  if (cleaned.length >= 10 && cleaned.length <= 11) {
+    hint.textContent = '✓ Número válido';
+    hint.style.color = '#25D366';
+    input.classList.add('valid');
+    input.classList.remove('error');
+  } else {
+    hint.textContent = 'Digite o número com DDD (ex: 11999999999)';
+    hint.style.color = '#E85C4A';
+    input.classList.add('error');
+    input.classList.remove('valid');
+  }
 }
 
 async function submitForm(e) {
   e.preventDefault();
   const name = document.getElementById('fieldName').value.trim();
   const phone = document.getElementById('fieldWhatsapp').value.trim();
-  const email = document.getElementById('fieldEmail').value.trim();
+  const email = document.getElementById('fieldEmail') ? document.getElementById('fieldEmail').value.trim() : '';
 
   let valid = true;
   if (!name) { valid = false; }
@@ -372,12 +423,6 @@ async function submitForm(e) {
     valid = false;
   } else {
     document.getElementById('fieldWhatsapp').classList.remove('error');
-  }
-  if (!validateEmail(email)) {
-    document.getElementById('fieldEmail').classList.add('error');
-    valid = false;
-  } else {
-    document.getElementById('fieldEmail').classList.remove('error');
   }
 
   if (!valid) return;
@@ -437,12 +482,61 @@ function shareWhatsapp() {
   window.open(`https://wa.me/?text=${text}`, '_blank');
 }
 
+// MUDANÇA 15
+function compartilharResultado() {
+  var nomeResultado = document.querySelector('[data-resultado-nome]')?.textContent
+    || document.querySelector('#resultName')?.textContent
+    || 'Cacho Equilibrado';
+  var texto = encodeURIComponent(
+    'Fiz o diagnóstico capilar da CachoViva e descobri que meu cacho é ' +
+    nomeResultado + '! 🌀\n\n' +
+    'Você sabe o que o SEU cacho precisa? Faz o teste grátis (2 minutinhos) 👇\n' +
+    'https://cachoviva.onrender.com'
+  );
+  window.open('https://wa.me/?text=' + texto, '_blank');
+}
+
 function restartQuiz() {
   currentQuestion = 0;
   answers = [];
   leadData = null;
   showScreen('screen-hero');
 }
+
+// MUDANÇA 11
+function atualizarEncorajamento(perguntaAtual) {
+  var msgs = {
+    1: "Ótimo começo! Seu diagnóstico está sendo montado.",
+    2: "Continue! Cada resposta deixa o diagnóstico mais preciso.",
+    3: "Você está na metade — já temos informações importantes.",
+    4: "Indo bem! Quase na reta final.",
+    5: "Só mais 3 perguntas. Você está quase lá!",
+    6: "Ótimo! O diagnóstico está quase completo.",
+    7: "Última etapa! Seu resultado personalizado está quase pronto.",
+    8: "Perfeito! Finalizando seu diagnóstico..."
+  };
+  var el = document.getElementById('encorajamento-quiz');
+  if (el && msgs[perguntaAtual]) {
+    el.textContent = msgs[perguntaAtual];
+    el.style.display = 'block';
+  }
+}
+
+// MUDANÇA 12
+var mapaResultados = {
+  "Cabelo Equilibrado":   { nome: "Cacho Equilibrado ✨",    sub: "Seus fios estão no caminho certo — só falta o produto certo." },
+  "Cabelo Seco":          { nome: "Cacho Sedento 💧",        sub: "Seus fios pedem hidratação urgente." },
+  "Ressecado":            { nome: "Cacho Sedento 💧",        sub: "Seus fios pedem hidratação urgente." },
+  "Excesso de Proteína":  { nome: "Cacho Proteico ⚖️",      sub: "Seus fios precisam de equilíbrio entre proteína e hidratação." },
+  "Transição":            { nome: "Cacho em Renascimento 🌱",sub: "Você está numa das fases mais especiais do cabelo." },
+  "Porosidade Alta":      { nome: "Cacho Poroso 🌊",         sub: "Seus fios absorvem muito mas não retêm — vamos resolver." },
+  "Fragilidade":          { nome: "Cacho Sensível 🤍",       sub: "Seus fios precisam de força e cuidado redobrado." },
+  "Cabelo Ressaca":       { nome: "Cacho Proteico ⚖️",      sub: "Seus fios precisam de equilíbrio entre proteína e hidratação." },
+  "Cabelo Sedento":       { nome: "Cacho Sedento 💧",        sub: "Seus fios pedem hidratação urgente." },
+  "Cabelo Pesado":        { nome: "Cacho Nutrido 🛢️",       sub: "Seus fios estão sobrecarregados — hora de leveza." },
+  "Cabelo Poroso":        { nome: "Cacho Poroso 🌊",         sub: "Seus fios absorvem muito mas não retêm — vamos resolver." },
+  "Cabelo sem Rotina":    { nome: "Cacho em Descoberta 🔍",  sub: "Você está prestes a montar a rotina ideal para seus fios." }
+};
 
 function toggleFaq(btn) {
   const item = btn.parentElement;
@@ -451,6 +545,8 @@ function toggleFaq(btn) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
-  document.getElementById('fieldWhatsapp').addEventListener('input', formatPhone);
+  const wppField = document.getElementById('fieldWhatsapp');
+  wppField.addEventListener('input', formatPhone);
+  wppField.addEventListener('blur', () => validateWppField(wppField.value));
   if (typeof lucide !== 'undefined') lucide.createIcons();
 });
