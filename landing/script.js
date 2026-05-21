@@ -91,10 +91,10 @@ const diagnoses = [
       { day: 'Sex', icon_name: 'wrench', treatment: 'Reconstrução' },
     ],
     tips: [
-      'Mantenha a frequência de lavagem ideal para seu tipo de cacho',
-      'Continue alternando hidratação, nutrição e reconstrução semanalmente',
-      'Faça um cronograma capilar a cada 3 meses para reavaliar as necessidades',
-      'Use finalizadores com proteção térmica se usar calor',
+      'Use o Creme Cachos Definidos como leave-in — o Óleo de Argan e a Manteiga de Karité mantêm seus fios no ponto certo',
+      'No dia seguinte, borrife o Spray Day After com Efeito Memória para reativar os cachos',
+      'O kit foi feito para manter o que já funciona — sem desregular sua rotina',
+      'Continue lavando na frequência ideal para seu tipo de cacho',
     ],
   },
   {
@@ -112,11 +112,10 @@ const diagnoses = [
       { day: 'Sex', icon_name: 'wrench', treatment: 'RECONSTRUÇÃO' },
     ],
     tips: [
-      'URGENTE: Faça uma reconstrução com queratina ou aminoácidos',
-      'Reduza hidratações para 1x por semana durante 1 mês',
-      'Invista em produtos com proteínas (queratina, colágeno, argenina)',
-      'Evite banhos muito quentes e selamento com água fria',
-      'Após 1 mês, reavalie e monte um cronograma equilibrado',
+      'Simplifique: o Creme Cachos Definidos entrega hidratação (Óleo de Argan) e nutrição (Manteiga de Karité) num só passo',
+      'Evite alternar entre vários produtos — o desequilíbrio muitas vezes vem do excesso de camadas',
+      'O Spray Day After mantém o resultado no dia seguinte sem desregular o fio',
+      'Use o kit por 15 dias e observe seus fios — às vezes menos produtos é o equilíbrio que falta',
     ],
   },
   {
@@ -134,11 +133,10 @@ const diagnoses = [
       { day: 'Sex', icon_name: 'sparkles', treatment: 'Nutrição' },
     ],
     tips: [
-      'Invista em máscaras de hidratação com aloe vera, glicerina, pantenol',
-      'Faça hidratação 2x por semana nas primeiras 3 semanas',
-      'Use leave-in com agentes umectantes no dia a dia',
-      'Técnica de umidade: borrifar água + leave-in diariamente',
-      'Finalize com gelatina para selar a cutícula',
+      'O Creme Cachos Definidos tem pH 4.0–4.5 que sela a cutícula e retém a hidratação nos fios',
+      'O Óleo de Argan hidrata e a Manteiga de Karité nutre — tudo num leave-in sem enxágue',
+      'No dia seguinte, o Spray Day After com Aloé Vera reativa os cachos sem molhar',
+      'O Day After tem Proteção Térmica — use antes do difusor para potencializar o efeito',
     ],
   },
   {
@@ -156,11 +154,10 @@ const diagnoses = [
       { day: 'Sex', icon_name: 'wrench', treatment: 'Reconstrução' },
     ],
     tips: [
-      'Faça uma limpeza profunda com shampoo antirresíduos já na próxima lavagem',
-      'Reduza a frequência de nutrição — no máximo 1x a cada 15 dias',
-      'Prefira finalizadores leves (gelatina, spray, mousse) em vez de cremes densos',
-      'Evite óleos pesados (óleo de rícino, manteiga de karité) por enquanto',
-      'Aumente a frequência de lavagem para evitar acúmulo',
+      'O Creme Cachos Definidos tem 0% Petrolatos — não acumula nos fios como cremes convencionais',
+      'Use uma quantidade do tamanho de uma noz — o suficiente para definir sem pesar',
+      'O pH 4.0–4.5 sela a cutícula e impede que resíduos externos entrem no fio',
+      'O Spray Day After é seco e leve — redefine sem adicionar peso extra',
     ],
   },
   {
@@ -178,11 +175,10 @@ const diagnoses = [
       { day: 'Sex', icon_name: 'sparkles', treatment: 'Nutrição leve' },
     ],
     tips: [
-      'Priorize reconstrução com queratina a cada 15 dias',
-      'Finalize sempre com água fria para selar as cutículas',
-      'Use finalizadores com filmógenos (gelatina, linhaça)',
-      'Evite químicas e calor excessivo até a cutícula se recuperar',
-      'Invista em um cronograma: reconstrução → hidratação → nutrição',
+      'O pH 4.0–4.5 do Creme Cachos Definidos ajuda a fechar as cutículas dos fios porosos',
+      'A Manteiga de Karité sela a umidade dentro do fio',
+      'Finalize com água fria para potencializar o selamento do pH balanceado',
+      'O Spray Day After tem Proteção UV e Térmica — protege contra agressores que pioram a porosidade',
     ],
   },
   {
@@ -200,11 +196,10 @@ const diagnoses = [
       { day: 'Sex', icon_name: 'wrench', treatment: 'Reconstrução' },
     ],
     tips: [
-      'Comece com um cronograma capilar simples: H → N → R a cada semana',
-      'Identifique seu tipo de cacho (2A a 4C) e porosidade',
-      'Invista em 3 máscaras: uma de hidratação, uma nutrição, uma reconstrução',
-      'Crie o hábito de lavar o cabelo com frequência regular',
-      'Use finalizador adequado para seu tipo de cacho',
+      'Creme Cachos Definidos no dia da lavagem — aplique como leave-in, sem enxaguar',
+      'Spray Day After no dia seguinte — borrife e modele os cachos',
+      'Sem cronograma capilar, sem 7 produtos — só dois passos, dois minutos',
+      'A consistência vem da simplicidade: lave, aplique, finalize. No dia seguinte, borrife e modele',
     ],
   },
 ];
@@ -212,7 +207,7 @@ const diagnoses = [
 const letters = ['A', 'B', 'C', 'D'];
 const encouragements = [
   'Ótimo! Já sabemos mais sobre seus fios.',
-  'Boa! Continue que está quase lá.',
+  'Bom! Continue que está quase lá.',
   'Perfeito! Mais algumas e seu diagnóstico fica pronto.',
   'Show! Você está entendendo seu cabelo como nunca.',
   'Mandou bem! Só mais algumas perguntas.',
@@ -413,6 +408,51 @@ function showResult(diagnosis) {
 
   if (typeof lucide !== 'undefined') lucide.createIcons();
 
+  // BLOCO 1 — productMatch personalizado
+  var nomeDisplay = mapaResultados[diagnosis.name] ? mapaResultados[diagnosis.name].nome : diagnosis.name;
+  var diagnosticKey = cleanKey(nomeDisplay);
+  var match = productMatch[diagnosticKey] || productMatch["Cacho Equilibrado"];
+  getContadorPerfil(diagnosticKey).then(function(contador) {
+    var blocoMatch = document.getElementById('bloco-match');
+    if (blocoMatch) blocoMatch.remove();
+    var ctaEl = document.getElementById('bloco-cta-kit');
+    if (ctaEl) ctaEl.remove();
+
+    var blocoHTML =
+      '<div id="bloco-match" style="background:linear-gradient(135deg,#fff3e8 0%,#ffe8d6 100%);border:2px solid #B8541A;border-radius:16px;padding:22px 24px 18px;margin:20px 0;position:relative;text-align:left;">' +
+        '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#B8541A;color:#fff;font-size:11px;font-weight:700;padding:4px 18px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">' +
+          '🎯 KIT IDEAL PARA SEU PERFIL' +
+        '</div>' +
+        '<p style="font-size:17px;font-weight:800;color:#1a1a1a;margin:14px 0 10px;text-align:center;line-height:1.4;">' + match.titulo + '</p>' +
+        '<p style="font-size:14px;color:#5a2e0e;line-height:1.8;margin-bottom:14px;">' + match.paragrafo + '</p>' +
+        '<div style="display:flex;align-items:center;gap:8px;background:rgba(184,84,26,0.1);border-radius:10px;padding:12px 16px;margin-bottom:14px;">' +
+          '<span style="font-size:14px;">🔥</span>' +
+          '<span style="font-size:13px;color:#2a1a1b;font-weight:600;">' + contador + ' ' + match.urgencia + '</span>' +
+        '</div>' +
+        '<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;font-size:13px;color:#4a2a0e;">' +
+          '<span>✅ Desenvolvido para as necessidades do seu cacho</span>' +
+          '<span>✅ 2 passos: Creme Cachos Definidos + Spray Day After</span>' +
+          '<span>✅ Resultado visível desde o primeiro uso</span>' +
+        '</div>' +
+        '<div style="background:rgba(197,165,90,0.12);border-radius:10px;padding:14px 16px;margin-bottom:14px;text-align:center;">' +
+          '<div style="font-size:12px;color:#7a6465;margin-bottom:2px;">⭐ O que estão dizendo</div>' +
+          '<div style="font-size:13px;color:#2a1a1b;font-style:italic;line-height:1.5;">"Meus cachos ficaram definidos por 2 dias sem precisar refazer"</div>' +
+        '</div>' +
+      '</div>' +
+      '<div id="bloco-cta-kit" style="margin:0 0 20px;text-align:center;">' +
+        '<button onclick="garantirKit(\'' + diagnosticKey + '\')" style="display:block;width:100%;max-width:400px;margin:0 auto;padding:18px 24px;background:linear-gradient(135deg,#B8541A,#D4783A);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:800;cursor:pointer;text-align:center;box-shadow:0 6px 24px rgba(184,84,26,0.4);transition:all 0.3s ease;letter-spacing:0.3px;">' +
+          '🔥 GARANTIR MEU KIT COM DESCONTO' +
+        '</button>' +
+        '<p style="font-size:12px;color:#999;text-align:center;margin-top:10px;line-height:1.5;">De R$89,90 por <strong style="color:#B8541A;font-size:16px;">R$49,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>' +
+        '<p style="font-size:11px;color:#bbb;margin-top:4px;">⏳ Pré-lançamento · Estoque limitado</p>' +
+      '</div>';
+
+    var details = document.querySelector('.result-details');
+    if (details) {
+      details.insertAdjacentHTML('beforebegin', blocoHTML);
+    }
+  });
+
   showScreen('screen-result');
 }
 
@@ -452,6 +492,23 @@ function validateWppField(value) {
   }
 }
 
+function copiarTexto(texto) {
+  try {
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(texto);
+    } else {
+      var ta = document.createElement('textarea');
+      ta.value = texto;
+      ta.style.cssText = 'position:fixed;left:-9999px;top:0;opacity:0';
+      document.body.appendChild(ta);
+      ta.focus();
+      ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+    }
+  } catch(e) {}
+}
+
 async function submitForm(e) {
   e.preventDefault();
   const name = document.getElementById('fieldName').value.trim();
@@ -470,6 +527,9 @@ async function submitForm(e) {
   if (!valid) return;
 
   const diagnosis = calcDiagnosis();
+  var diagnosticName = (mapaResultados[diagnosis.name] && mapaResultados[diagnosis.name].nome) || diagnosis.name;
+  localStorage.setItem('cv_diagnostico', diagnosticName);
+  localStorage.setItem('cv_diagnostico_data', new Date().toISOString());
   limparProgresso();
   gaEvent('submit_form', diagnosis ? diagnosis.id : 'unknown');
 
@@ -477,6 +537,101 @@ async function submitForm(e) {
 
   document.getElementById('loadingOverlay').classList.remove('hidden');
 
+  // PASSO 1 — mostra resultado na tela
+  try { showResult(diagnosis); } catch(e) { console.warn(e); }
+
+  // PASSO 2 — constroi mensagem do WhatsApp com diagnóstico + lista VIP
+  var phoneClean = phone.replace(/\D/g, '');
+  var waMsg = '';
+  var waUrl = '';
+  var waUrlFallback = '';
+
+  if (phoneClean.length >= 10) {
+    if (!phoneClean.startsWith('55')) phoneClean = '55' + phoneClean;
+    var nomeResultado = (mapaResultados[diagnosis.name] && mapaResultados[diagnosis.name].nome) || diagnosis.name;
+    var match = productMatch[cleanKey(nomeResultado)];
+    var leadId = localStorage.getItem('cv_lead_id') || 'temp_' + Date.now();
+
+    var msgParts = [
+      '🧴 *MEU DIAGNÓSTICO CAPILAR CACHOVIVA*',
+      '',
+      '👤 *' + name + '*',
+      '📋 *Tipo:* ' + nomeResultado,
+      '',
+      '📝 *O que significa:*',
+      diagnosis.meaning,
+      '',
+      '📅 *Calendário recomendado:*',
+    ];
+
+    diagnosis.calendar.forEach(function(d) {
+      msgParts.push('▸ ' + d.day + ' → ' + d.treatment);
+    });
+
+    msgParts.push('');
+    msgParts.push('💡 *Dicas rápidas:*');
+    diagnosis.tips.forEach(function(t) {
+      msgParts.push('✅ ' + t);
+    });
+
+    if (match) {
+      msgParts.push('');
+      msgParts.push('💡 *Kit ideal para seu perfil:*');
+      msgParts.push(match.paragrafo);
+    }
+
+    msgParts.push('');
+    msgParts.push('━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━');
+    msgParts.push('🎯 *ENTRE NA LISTA VIP DE LANÇAMENTO!*');
+    msgParts.push('');
+    msgParts.push('✅ Desconto especial sem pegadinhas');
+    msgParts.push('✅ Acesso antecipado ao lançamento');
+    msgParts.push('✅ Brinde exclusivo: Perfume Capilar 30ml');
+    msgParts.push('');
+    msgParts.push('👉 *Confirme seu lugar na lista VIP:*');
+    msgParts.push(window.location.origin + '/?confirmar_lista=' + leadId);
+    msgParts.push('');
+    msgParts.push('Se não quiser entrar na lista VIP, apenas ignore esta mensagem.');
+
+    waMsg = msgParts.join('\n');
+    waUrl = 'https://wa.me/' + phoneClean + '?text=' + encodeURIComponent(waMsg);
+    waUrlFallback = 'https://api.whatsapp.com/send?phone=' + phoneClean + '&text=' + encodeURIComponent(waMsg);
+  }
+
+  // PASSO 3 — COPIA PARA A ÁREA DE TRANSFERÊNCIA (sempre funciona)
+  if (waMsg) {
+    copiarTexto(waMsg);
+  }
+
+  // PASSO 4 — INJETA BOTÃO DO WHATSAPP NA TELA DE RESULTADO (aparece após o card do diagnóstico)
+  var btnExistente = document.getElementById('btn-wa-auto');
+  if (!btnExistente && waUrl) {
+    var htmlBtn =
+      '<div id="btn-wa-auto" style="margin:20px 0 10px;">' +
+        '<a href="' + waUrlFallback + '" target="_blank" ' +
+           'style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px 20px;' +
+           'background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:50px;' +
+           'font-size:17px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;' +
+           'box-shadow:0 6px 24px rgba(37,211,102,0.4);transition:all 0.3s ease;letter-spacing:0.3px;">' +
+          '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
+          'ABRIR WHATSAPP COM MEU DIAGNÓSTICO' +
+        '</a>' +
+        '<p style="font-size:12px;color:#888;text-align:center;margin-top:8px;">📋 Mensagem copiada! Cole no WhatsApp se necessário.</p>' +
+      '</div>';
+
+    var el = document.querySelector('.result-card');
+    if (el) {
+      el.insertAdjacentHTML('afterend', htmlBtn);
+    }
+  }
+
+  // PASSO 5 — TENTA ABRIR WHATSAPP AUTOMATICAMENTE (navegação direta, sem popup)
+  if (waUrl) {
+    try { window.location.href = waUrl; } catch(e) {}
+  }
+
+  // PASSO 6 — salva lead no servidor (background)
+  document.getElementById('loadingOverlay').classList.add('hidden');
   try {
     const resp = await fetch(`${API_BASE}/leads`, {
       method: 'POST',
@@ -511,33 +666,13 @@ async function submitForm(e) {
 
     const data = await resp.json();
     leadData = data.lead || leadData;
+    if (data.lead && data.lead.id) {
+      localStorage.setItem('cv_lead_id', data.lead.id);
+      localStorage.setItem('cv_nome', data.lead.name);
+    }
   } catch (err) {
     console.warn('Lead não salvou no servidor, mas diagnóstico será exibido:', err.message);
   }
-
-  document.getElementById('loadingOverlay').classList.add('hidden');
-  showResult(diagnosis);
-
-  // Envia diagnóstico via WhatsApp automaticamente
-  try {
-    var phoneClean = phone.replace(/\D/g, '');
-    if (phoneClean.length >= 10) {
-      if (!phoneClean.startsWith('55')) phoneClean = '55' + phoneClean;
-      var nomeResultado = (mapaResultados[diagnosis.name] && mapaResultados[diagnosis.name].nome) || diagnosis.name;
-      var msg =
-        '🧴 *MEU DIAGNÓSTICO CAPILAR CACHOVIVA*%0A%0A' +
-        '👤 *' + name + '*%0A' +
-        '📋 Tipo: *' + nomeResultado + '*%0A%0A' +
-        '📝 *O que significa:*%0A' + diagnosis.meaning + '%0A%0A' +
-        '📅 *Calendário recomendado:*%0A' +
-        diagnosis.calendar.map(function(d) { return '  - ' + d.day + ': ' + d.treatment; }).join('%0A') + '%0A%0A' +
-        '💡 *Dicas rápidas:*%0A' +
-        diagnosis.tips.map(function(t) { return '  - ' + t; }).join('%0A') + '%0A%0A' +
-        '👇 Faça o seu diagnóstico grátis:%0A' +
-        'https://cachoviva.onrender.com';
-      window.open('https://wa.me/' + phoneClean + '?text=' + msg, '_blank');
-    }
-  } catch(e) {}
 }
 
 function shareWhatsapp() {
@@ -626,6 +761,91 @@ var mapaResultados = {
   "Cabelo sem Rotina":    { nome: "Cacho em Descoberta 🔍",  sub: "Você está prestes a montar a rotina ideal para seus fios." }
 };
 
+function cleanKey(str) {
+  return str.replace(/\p{Extended_Pictographic}/gu, '').replace(/\s+/g, ' ').trim();
+}
+
+const productMatch = {
+  "Cacho Sedento": {
+    titulo: "O kit com pH que sela a hidratação nos fios",
+    paragrafo: "Seu cabelo resseca porque a cutícula não retém umidade. O Creme Cachos Definidos tem pH 4.0–4.5 que sela a cutícula, enquanto o Óleo de Argan hidrata e a Manteiga de Karité nutre — tudo num leave-in que não precisa enxaguar. No dia seguinte, o Spray Day After com Aloé Vera reativa a definição sem molhar. Resultado: hidratação que fica retida por mais tempo.",
+    urgencia: "pessoas com cacho sedento já reservaram o kit"
+  },
+  "Cacho Pesado": {
+    titulo: "O kit leve que define sem acumular resíduo",
+    paragrafo: "Seu cabelo acumulou resíduo de cremes convencionais. O Creme Cachos Definidos tem 0% Petrolatos — não deposita camadas que pesam. É leave-in com pH balanceado que sela a cutícula sem abrir espaço para novo acúmulo. O Spray Day After finaliza sem peso extra. Resultado: definição com leveza real.",
+    urgencia: "pessoas com cacho pesado já reservaram o kit"
+  },
+  "Cacho Poroso": {
+    titulo: "O kit com pH ácido que sela a porosidade dos fios",
+    paragrafo: "Seu cabelo tem porosidade alta — absorve hidratação mas perde rápido. O Creme Cachos Definidos tem pH 4.0–4.5, que ajuda a fechar as cutículas e reter os ativos. A Manteiga de Karité sela a umidade. O Spray Day After tem Proteção UV e Térmica que blindam o fio contra agressores que pioram a porosidade. Resultado: o que hidrata fica dentro do cacho.",
+    urgencia: "pessoas com cacho poroso já reservaram o kit"
+  },
+  "Cacho Proteico": {
+    titulo: "O kit com hidratação e nutrição na medida certa",
+    paragrafo: "Seu cabelo alterna entre ressecamento e oleosidade — sinal de desequilíbrio entre hidratação e nutrição. O Creme Cachos Definidos entrega Óleo de Argan (hidratação) e Manteiga de Karité (nutrição) num só passo, sem petrolatos que disfarçam o estado real do fio. O Spray Day After mantém o equilíbrio no dia seguinte. Resultado: cabelo mais previsível — você para de adivinhar.",
+    urgencia: "pessoas com desequilíbrio capilar já reservaram o kit"
+  },
+  "Cacho Equilibrado": {
+    titulo: "O kit para manter o que já funciona — por mais tempo",
+    paragrafo: "Seu cabelo está equilibrado — o desafio é fazer a definição durar. O Creme Cachos Definidos potencializa seus cachos com Óleo de Argan e Manteiga de Karité, entregando definição e brilho. O Spray Day After com Efeito Memória reativa os cachos no segundo dia sem desfazer o que você criou. Resultado: a mesma beleza da lavagem no dia seguinte.",
+    urgencia: "pessoas com cacho equilibrado já reservaram o kit"
+  },
+  "Cacho em Descoberta": {
+    titulo: "O kit para quem quer resultado sem rotina complicada",
+    paragrafo: "Você não tem uma rotina definida — cada lavagem é um resultado diferente. O kit CachoViva resolve: Creme Cachos Definidos no dia da lavagem (leave-in, sem enxaguar), Spray Day After no dia seguinte (borrifar e modelar). Sem mistério, sem 7 produtos, sem cronograma. Resultado: consistência real com o mínimo de esforço.",
+    urgencia: "pessoas sem rotina já encontraram o método com o kit"
+  },
+  "Cacho Nutrido": {
+    titulo: "O kit que não acumula — ideal para cabelo sobrecarregado",
+    paragrafo: "Seu cabelo acumulou resíduo de cremes com petrolatos e parabenos. O Creme Cachos Definidos tem 0% Petrolatos — hidrata e nutre sem depositar camadas. O pH 4.0–4.5 sela a cutícula, impedindo que novos resíduos entrem. O Spray Day After é seco, leve, sem adicionar peso no dia seguinte. Resultado: cacho definido com leveza de verdade.",
+    urgencia: "pessoas com cabelo sobrecarregado já reservaram o kit"
+  },
+  "Cacho em Renascimento": {
+    titulo: "O kit para cabelo em transição que quer definição",
+    paragrafo: "Seu cabelo está em transição — uma fase que merece produtos que respeitem as diferentes texturas. O Creme Cachos Definidos é indicado para todos os tipos de cabelo, com pH balanceado que não agride os fios em transformação. O Spray Day After define sem pesar, ideal para texturas mistas. Resultado: cachos definidos em qualquer estágio da transição.",
+    urgencia: "pessoas em transição capilar já reservaram o kit"
+  },
+  "Cacho Sensível": {
+    titulo: "O kit com fórmula limpa para cabelo frágil",
+    paragrafo: "Seu cabelo está frágil, quebradiço — precisa de cuidados que não agridam. O Creme Cachos Definidos tem 0% Corante e 0% Petrolatos: hidrata e nutre sem ingredientes agressivos. O pH 4.0–4.5 sela a cutícula suavemente. O Spray Day After é 0% Sulfato e 0% Parabenos, com Proteção Térmica que evita danos por calor. Resultado: fios mais fortes com ingredientes que cuidam, não agridem.",
+    urgencia: "pessoas com cabelo sensível já reservaram o kit"
+  }
+};
+
+async function getContadorPerfil(diagnostico) {
+  try {
+    const res = await fetch(API_BASE + '/counters');
+    const data = await res.json();
+    const real = data[diagnostico] || 0;
+    const semente = {
+      "Cacho Sedento": 23, "Cacho Pesado": 11,
+      "Cacho Poroso": 17, "Cacho Proteico": 9,
+      "Cacho Equilibrado": 31, "Cacho em Descoberta": 14,
+      "Cacho Nutrido": 8, "Cacho em Renascimento": 12,
+      "Cacho Sensível": 7
+    };
+    return real + (semente[diagnostico] || 10);
+  } catch {
+    return Math.floor(Math.random() * 20) + 10;
+  }
+}
+
+function garantirKit(diagnostico) {
+  const leadId = localStorage.getItem('cv_lead_id');
+  if (leadId) {
+    fetch(API_BASE + '/leads/' + leadId + '/kit', { method: 'POST' }).catch(function() {});
+    fetch(API_BASE + '/counters/' + encodeURIComponent(diagnostico), { method: 'POST' }).catch(function() {});
+  }
+  var modal = document.getElementById('waitlistConfirmModal');
+  if (modal) modal.classList.add('active');
+}
+
+function fecharModalWaitlist() {
+  var modal = document.getElementById('waitlistConfirmModal');
+  if (modal) modal.classList.remove('active');
+}
+
 function toggleFaq(btn) {
   const item = btn.parentElement;
   item.classList.toggle('open');
@@ -660,6 +880,19 @@ function iniciarContador() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Verifica se veio do link de confirmação da lista VIP
+  var params = new URLSearchParams(window.location.search);
+  var confirmarLista = params.get('confirmar_lista');
+  if (confirmarLista) {
+    fetch(API_BASE + '/leads/' + confirmarLista + '/confirmar-lista').then(function(r) {
+      if (r.ok) {
+        var modal = document.getElementById('waitlistConfirmModal');
+        if (modal) modal.classList.add('active');
+      }
+    }).catch(function() {});
+    window.history.replaceState({}, '', window.location.pathname);
+  }
+
   const wppField = document.getElementById('fieldWhatsapp');
   if (wppField) {
     wppField.addEventListener('input', formatPhone);
