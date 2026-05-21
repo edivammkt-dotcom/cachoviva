@@ -60,6 +60,18 @@ function createTables() {
   db.run(`CREATE TABLE IF NOT EXISTS telegram_messages (id TEXT PRIMARY KEY, chat_id TEXT NOT NULL, text TEXT NOT NULL, processed INTEGER DEFAULT 0, message_type TEXT DEFAULT 'text', created_at INTEGER DEFAULT (strftime('%s','now')))`);
   db.run(`CREATE TABLE IF NOT EXISTS weekly_cycles (id TEXT PRIMARY KEY, status TEXT DEFAULT 'planning', telegram_chat_id TEXT DEFAULT '', squad1_output TEXT DEFAULT '{}', squad2_output TEXT DEFAULT '{}', posts_data TEXT DEFAULT '[]', approved_at INTEGER, created_at INTEGER DEFAULT (strftime('%s','now')), updated_at INTEGER DEFAULT (strftime('%s','now')))`);
   db.run(`CREATE TABLE IF NOT EXISTS cycle_posts (id TEXT PRIMARY KEY, cycle_id TEXT NOT NULL, ordem INTEGER DEFAULT 0, plataforma TEXT DEFAULT '', tipo TEXT DEFAULT '', objetivo TEXT DEFAULT '', titulo TEXT DEFAULT '', squad3_output TEXT DEFAULT '{}', squad4_output TEXT DEFAULT '{}', score INTEGER DEFAULT 0, status TEXT DEFAULT 'processing', created_at INTEGER DEFAULT (strftime('%s','now')), updated_at INTEGER DEFAULT (strftime('%s','now')))`);
+  db.run(`CREATE TABLE IF NOT EXISTS leads (
+    id TEXT PRIMARY KEY,
+    name TEXT NOT NULL,
+    phone TEXT NOT NULL,
+    email TEXT DEFAULT '',
+    diagnosis TEXT NOT NULL,
+    diagnosis_name TEXT DEFAULT '',
+    scores TEXT DEFAULT '{}',
+    answers TEXT DEFAULT '[]',
+    kit_interest INTEGER DEFAULT 0,
+    created_at INTEGER DEFAULT (strftime('%s','now'))
+  )`);
 }
 
 function queryObjects(sql, params = []) {

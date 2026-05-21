@@ -5,23 +5,7 @@ const db = require('../database');
 const { sendToTelegram } = require('../services/telegram');
 const { sendDiagnosisEmail } = require('../services/email');
 
-function initLeadsTable() {
-  db.runSql(`CREATE TABLE IF NOT EXISTS leads (
-    id TEXT PRIMARY KEY,
-    name TEXT NOT NULL,
-    phone TEXT NOT NULL,
-    email TEXT DEFAULT '',
-    diagnosis TEXT NOT NULL,
-    diagnosis_name TEXT DEFAULT '',
-    scores TEXT DEFAULT '{}',
-    answers TEXT DEFAULT '[]',
-    kit_interest INTEGER DEFAULT 0,
-    created_at INTEGER DEFAULT (strftime('%s','now'))
-  )`);
-  try { db.runSql(`ALTER TABLE leads ADD COLUMN kit_interest INTEGER DEFAULT 0`); } catch (e) { /* coluna já existe */ }
-}
-
-initLeadsTable();
+try { db.runSql(`ALTER TABLE leads ADD COLUMN kit_interest INTEGER DEFAULT 0`); } catch (e) {}
 
 router.post('/', (req, res) => {
   try {
