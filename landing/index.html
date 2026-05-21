@@ -9,8 +9,8 @@
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;0,800;1,400&family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
   <script src="https://unpkg.com/lucide@latest" defer></script>
   <link rel="stylesheet" href="style.css">
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
-  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-XXXXXXXXXX');</script>
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-X4XBLS1R9D"></script>
+  <script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-X4XBLS1R9D');</script>
 </head>
 <body>
 
@@ -58,11 +58,11 @@
             </div>
 
             <p class="teaser-title">
-              Em 30 dias, o kit para o seu tipo de cacho.
+              🔥 Seu kit chega em até 30 dias
             </p>
             <p class="teaser-sub">
-              Você está entre as primeiras a saber. Quem fez o diagnóstico recebe acesso
-              e condições exclusivas antes de todo mundo.
+              Quem fez o diagnóstico entra na lista VIP — acesso antecipado,
+              condição especial de lançamento e brinde exclusivo.
             </p>
 
           </div>
@@ -90,7 +90,7 @@
     <!-- ====== TESTIMONIALS ====== -->
     <section class="testimonials-section" id="screen-testimonials">
       <div class="container">
-        <h2 class="testimonials-title">O que as meninas estão dizendo</h2>
+        <h2 class="testimonials-title">O que estão dizendo</h2>
         <div class="testimonials-track">
 
           <div class="testimonial-card">
@@ -258,20 +258,20 @@
           </div>
 
           <div class="emotional-bridge">
-            Seu diagnóstico identificou o perfil dos seus cachos.
-            Em 30 dias, lançamos um kit desenvolvido <strong>exatamente para esse perfil</strong> —
-            com os produtos certos, na ordem certa, para o seu tipo de cacho.
+            <strong>🎯 Sua vaga no pré-lançamento está garantida.</strong><br>
+            Quando o kit abrir, você escolhe primeiro — com condição especial
+            de lançamento e brinde exclusivo.
           </div>
 
           <!-- LAUNCH TEASER -->
           <!-- MUDANÇA 14 -->
-          <div class="launch-teaser">
+          <div class="launch-teaser" id="bloco-teaser">
             <div class="launch-teaser-icon"><i data-lucide="flame" style="width:42px;height:42px;stroke:var(--gold-light);fill:var(--gold-light);stroke-width:1.5;display:block;margin:0 auto"></i></div>
-            <h3>O kit para o seu tipo de cacho chega em 30 dias</h3>
+            <h3>🔥 Vagas limitadas — você garantiu a sua</h3>
             <p>
-              Você já está na lista. Nos próximos dias você receberá dicas exclusivas
-              para preparar seus fios — e será avisada antes de qualquer pessoa
-              quando o kit abrir com condições especiais de lançamento.
+              Seu kit — Creme Cachos Definidos + Spray Day After — chega em até 30 dias.
+              Quem fez o diagnóstico garante acesso antecipado, preço especial de
+              lançamento e brinde exclusivo.
             </p>
           </div>
 
@@ -285,7 +285,7 @@
               onclick="compartilharResultado()"
               class="btn-share-outline"
             >
-              💬 Compartilhar meu resultado com as amigas
+              💬 Compartilhar meu resultado
             </button>
             <button class="btn-link" onclick="restartQuiz()">Refazer diagnóstico</button>
           </div>
@@ -332,7 +332,7 @@
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
               <div class="faq-answer">
-                <p>Claro! Você pode compartilhar seu diagnóstico com as amigas pelo WhatsApp. Quem mais fizer o diagnóstico também receberá dicas personalizadas.</p>
+                <p>Claro! Você pode compartilhar seu diagnóstico pelo WhatsApp. Quem mais fizer o diagnóstico também receberá dicas personalizadas.</p>
               </div>
             </div>
 
@@ -348,11 +348,11 @@
             </div>
             <div class="faq-item">
               <button class="faq-question" onclick="toggleFaq(this)">
-                <span>Posso indicar para as amigas?</span>
+                <span>Posso compartilhar com outras pessoas?</span>
                 <svg width="18" height="18" viewBox="0 0 24 24" fill="none"><path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
               </button>
               <div class="faq-answer">
-                <p>Pode e deve! Cada amiga que fizer o diagnóstico também recebe um resultado personalizado gratuitamente. Use o botão "Compartilhar meu resultado" na tela de diagnóstico — o link já vem preenchido para você só encaminhar.</p>
+                <p>Pode e deve! Quem fizer o diagnóstico também recebe um resultado personalizado gratuitamente. Use o botão "Compartilhar meu resultado" na tela de diagnóstico — o link já vem preenchido para você só encaminhar.</p>
               </div>
             </div>
           </div>
@@ -386,6 +386,21 @@
 
   </div>
 
+  <!-- WAITLIST CONFIRMATION MODAL -->
+  <div class="waitlist-modal-overlay" id="waitlistConfirmModal">
+    <div class="waitlist-modal">
+      <div class="waitlist-modal-icon">🎉</div>
+      <h2>Você está na lista VIP! 🚀</h2>
+      <p>Assim que o lançamento abrir, você será um dos primeiros a saber — com <strong>acesso antecipado</strong> e <strong>desconto especial sem pegadinhas</strong>.</p>
+      <div class="waitlist-benefits">
+        <span>✅ Acesso antecipado ao lançamento</span>
+        <span>🏷️ Desconto exclusivo</span>
+        <span>🎁 Brinde Perfume Capilar 30ml</span>
+      </div>
+      <button class="btn-primary btn-full" onclick="fecharModalWaitlist()">Entendi! 🔥</button>
+    </div>
+  </div>
+
   <!-- EXIT-INTENT -->
   <div class="exit-intent-overlay" id="exitIntentOverlay">
     <div class="exit-intent-modal">
@@ -395,7 +410,7 @@
       <button class="btn-primary btn-full" onclick="fecharExitIntent();startQuiz();">
         Quero meu diagnóstico grátis →
       </button>
-      <button class="exit-intent-close" onclick="fecharExitIntent()">Não quero, obrigada</button>
+      <button class="exit-intent-close" onclick="fecharExitIntent()">Não quero, obrigado</button>
     </div>
   </div>
 

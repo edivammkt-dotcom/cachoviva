@@ -215,7 +215,7 @@ const encouragements = [
   'Última! Vamos nessa!',
 ];
 
-const GA_ID = 'G-XXXXXXXXXX';
+const GA_ID = 'G-X4XBLS1R9D';
 
 function gaEvent(action, label) {
   try {

@@ -482,6 +482,44 @@ async function processTelegramMessage(msgId, chatId, text) {
     return;
   }
 
+  // ─── /stats — Estatísticas de leads por diagnóstico ───
+  if (lower === '/stats') {
+    runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['stats', msgId]);
+    try {
+      const allLeads = queryObjects("SELECT diagnosis_name, COUNT(*) as total FROM leads WHERE diagnosis_name != '' GROUP BY diagnosis_name ORDER BY total DESC");
+      const totalLeads = queryOne('SELECT COUNT(*) as total FROM leads');
+      const total = totalLeads?.total || 0;
+      const kitCount = queryOne("SELECT COUNT(*) as total FROM leads WHERE kit_interest = 1");
+      const interests = kitCount?.total || 0;
+
+      const displayMap = {
+        "Cabelo Equilibrado": "Cacho Equilibrado",
+        "Cabelo Ressaca": "Cacho Proteico",
+        "Cabelo Sedento": "Cacho Sedento",
+        "Cabelo Pesado": "Cacho Nutrido",
+        "Cabelo Poroso": "Cacho Poroso",
+        "Cabelo sem Rotina": "Cacho em Descoberta"
+      };
+
+      let msg = '📊 *CachoViva — Leads por perfil*\n\n';
+      allLeads.forEach(function(r) {
+        var pct = total > 0 ? Math.round((r.total / total) * 100) : 0;
+        var bar = '█'.repeat(Math.floor(pct / 10)) + '░'.repeat(10 - Math.min(Math.floor(pct / 10), 10));
+        var name = displayMap[r.diagnosis_name] || r.diagnosis_name;
+        msg += '*' + name + '*\n' + bar + ' ' + r.total + ' (' + pct + '%)\n\n';
+      });
+      msg += '─────────────────\n';
+      msg += '👥 Total: ' + total + '\n';
+      msg += '🔥 Interesse no kit: ' + interests + '\n';
+      msg += '📈 Taxa de interesse: ' + (total > 0 ? Math.round((interests / total) * 100) : 0) + '%';
+
+      await sendTelegramMessage(chatId, msg);
+    } catch (err) {
+      await sendTelegramMessage(chatId, '❌ Erro ao buscar stats: ' + err.message);
+    }
+    return;
+  }
+
   // ─── /lead_<id> — Ver detalhes completos de um lead ───
   const leadDetailMatch = text.match(/^\/lead_(\S+)/);
   if (leadDetailMatch) {
@@ -520,43 +558,65 @@ async function processTelegramMessage(msgId, chatId, text) {
     return;
   }
 
-  // ─── /list — Listar leads com paginação ───
-  const listMatch = text.match(/^\/list(?:_p(\d+))?$/);
+  // ─── /list — Listar leads com paginação e filtro por diagnóstico ───
+  // Formatos: /list, /list_p0, /list sedento, /list_p0 sedento
+  const listMatch = text.match(/^\/list(?:_p(\d+))?(?:\s+(.+))?$/i);
   if (listMatch) {
     const page = parseInt(listMatch[1] || '0', 10);
+    let filter = (listMatch[2] || '').trim().toLowerCase();
     runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['list_leads', msgId]);
-    const allLeads = queryObjects('SELECT id, name, phone, diagnosis, diagnosis_name, created_at, kit_interest FROM leads ORDER BY created_at DESC');
-    if (allLeads.length === 0) {
-      await sendTelegramMessage(chatId, '📭 Nenhum lead cadastrado ainda.');
+
+    const filterClause = filter !== ''
+      ? "WHERE LOWER(diagnosis_name) LIKE '%' || ? || '%' OR LOWER(diagnosis) LIKE '%' || ? || '%'"
+      : '';
+    const params = filter !== '' ? [filter, filter] : [];
+
+    const countRow = queryOne(
+      'SELECT COUNT(*) as total FROM leads ' + filterClause,
+      params.length > 0 ? params : undefined
+    );
+    const totalLeads = countRow?.total || 0;
+    if (totalLeads === 0) {
+      await sendTelegramMessage(chatId, filter !== ''
+        ? '📭 Nenhum lead encontrado com o perfil "' + listMatch[2] + '".'
+        : '📭 Nenhum lead cadastrado ainda.');
       return;
     }
+
     const PER_PAGE = 5;
-    const totalPages = Math.ceil(allLeads.length / PER_PAGE);
+    const totalPages = Math.ceil(totalLeads / PER_PAGE);
     const currentPage = Math.min(page, totalPages - 1);
     const start = currentPage * PER_PAGE;
-    const pageLeads = allLeads.slice(start, start + PER_PAGE);
-    const diagnosisNames = { '1a': '1A - Liso', '1b': '1B - Liso', '1c': '1C - Liso', '2a': '2A - Ondulado', '2b': '2B - Ondulado', '2c': '2C - Ondulado', '3a': '3A - Cacheado', '3b': '3B - Cacheado', '3c': '3C - Cacheado', '4a': '4A - Crespo', '4b': '4B - Crespo', '4c': '4C - Crespo' };
 
-    let msg = `📋 *Leads CachoViva* (página ${currentPage + 1}/${totalPages})\n\n`;
-    pageLeads.forEach((l, i) => {
-      const num = start + i + 1;
-      const dName = diagnosisNames[l.diagnosis] || l.diagnosis_name || l.diagnosis || '—';
-      const kit = l.kit_interest ? ' 🛍️' : '';
-      msg += `${num}. *${l.name}*${kit}\n   📞 ${l.phone} | 📋 ${dName}\n`;
+    const allLeads = queryObjects(
+      'SELECT id, name, phone, diagnosis, diagnosis_name, created_at, kit_interest FROM leads ' + filterClause + ' ORDER BY created_at DESC LIMIT ' + PER_PAGE + ' OFFSET ' + start,
+      params.length > 0 ? params : undefined
+    );
+
+    const diagnosisNames = { '1a': '1A - Liso', '1b': '1B - Liso', '1c': '1C - Liso', '2a': '2A - Ondulado', '2b': '2B - Ondulado', '2c': '2C - Ondulado', '3a': '3A - Cacheado', '3b': '3B - Cacheado', '3c': '3C - Cacheado', '4a': '4A - Crespo', '4b': '4B - Crespo', '4c': '4C - Crespo' };
+    const suffix = filter !== '' ? ' • Filtro: ' + listMatch[2] : '';
+    let msg = '📋 *Leads CachoViva* (página ' + (currentPage + 1) + '/' + totalPages + ')' + suffix + '\n\n';
+
+    allLeads.forEach(function(l, i) {
+      var num = start + i + 1;
+      var dName = diagnosisNames[l.diagnosis] || l.diagnosis_name || l.diagnosis || '—';
+      var kit = l.kit_interest ? ' 🛍️' : '';
+      msg += num + '. *' + l.name + '*' + kit + '\n   📞 ' + l.phone + ' | 📋 ' + dName + '\n';
     });
 
     const buttons = [];
-    pageLeads.forEach(l => {
-      buttons.push([{ text: `👤 ${l.name}`, callback_data: `/lead_${l.id}` }]);
+    allLeads.forEach(function(l) {
+      buttons.push([{ text: '👤 ' + l.name, callback_data: '/lead_' + l.id }]);
     });
 
+    const filterParam = filter !== '' ? ' ' + listMatch[2] : '';
     const navRow = [];
     if (currentPage > 0) {
-      navRow.push({ text: '◀️ Anterior', callback_data: `/list_p${currentPage - 1}` });
+      navRow.push({ text: '◀️ Anterior', callback_data: '/list_p' + (currentPage - 1) + filterParam });
     }
-    navRow.push({ text: `${currentPage + 1}/${totalPages}`, callback_data: '/list_current' });
+    navRow.push({ text: (currentPage + 1) + '/' + totalPages, callback_data: '/list_current' });
     if (currentPage < totalPages - 1) {
-      navRow.push({ text: '▶️ Próximo', callback_data: `/list_p${currentPage + 1}` });
+      navRow.push({ text: '▶️ Próximo', callback_data: '/list_p' + (currentPage + 1) + filterParam });
     }
     if (navRow.length > 0) buttons.push(navRow);
 
@@ -577,7 +637,8 @@ async function processTelegramMessage(msgId, chatId, text) {
     await sendTelegramMessage(chatId,
       '❓ Comando não reconhecido.\n\n' +
       'Comandos disponíveis:\n' +
-      '🔹 /list — Listar leads cadastrados\n' +
+      '🔹 /list — Listar leads (use /list sedento p/ filtrar)\n' +
+      '🔹 /stats — Estatísticas de leads por perfil\n' +
       '🔹 /post <id> — Ver detalhes de um post\n' +
       '🔹 /briefing <texto> — Definir briefing\n' +
       '🔹 /keyword <palavra> — Adicionar keyword\n' +
