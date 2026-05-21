@@ -482,12 +482,102 @@ async function processTelegramMessage(msgId, chatId, text) {
     return;
   }
 
+  // ─── /lead_<id> — Ver detalhes completos de um lead ───
+  const leadDetailMatch = text.match(/^\/lead_(\S+)/);
+  if (leadDetailMatch) {
+    const leadId = leadDetailMatch[1];
+    runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['lead_detail', msgId]);
+    const lead = queryOne('SELECT * FROM leads WHERE id = ?', [leadId]);
+    if (!lead) {
+      await sendTelegramMessage(chatId, '❌ Lead não encontrado.');
+      return;
+    }
+    const scores = (() => { try { return JSON.parse(lead.scores || '{}'); } catch { return {}; } })();
+    const answers = (() => { try { return JSON.parse(lead.answers || '[]'); } catch { return []; } })();
+    const diagnosisNames = { '1a': '1A - Liso', '1b': '1B - Liso', '1c': '1C - Liso', '2a': '2A - Ondulado', '2b': '2B - Ondulado', '2c': '2C - Ondulado', '3a': '3A - Cacheado', '3b': '3B - Cacheado', '3c': '3C - Cacheado', '4a': '4A - Crespo', '4b': '4B - Crespo', '4c': '4C - Crespo' };
+    const dateStr = new Date((lead.created_at || 0) * 1000).toLocaleString('pt-BR');
+
+    let msg = `━━━━━━━━━━━━━━━\n👤 *${lead.name}*\n━━━━━━━━━━━━━━━\n`;
+    msg += `📞 ${lead.phone}\n`;
+    msg += `📧 ${lead.email || '—'}\n`;
+    msg += `📋 Diagnóstico: *${diagnosisNames[lead.diagnosis] || lead.diagnosis_name || lead.diagnosis}*\n`;
+    msg += `📅 ${dateStr}\n`;
+    if (lead.kit_interest) msg += `🛍️ *Interesse no Kit Lançamento!*\n`;
+    msg += `\n📊 *Scores:*\n`;
+    for (const [key, val] of Object.entries(scores)) {
+      msg += `  • ${key}: ${val}\n`;
+    }
+    if (answers.length > 0) {
+      msg += `\n📝 *Respostas:*\n`;
+      answers.forEach((a, i) => {
+        const q = typeof a === 'object' ? (a.question || a.q || `Pergunta ${i + 1}`) : `Pergunta ${i + 1}`;
+        const r = typeof a === 'object' ? (a.answer || a.a || a) : a;
+        msg += `  ${i + 1}. ${q}: ${r}\n`;
+      });
+    }
+    msg += '━━━━━━━━━━━━━━━';
+    await sendTelegramMessage(chatId, msg);
+    return;
+  }
+
+  // ─── /list — Listar leads com paginação ───
+  const listMatch = text.match(/^\/list(?:_p(\d+))?$/);
+  if (listMatch) {
+    const page = parseInt(listMatch[1] || '0', 10);
+    runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['list_leads', msgId]);
+    const allLeads = queryObjects('SELECT id, name, phone, diagnosis, diagnosis_name, created_at, kit_interest FROM leads ORDER BY created_at DESC');
+    if (allLeads.length === 0) {
+      await sendTelegramMessage(chatId, '📭 Nenhum lead cadastrado ainda.');
+      return;
+    }
+    const PER_PAGE = 5;
+    const totalPages = Math.ceil(allLeads.length / PER_PAGE);
+    const currentPage = Math.min(page, totalPages - 1);
+    const start = currentPage * PER_PAGE;
+    const pageLeads = allLeads.slice(start, start + PER_PAGE);
+    const diagnosisNames = { '1a': '1A - Liso', '1b': '1B - Liso', '1c': '1C - Liso', '2a': '2A - Ondulado', '2b': '2B - Ondulado', '2c': '2C - Ondulado', '3a': '3A - Cacheado', '3b': '3B - Cacheado', '3c': '3C - Cacheado', '4a': '4A - Crespo', '4b': '4B - Crespo', '4c': '4C - Crespo' };
+
+    let msg = `📋 *Leads CachoViva* (página ${currentPage + 1}/${totalPages})\n\n`;
+    pageLeads.forEach((l, i) => {
+      const num = start + i + 1;
+      const dName = diagnosisNames[l.diagnosis] || l.diagnosis_name || l.diagnosis || '—';
+      const kit = l.kit_interest ? ' 🛍️' : '';
+      msg += `${num}. *${l.name}*${kit}\n   📞 ${l.phone} | 📋 ${dName}\n`;
+    });
+
+    const buttons = [];
+    pageLeads.forEach(l => {
+      buttons.push([{ text: `👤 ${l.name}`, callback_data: `/lead_${l.id}` }]);
+    });
+
+    const navRow = [];
+    if (currentPage > 0) {
+      navRow.push({ text: '◀️ Anterior', callback_data: `/list_p${currentPage - 1}` });
+    }
+    navRow.push({ text: `${currentPage + 1}/${totalPages}`, callback_data: '/list_current' });
+    if (currentPage < totalPages - 1) {
+      navRow.push({ text: '▶️ Próximo', callback_data: `/list_p${currentPage + 1}` });
+    }
+    if (navRow.length > 0) buttons.push(navRow);
+
+    await sendTelegramMessage(chatId, msg, buttons);
+    return;
+  }
+
+  // ─── /list_current — no-op (botão de indicador de página) ───
+  if (lower === '/list_current') {
+    runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['list_current', msgId]);
+    await sendTelegramMessage(chatId, `📍 Você está nesta página. Use ◀️ e ▶️ para navegar.`);
+    return;
+  }
+
   // ─── CATCH-ALL: comando desconhecido começando com / ───
   if (lower.startsWith('/')) {
     runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['unknown_cmd', msgId]);
     await sendTelegramMessage(chatId,
       '❓ Comando não reconhecido.\n\n' +
       'Comandos disponíveis:\n' +
+      '🔹 /list — Listar leads cadastrados\n' +
       '🔹 /post <id> — Ver detalhes de um post\n' +
       '🔹 /briefing <texto> — Definir briefing\n' +
       '🔹 /keyword <palavra> — Adicionar keyword\n' +
@@ -673,10 +763,10 @@ function stopPolling() {
   }
 }
 
-async function sendToTelegram(text) {
+async function sendToTelegram(text, keyboard = null) {
   const cfg = getConfigAny();
   if (!cfg?.bot_token || !cfg?.chat_id) return;
-  await sendTelegramMessage(cfg.chat_id, text);
+  await sendTelegramMessage(cfg.chat_id, text, keyboard);
 }
 
 function logAction(action, postId, details) {

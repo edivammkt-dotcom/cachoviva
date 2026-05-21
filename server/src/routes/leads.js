@@ -28,8 +28,9 @@ router.post('/', (req, res) => {
       return res.status(500).json({ error: 'Erro ao salvar lead' });
     }
 
-    const msg = `🆕 *Nova Lead CachoViva!*\n\n👤 *${name}*\n📞 ${phone}\n📧 ${email}\n📋 Diagnóstico: *${diagnosis_name || diagnosis}*\n📊 Scores: ${JSON.stringify(scores || {})}`;
-    sendToTelegram(msg).catch(() => {});
+    const msg = `🆕 *Nova Lead CachoViva!*\n\n👤 *${name}*\n📞 ${phone}\n📧 ${email || '—'}\n📋 Diagnóstico: *${diagnosis_name || diagnosis}*\n📊 Scores: ${JSON.stringify(scores || {})}`;
+    const buttons = [[{ text: '📋 Ver lead', callback_data: `/lead_${id}` }]];
+    sendToTelegram(msg, buttons).catch(() => {});
 
     // Enviar e-mail com o diagnóstico
     if (email && diagnosis_details) {
@@ -76,8 +77,9 @@ router.post('/:id/kit', (req, res) => {
 
     db.runSql('UPDATE leads SET kit_interest = 1 WHERE id = ?', [id]);
 
-    const msg = `🛍️ *INTERESSE NO KIT!*\n\n👤 *${lead.name}*\n📞 ${lead.phone}\n📧 ${lead.email}\n📋 Diagnóstico: *${lead.diagnosis_name || lead.diagnosis}*\n\nQuer comprar o Kit Lançamento!`;
-    sendToTelegram(msg).catch(() => {});
+    const msg = `🛍️ *INTERESSE NO KIT!*\n\n👤 *${lead.name}*\n📞 ${lead.phone}\n📧 ${lead.email || '—'}\n📋 Diagnóstico: *${lead.diagnosis_name || lead.diagnosis}*\n\nQuer comprar o Kit Lançamento!`;
+    const buttons = [[{ text: '📋 Ver lead', callback_data: `/lead_${id}` }]];
+    sendToTelegram(msg, buttons).catch(() => {});
 
     res.json({ success: true, message: 'Interesse registrado!' });
   } catch (err) {
