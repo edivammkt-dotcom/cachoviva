@@ -85,4 +85,13 @@ router.post('/:id/kit', (req, res) => {
   }
 });
 
+router.delete('/all', (req, res) => {
+  try {
+    db.runSql('DELETE FROM leads');
+    res.json({ success: true, message: 'Todos os leads foram removidos' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 module.exports = router;
