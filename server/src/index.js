@@ -25,6 +25,7 @@ app.use('/api/social', require('./routes/social'));
 app.use('/api/ai', require('./routes/ai'));
 app.use('/api/research', require('./routes/research'));
 app.use('/api/leads', require('./routes/leads'));
+app.use('/api/analytics', require('./routes/analytics'));
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });

@@ -53,5 +53,10 @@ module.exports = {
     user: process.env.SMTP_USER || '',
     pass: process.env.SMTP_PASS || '',
     from: process.env.EMAIL_FROM || '',
+  },
+  ga4: {
+    propertyId: process.env.GA4_PROPERTY_ID || '',
+    clientEmail: process.env.GA4_CLIENT_EMAIL || '',
+    privateKey: process.env.GA4_PRIVATE_KEY || '',
   }
 };

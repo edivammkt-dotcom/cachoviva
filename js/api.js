@@ -246,5 +246,14 @@ const api = {
 
   async getTelegramMessages() {
     return this.get('/research/telegram/messages');
+  },
+
+  // === GOOGLE ANALYTICS ===
+  async getGA4Metrics() {
+    return this.get('/analytics/ga4');
+  },
+
+  async getGA4Status() {
+    return this.get('/analytics/ga4/status');
   }
 };

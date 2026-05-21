@@ -330,6 +330,56 @@ async function renderMetricsView(area) {
   const totalSaves = posts.reduce((acc, p) => acc + (p.metrics?.saves || 0), 0);
   const engagement = totalReach > 0 ? ((totalLikes + totalComments + totalShares) / totalReach * 100).toFixed(1) : '0';
 
+  // GA4 data
+  var ga4html = '';
+  try {
+    var ga4 = await api.getGA4Metrics();
+    if (ga4.configured && ga4.overview) {
+      var o = ga4.overview;
+      var sourcesHtml = (ga4.trafficSources || []).slice(0, 5).map(function(s) {
+        var max = Math.max.apply(null, (ga4.trafficSources || []).map(function(x) { return x.sessions; }));
+        var pct = max > 0 ? (s.sessions / max * 100) : 0;
+        return '<div style="display:flex;align-items:center;gap:8px;margin:4px 0;font-size:0.85rem;">' +
+          '<span style="width:80px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;">' + escHtml(s.source) + '</span>' +
+          '<div style="flex:1;height:18px;background:var(--bg-secondary);border-radius:4px;overflow:hidden;">' +
+          '<div style="width:' + pct + '%;height:100%;background:var(--accent-gradient, linear-gradient(135deg,#B8541A,#D4783A));border-radius:4px;"></div></div>' +
+          '<span style="width:40px;text-align:right;">' + s.sessions + '</span></div>';
+      }).join('');
+
+      var dailyHtml = (ga4.daily || []).slice(-7).map(function(d) {
+        return '<div style="display:flex;align-items:center;gap:6px;margin:2px 0;font-size:0.8rem;">' +
+          '<span style="width:75px;">' + d.date.slice(5) + '</span>' +
+          '<span>👁️ ' + d.pageViews + '</span>' +
+          '<span style="color:var(--text-secondary);">👤 ' + d.users + '</span></div>';
+      }).join('');
+
+      ga4html = '<div class="ga4-section" style="margin:20px 0;padding:16px;background:var(--bg-card);border-radius:12px;">' +
+        '<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:12px;">' +
+          '<h3 style="margin:0;">📊 Google Analytics — Landing Page</h3>' +
+          '<span style="font-size:0.75rem;color:var(--text-secondary);">' + new Date(ga4.fetchedAt).toLocaleString('pt-BR') + '</span></div>' +
+        '<div class="metrics-grid" style="grid-template-columns:repeat(auto-fit,minmax(130px,1fr));margin-bottom:16px;">' +
+          '<div class="metric-card" style="padding:10px;"><div class="metric-value" style="font-size:1.2rem;">' + (o.pageViews || 0).toLocaleString() + '</div><div class="metric-label">👁️ Page Views</div></div>' +
+          '<div class="metric-card" style="padding:10px;"><div class="metric-value" style="font-size:1.2rem;">' + (o.totalUsers || 0).toLocaleString() + '</div><div class="metric-label">👤 Usuários</div></div>' +
+          '<div class="metric-card" style="padding:10px;"><div class="metric-value" style="font-size:1.2rem;">' + (o.sessions || 0).toLocaleString() + '</div><div class="metric-label">🔄 Sessões</div></div>' +
+          '<div class="metric-card" style="padding:10px;"><div class="metric-value" style="font-size:1.2rem;">' + (o.bounceRate || '0%') + '</div><div class="metric-label">📉 Taxa Rejeição</div></div>' +
+          '<div class="metric-card" style="padding:10px;"><div class="metric-value" style="font-size:1.2rem;">' + (o.avgSessionDuration || '0s') + '</div><div class="metric-label">⏱️ Duração Média</div></div>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:1fr 1fr;gap:16px;">' +
+          '<div><h4 style="margin:0 0 8px;font-size:0.9rem;">🌐 Tráfego (últimos 7 dias)</h4>' + dailyHtml + '</div>' +
+          '<div><h4 style="margin:0 0 8px;font-size:0.9rem;">🔗 Fontes de Tráfego</h4>' + sourcesHtml + '</div>' +
+        '</div></div>';
+    } else if (!ga4.configured) {
+      ga4html = '<div class="ga4-section" style="margin:20px 0;padding:16px;background:var(--bg-card);border-radius:12px;">' +
+        '<div style="text-align:center;padding:20px;">' +
+          '<h3 style="margin:0 0 8px;">📊 Google Analytics</h3>' +
+          '<p style="color:var(--text-secondary);font-size:0.85rem;">GA4 não configurado. Configure as variáveis GA4_PROPERTY_ID, GA4_CLIENT_EMAIL e GA4_PRIVATE_KEY no .env</p>' +
+        '</div></div>';
+    }
+  } catch(e) {
+    ga4html = '<div class="ga4-section" style="margin:20px 0;padding:16px;background:var(--bg-card);border-radius:12px;">' +
+      '<p style="color:var(--text-secondary);text-align:center;">📊 Google Analytics indisponível</p></div>';
+  }
+
   area.innerHTML = `
     <div class="metrics-grid">
       <div class="metric-card"><div class="metric-value">${totalLikes.toLocaleString()}</div><div class="metric-label">❤️ Curtidas</div></div>
@@ -339,6 +389,7 @@ async function renderMetricsView(area) {
       <div class="metric-card"><div class="metric-value">${totalSaves.toLocaleString()}</div><div class="metric-label">💾 Salvos</div></div>
       <div class="metric-card"><div class="metric-value">${engagement}%</div><div class="metric-label">📊 Engajamento</div></div>
     </div>
+    ${ga4html}
     <h3 style="margin-bottom:12px;">📋 Publicados</h3>
     <div class="posts-grid">
       ${posts.map(p => {

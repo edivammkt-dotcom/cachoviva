@@ -217,10 +217,29 @@ const encouragements = [
 
 const GA_ID = 'G-X4XBLS1R9D';
 
-function gaEvent(action, label) {
+function gaEvent(action, label, extra) {
   try {
     if (typeof gtag === 'function') {
-      gtag('event', action, { event_category: 'engagement', event_label: label });
+      var params = Object.assign({
+        event_category: 'engagement',
+        event_label: label || '',
+        engagement_time_msec: 1,
+      }, extra || {});
+      gtag('event', action, params);
+    }
+  } catch(e) {}
+}
+
+function gaConversion(action, label, value) {
+  try {
+    if (typeof gtag === 'function') {
+      gtag('event', action, {
+        event_category: 'conversion',
+        event_label: label || '',
+        value: value || 1,
+        currency: 'BRL',
+        engagement_time_msec: 1,
+      });
     }
   } catch(e) {}
 }
@@ -340,6 +359,7 @@ function nextQuestion() {
     currentQuestion++;
     renderQuestion();
   } else {
+    gaEvent('quiz_complete', 'final_question');
     showScreen('screen-form');
   }
 }
@@ -348,6 +368,7 @@ function prevQuestion() {
   if (currentQuestion > 0) {
     currentQuestion--;
     renderQuestion();
+    gaEvent('quiz_prev', 'q' + (currentQuestion + 2));
   }
 }
 
@@ -379,6 +400,9 @@ function calcDiagnosis() {
 }
 
 function showResult(diagnosis) {
+  var nomeDisplay = mapaResultados[diagnosis.name] ? mapaResultados[diagnosis.name].nome : diagnosis.name;
+  gaEvent('diagnosis_view', diagnosis.id, { diagnostic_type: diagnosis.id, diagnostic_name: nomeDisplay });
+
   document.getElementById('resultBadge').innerHTML = `<i data-lucide="${diagnosis.badge_name}" style="width:48px;height:48px;stroke:var(--gold);stroke-width:1.5;display:block;margin:0 auto"></i>`;
   document.getElementById('resultTitle').textContent = 'Diagnóstico Completo';
   document.getElementById('resultSub').textContent = leadData ? `Para ${leadData.name}` : 'Seu diagnóstico capilar personalizado';
@@ -524,14 +548,17 @@ async function submitForm(e) {
     document.getElementById('fieldWhatsapp').classList.remove('error');
   }
 
-  if (!valid) return;
+  if (!valid) {
+    gaEvent('form_error', valid === false ? 'campos_invalidos' : 'phone_invalido');
+    return;
+  }
 
   const diagnosis = calcDiagnosis();
   var diagnosticName = (mapaResultados[diagnosis.name] && mapaResultados[diagnosis.name].nome) || diagnosis.name;
   localStorage.setItem('cv_diagnostico', diagnosticName);
   localStorage.setItem('cv_diagnostico_data', new Date().toISOString());
   limparProgresso();
-  gaEvent('submit_form', diagnosis ? diagnosis.id : 'unknown');
+  gaConversion('submit_form', diagnosis ? diagnosis.id : 'unknown');
 
   leadData = { name, phone, email };
 
@@ -623,6 +650,15 @@ async function submitForm(e) {
     if (el) {
       el.insertAdjacentHTML('afterend', htmlBtn);
     }
+    // Tracking do botão injetado
+    setTimeout(function() {
+      var injectedBtn = document.getElementById('btn-wa-auto');
+      if (injectedBtn) {
+        injectedBtn.querySelector('a').addEventListener('click', function() {
+          gaEvent('whatsapp_btn_click', 'diagnosis_result');
+        });
+      }
+    }, 100);
   }
 
   // PASSO 5 — TENTA ABRIR WHATSAPP AUTOMATICAMENTE (navegação direta, sem popup)
@@ -676,6 +712,7 @@ async function submitForm(e) {
 }
 
 function shareWhatsapp() {
+  gaEvent('whatsapp_send', leadData?.name || 'anonimo');
   const name = leadData?.name || '';
   const diagnosisName = document.getElementById('resultName').textContent;
   const url = window.location.href;
@@ -703,6 +740,7 @@ function compartilharResultado() {
 }
 
 function restartQuiz() {
+  gaEvent('restart_quiz', 'btn_refazer');
   limparProgresso();
   currentQuestion = 0;
   answers = [];
@@ -722,7 +760,7 @@ document.addEventListener('mouseleave', function(e) {
   if (hero && hero.classList.contains('active')) {
     exitIntentFired = true;
     document.getElementById('exitIntentOverlay').classList.add('active');
-    gaEvent('exit_intent', 'showed');
+    gaEvent('exit_intent', 'showed', { exit_intent_shown: true });
   }
 });
 
@@ -832,6 +870,7 @@ async function getContadorPerfil(diagnostico) {
 }
 
 function garantirKit(diagnostico) {
+  gaConversion('kit_click', diagnostico);
   const leadId = localStorage.getItem('cv_lead_id');
   if (leadId) {
     fetch(API_BASE + '/leads/' + leadId + '/kit', { method: 'POST' }).catch(function() {});
@@ -839,17 +878,21 @@ function garantirKit(diagnostico) {
   }
   var modal = document.getElementById('waitlistConfirmModal');
   if (modal) modal.classList.add('active');
+  gaEvent('kit_modal_view', diagnostico);
 }
 
 function fecharModalWaitlist() {
+  gaEvent('kit_modal_close', 'btn_entendi');
   var modal = document.getElementById('waitlistConfirmModal');
   if (modal) modal.classList.remove('active');
 }
 
 function toggleFaq(btn) {
   const item = btn.parentElement;
+  var isOpening = !item.classList.contains('open');
   item.classList.toggle('open');
   btn.classList.toggle('open');
+  gaEvent(isOpening ? 'faq_open' : 'faq_close', btn.textContent.trim().slice(0, 40));
 }
 
 function iniciarContador() {
@@ -884,26 +927,50 @@ document.addEventListener('DOMContentLoaded', () => {
   var params = new URLSearchParams(window.location.search);
   var confirmarLista = params.get('confirmar_lista');
   if (confirmarLista) {
+    gaConversion('vip_confirm', 'link_whatsapp', 5);
     fetch(API_BASE + '/leads/' + confirmarLista + '/confirmar-lista').then(function(r) {
       if (r.ok) {
         var modal = document.getElementById('waitlistConfirmModal');
         if (modal) modal.classList.add('active');
+        gaEvent('vip_modal_view', 'confirmado');
       }
     }).catch(function() {});
     window.history.replaceState({}, '', window.location.pathname);
   }
 
-  const wppField = document.getElementById('fieldWhatsapp');
+  var fieldName = document.getElementById('fieldName');
+  var fieldConsent = document.getElementById('fieldConsent');
+  if (fieldName) fieldName.addEventListener('focus', function() { gaEvent('form_field_focus', 'nome'); });
   if (wppField) {
     wppField.addEventListener('input', formatPhone);
+    wppField.addEventListener('focus', function() { gaEvent('form_field_focus', 'whatsapp'); });
     wppField.addEventListener('blur', () => validateWppField(wppField.value));
   }
+  if (fieldConsent) fieldConsent.addEventListener('change', function() {
+    gaEvent('form_consent', this.checked ? 'aceito' : 'recusado');
+  });
+
+  // Track form view when screen-form becomes visible
+  var formObserver = new MutationObserver(function() {
+    var formScreen = document.getElementById('screen-form');
+    if (formScreen && formScreen.classList.contains('active')) {
+      gaEvent('form_view', 'screen');
+      formObserver.disconnect();
+    }
+  });
+  formObserver.observe(document.getElementById('screen-form') || document.body, { attributes: true, attributeFilter: ['class'] });
+
   iniciarContador();
 
   var lazyImages = document.querySelectorAll('.hero-visual-img, .hero-logo-wrap img');
   lazyImages.forEach(function(img) {
     if (img.complete) { img.classList.add('loaded'); }
     else { img.addEventListener('load', function() { img.classList.add('loaded'); }); img.addEventListener('error', function() { img.classList.add('loaded'); }); }
+  });
+
+  // Footer WhatsApp click tracking
+  document.querySelectorAll('.footer-whatsapp').forEach(function(el) {
+    el.addEventListener('click', function() { gaEvent('footer_whatsapp_click', 'contato'); });
   });
 
   if (typeof lucide !== 'undefined') lucide.createIcons();
