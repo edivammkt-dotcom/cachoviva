@@ -28,7 +28,26 @@ router.post('/', (req, res) => {
       return res.status(500).json({ error: 'Erro ao salvar lead' });
     }
 
-    const msg = `🆕 *Nova Lead CachoViva!*\n\n👤 *${name}*\n📞 ${phone}\n📧 ${email || '—'}\n📋 Diagnóstico: *${diagnosis_name || diagnosis}*\n📊 Scores: ${JSON.stringify(scores || {})}`;
+    // Monta resumo do diagnóstico
+    const labelMap = { H: 'Hidratação', N: 'Nutrição', R: 'Reconstrução', P: 'Porosidade' };
+    var scoresLinhas = Object.entries(labelMap).map(function(e) {
+      return '▸ ' + e[1] + ': ' + ((scores && scores[e[0]]) || 0);
+    }).join('\n');
+    var maior = '';
+    var maiorValor = -1;
+    Object.keys(labelMap).forEach(function(k) {
+      var v = (scores && scores[k]) || 0;
+      if (v > maiorValor) { maiorValor = v; maior = labelMap[k]; }
+    });
+    var resumo = '📋 *Diagnóstico:* ' + (diagnosis_name || diagnosis || '—');
+    resumo += '\n📊 *Scores:*\n' + scoresLinhas;
+    if (maior) resumo += '\n🔍 *Principal necessidade:* ' + maior;
+
+    const msg = '🆕 *Nova Lead CachoViva!*\n\n' +
+      '👤 *' + name + '*\n' +
+      '📞 ' + phone + '\n' +
+      '📧 ' + (email || '—') + '\n\n' +
+      resumo;
     const buttons = [[{ text: '📋 Ver lead', callback_data: `/lead_${id}` }]];
     sendToTelegram(msg, buttons).catch(() => {});
 
@@ -69,6 +88,49 @@ router.get('/count', (req, res) => {
   }
 });
 
+router.get('/:id/confirmar-lista', (req, res) => {
+  try {
+    const { id } = req.params;
+    const lead = db.queryOne('SELECT * FROM leads WHERE id = ?', [id]);
+    if (!lead) return res.status(404).json({ error: 'Lead não encontrada' });
+
+    db.runSql('UPDATE leads SET kit_interest = 1 WHERE id = ?', [id]);
+
+    // Monta resumo do diagnóstico
+    const scores = JSON.parse(lead.scores || '{}');
+    const labelMap = { H: 'Hidratação', N: 'Nutrição', R: 'Reconstrução', P: 'Porosidade' };
+    var scoresLinhas = Object.entries(labelMap).map(function(e) {
+      return '▸ ' + e[1] + ': ' + (scores[e[0]] || 0);
+    }).join('\n');
+
+    // Encontra a maior necessidade (exclui B)
+    var maior = '';
+    var maiorValor = -1;
+    Object.keys(labelMap).forEach(function(k) {
+      var v = scores[k] || 0;
+      if (v > maiorValor) { maiorValor = v; maior = labelMap[k]; }
+    });
+
+    var resumo = '📋 *Diagnóstico:* ' + (lead.diagnosis_name || lead.diagnosis || '—');
+    if (scoresLinhas) resumo += '\n📊 *Scores:*\n' + scoresLinhas;
+    if (maior) resumo += '\n🔍 *Principal necessidade:* ' + maior;
+
+    const msg = '🛍️ *NOVO NA LISTA VIP!*\n\n' +
+      '👤 *' + lead.name + '*\n' +
+      '📞 ' + lead.phone + '\n' +
+      '📧 ' + (lead.email || '—') + '\n\n' +
+      resumo + '\n\n' +
+      'Entrou na lista de espera do lançamento!';
+
+    const buttons = [[{ text: '📋 Ver lead', callback_data: `/lead_${id}` }]];
+    sendToTelegram(msg, buttons).catch(() => {});
+
+    res.json({ success: true, message: 'Confirmado na lista VIP!' });
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
 router.post('/:id/kit', (req, res) => {
   try {
     const { id } = req.params;
@@ -85,6 +147,36 @@ router.post('/:id/kit', (req, res) => {
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
+});
+
+// Mapeamento de diagnosis_name interno → nome de exibição (mesmo do frontend)
+const diagnosisDisplayMap = {
+  "Cabelo Equilibrado": "Cacho Equilibrado",
+  "Cabelo Ressaca": "Cacho Proteico",
+  "Cabelo Sedento": "Cacho Sedento",
+  "Cabelo Pesado": "Cacho Nutrido",
+  "Cabelo Poroso": "Cacho Poroso",
+  "Cabelo sem Rotina": "Cacho em Descoberta",
+};
+
+router.get('/counters', (req, res) => {
+  try {
+    const rows = db.queryObjects(
+      "SELECT diagnosis_name, COUNT(*) as total FROM leads WHERE diagnosis_name != '' GROUP BY diagnosis_name"
+    );
+    const counters = {};
+    rows.forEach(function(r) {
+      var displayName = diagnosisDisplayMap[r.diagnosis_name] || r.diagnosis_name;
+      counters[displayName] = (counters[displayName] || 0) + r.total;
+    });
+    res.json(counters);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
+  }
+});
+
+router.post('/counters/:diagnostico', (req, res) => {
+  res.json({ success: true });
 });
 
 router.delete('/all', (req, res) => {
