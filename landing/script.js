@@ -1,4 +1,4 @@
-const API_BASE = 'http://localhost:3001/api';
+const API_BASE = window.API_BASE || 'http://localhost:3001/api';
 
 const questions = [
   {
@@ -20,21 +20,21 @@ const questions = [
     ],
   },
   {
-    q: 'Você sabe a diferença entre hidratação, nutrição e reconstrução?',
+    q: 'Depois de lavar, seu cacho dura bonito por quanto tempo?',
     options: [
-      { text: 'Sim, e sigo um cronograma capilar', scores: { H: 0, N: 0, R: 0, P: 0, B: 4 } },
-      { text: 'Já ouvi falar, mas não aplico', scores: { H: 0, N: 0, R: 0, P: 2, B: 0 } },
-      { text: 'Sei que são diferentes, mas não sei quando usar', scores: { H: 0, N: 0, R: 0, P: 3, B: 0 } },
-      { text: 'Não faço ideia do que é', scores: { H: 0, N: 0, R: 0, P: 4, B: -1 } },
+      { text: 'Menos de 1 hora — murcha rápido', scores: { H: 0, N: 0, R: 0, P: 4, B: -1 } },
+      { text: 'Até 3 horas — dá tempo de sair', scores: { H: 0, N: 0, R: 0, P: 2, B: 0 } },
+      { text: 'O dia todo — só retocar', scores: { H: 1, N: 1, R: 0, P: 0, B: 2 } },
+      { text: 'Até o dia seguinte — ainda bonito', scores: { H: 0, N: 0, R: 0, P: 0, B: 4 } },
     ],
   },
   {
-    q: 'Com que frequência você faz cronograma capilar?',
+    q: 'Você acorda com o cacho do dia anterior ainda bonito?',
     options: [
-      { text: 'Toda semana, religiosamente', scores: { H: 0, N: 0, R: 0, P: 0, B: 4 } },
-      { text: 'De vez em quando, sem regularidade', scores: { H: 0, N: 0, R: 0, P: 2, B: 1 } },
-      { text: 'Já tentei, mas não consegui manter', scores: { H: 0, N: 0, R: 0, P: 3, B: 0 } },
-      { text: 'Nunca fiz, lavo e pronto', scores: { H: 0, N: 0, R: 0, P: 4, B: -1 } },
+      { text: 'Nunca — acordo e parece que nem lavei', scores: { H: 0, N: 0, R: 0, P: 4, B: -1 } },
+      { text: 'Às vezes — quando dá sorte', scores: { H: 0, N: 0, R: 0, P: 2, B: 1 } },
+      { text: 'Quase sempre — com uns ajustes', scores: { H: 1, N: 1, R: 0, P: 0, B: 2 } },
+      { text: 'Sempre — meus cachos duram dias', scores: { H: 0, N: 0, R: 0, P: 0, B: 4 } },
     ],
   },
   {
@@ -56,12 +56,12 @@ const questions = [
     ],
   },
   {
-    q: 'Você faz pré-poo (umectação) antes da lavagem?',
+    q: 'Antes de lavar, você costuma passar algum produto nos fios (óleo, creme, máscara)?',
     options: [
       { text: 'Sim, toda semana', scores: { H: 0, N: 0, R: 0, P: 0, B: 3 } },
       { text: 'Sim, a cada 15 dias', scores: { H: 0, N: 1, R: 0, P: 0, B: 1 } },
       { text: 'Raramente', scores: { H: 1, N: 0, R: 0, P: 1, B: 0 } },
-      { text: 'Nunca ou não sei o que é', scores: { H: 0, N: 0, R: 0, P: 3, B: -1 } },
+      { text: 'Nunca', scores: { H: 0, N: 0, R: 0, P: 3, B: -1 } },
     ],
   },
   {
@@ -188,8 +188,8 @@ const diagnoses = [
     badge: '📋',
     badge_name: 'clipboard-list',
     name: 'Cabelo sem Rotina',
-    desc: 'Você ainda não descobriu o poder de um cronograma capilar!',
-    meaning: 'Seu cabelo está "sem rumo" — você não segue uma rotina definida, usa produtos aleatórios e não sabe identificar o que os fios precisam. O resultado é um cabelo inconsistente: ora bom, ora ruim. Hora de montar um plano!',
+    desc: 'Você ainda não achou a rotina ideal — mas o caminho é mais simples do que parece.',
+    meaning: 'Seu cabelo está sem uma rotina definida e cada lavagem é um resultado diferente. A boa notícia: você não precisa entender de cronograma capilar ou de diferença entre hidratação e nutrição. O segredo está na simplicidade: um creme que define na hora e um spray que mantém no dia seguinte. Sem confusão, sem 7 produtos.',
     calendar: [
       { day: 'Seg', icon_name: 'droplets', treatment: 'Hidratação' },
       { day: 'Qua', icon_name: 'sparkles', treatment: 'Nutrição' },
@@ -198,7 +198,7 @@ const diagnoses = [
     tips: [
       'Creme Cachos Definidos no dia da lavagem — aplique como leave-in, sem enxaguar',
       'Spray Day After no dia seguinte — borrife e modele os cachos',
-      'Sem cronograma capilar, sem 7 produtos — só dois passos, dois minutos',
+      'Você não precisa de cronograma — só de dois passos, dois minutos',
       'A consistência vem da simplicidade: lave, aplique, finalize. No dia seguinte, borrife e modele',
     ],
   },
@@ -436,11 +436,27 @@ function showResult(diagnosis) {
   var nomeDisplay = mapaResultados[diagnosis.name] ? mapaResultados[diagnosis.name].nome : diagnosis.name;
   var diagnosticKey = cleanKey(nomeDisplay);
   var match = productMatch[diagnosticKey] || productMatch["Cacho Equilibrado"];
+  var isPremium = diagnosis.scores && diagnosis.scores.B >= 9;
   getContadorPerfil(diagnosticKey).then(function(contador) {
     var blocoMatch = document.getElementById('bloco-match');
     if (blocoMatch) blocoMatch.remove();
     var ctaEl = document.getElementById('bloco-cta-kit');
     if (ctaEl) ctaEl.remove();
+
+    var contadorHtml = contador > 0
+      ? '<div style="display:flex;align-items:center;gap:8px;background:rgba(184,84,26,0.1);border-radius:10px;padding:12px 16px;margin-bottom:14px;">' +
+          '<span style="font-size:14px;">🔥</span>' +
+          '<span style="font-size:13px;color:#2a1a1b;font-weight:600;">' + contador + ' ' + match.urgencia + '</span>' +
+        '</div>'
+      : '<div style="background:rgba(197,165,90,0.12);border-radius:10px;padding:14px 16px;margin-bottom:14px;text-align:center;">' +
+          '<div style="font-size:12px;color:#7a6465;margin-bottom:2px;">⭐ Depoimento real</div>' +
+          '<div style="font-size:13px;color:#2a1a1b;font-style:italic;line-height:1.5;">"Nunca segui uma rotina certa. O kit CachoViva mudou meu cabelo em 2 dias de uso."</div>' +
+        '</div>';
+
+    var precoTitulo = isPremium ? '🔥 GARANTIR KIT + REPARADOR COM DESCONTO' : '🔥 GARANTIR MEU KIT COM DESCONTO';
+    var precoHtml = isPremium
+      ? '<p style="font-size:12px;color:#999;text-align:center;margin-top:10px;line-height:1.5;">Kit completo: Creme Cachos Definidos + Spray Day After + <strong>Reparador de Pontas</strong><br>De <s>R$104,90</s> por <strong style="color:#B8541A;font-size:16px;">R$64,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>'
+      : '<p style="font-size:12px;color:#999;text-align:center;margin-top:10px;line-height:1.5;">De R$89,90 por <strong style="color:#B8541A;font-size:16px;">R$49,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>';
 
     var blocoHTML =
       '<div id="bloco-match" style="background:linear-gradient(135deg,#fff3e8 0%,#ffe8d6 100%);border:2px solid #B8541A;border-radius:16px;padding:22px 24px 18px;margin:20px 0;position:relative;text-align:left;">' +
@@ -449,10 +465,7 @@ function showResult(diagnosis) {
         '</div>' +
         '<p style="font-size:17px;font-weight:800;color:#1a1a1a;margin:14px 0 10px;text-align:center;line-height:1.4;">' + match.titulo + '</p>' +
         '<p style="font-size:14px;color:#5a2e0e;line-height:1.8;margin-bottom:14px;">' + match.paragrafo + '</p>' +
-        '<div style="display:flex;align-items:center;gap:8px;background:rgba(184,84,26,0.1);border-radius:10px;padding:12px 16px;margin-bottom:14px;">' +
-          '<span style="font-size:14px;">🔥</span>' +
-          '<span style="font-size:13px;color:#2a1a1b;font-weight:600;">' + contador + ' ' + match.urgencia + '</span>' +
-        '</div>' +
+        contadorHtml +
         '<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;font-size:13px;color:#4a2a0e;">' +
           '<span>✅ Desenvolvido para as necessidades do seu cacho</span>' +
           '<span>✅ 2 passos: Creme Cachos Definidos + Spray Day After</span>' +
@@ -465,9 +478,9 @@ function showResult(diagnosis) {
       '</div>' +
       '<div id="bloco-cta-kit" style="margin:0 0 20px;text-align:center;">' +
         '<button onclick="garantirKit(\'' + diagnosticKey + '\')" style="display:block;width:100%;max-width:400px;margin:0 auto;padding:18px 24px;background:linear-gradient(135deg,#B8541A,#D4783A);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:800;cursor:pointer;text-align:center;box-shadow:0 6px 24px rgba(184,84,26,0.4);transition:all 0.3s ease;letter-spacing:0.3px;">' +
-          '🔥 GARANTIR MEU KIT COM DESCONTO' +
+          precoTitulo +
         '</button>' +
-        '<p style="font-size:12px;color:#999;text-align:center;margin-top:10px;line-height:1.5;">De R$89,90 por <strong style="color:#B8541A;font-size:16px;">R$49,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>' +
+        precoHtml +
         '<p style="font-size:11px;color:#bbb;margin-top:4px;">⏳ Pré-lançamento · Estoque limitado</p>' +
       '</div>';
 
@@ -579,46 +592,33 @@ async function submitForm(e) {
     var match = productMatch[cleanKey(nomeResultado)];
     var leadId = localStorage.getItem('cv_lead_id') || 'temp_' + Date.now();
 
+    var shortMeaning = diagnosis.meaning.length > 200 ? diagnosis.meaning.substring(0, 200) + '...' : diagnosis.meaning;
+
     var msgParts = [
       '🧴 *MEU DIAGNÓSTICO CAPILAR CACHOVIVA*',
       '',
       '👤 *' + name + '*',
       '📋 *Tipo:* ' + nomeResultado,
       '',
-      '📝 *O que significa:*',
-      diagnosis.meaning,
+      '📝 ' + shortMeaning,
       '',
-      '📅 *Calendário recomendado:*',
+      '━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━',
+      '🎯 *ENTRE NA LISTA VIP DE LANÇAMENTO!*',
+      '',
+      '✅ Desconto especial sem pegadinhas',
+      '✅ Acesso antecipado ao lançamento',
+      '✅ Brinde exclusivo: Perfume Capilar 30ml',
+      '',
+      '👉 *Confirme seu lugar na lista VIP:*',
+      window.location.origin + '/?confirmar_lista=' + leadId,
+      '',
+      'Se não quiser entrar na lista VIP, apenas ignore esta mensagem.',
     ];
-
-    diagnosis.calendar.forEach(function(d) {
-      msgParts.push('▸ ' + d.day + ' → ' + d.treatment);
-    });
-
-    msgParts.push('');
-    msgParts.push('💡 *Dicas rápidas:*');
-    diagnosis.tips.forEach(function(t) {
-      msgParts.push('✅ ' + t);
-    });
 
     if (match) {
       msgParts.push('');
-      msgParts.push('💡 *Kit ideal para seu perfil:*');
-      msgParts.push(match.paragrafo);
+      msgParts.push('💡 Kit ideal: ' + match.paragrafo.substring(0, 120) + '...');
     }
-
-    msgParts.push('');
-    msgParts.push('━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━ ━');
-    msgParts.push('🎯 *ENTRE NA LISTA VIP DE LANÇAMENTO!*');
-    msgParts.push('');
-    msgParts.push('✅ Desconto especial sem pegadinhas');
-    msgParts.push('✅ Acesso antecipado ao lançamento');
-    msgParts.push('✅ Brinde exclusivo: Perfume Capilar 30ml');
-    msgParts.push('');
-    msgParts.push('👉 *Confirme seu lugar na lista VIP:*');
-    msgParts.push(window.location.origin + '/?confirmar_lista=' + leadId);
-    msgParts.push('');
-    msgParts.push('Se não quiser entrar na lista VIP, apenas ignore esta mensagem.');
 
     waMsg = msgParts.join('\n');
     waUrl = 'https://wa.me/' + phoneClean + '?text=' + encodeURIComponent(waMsg);
@@ -796,7 +796,7 @@ var mapaResultados = {
   "Cabelo Sedento":       { nome: "Cacho Sedento 💧",        sub: "Seus fios pedem hidratação urgente." },
   "Cabelo Pesado":        { nome: "Cacho Nutrido 🛢️",       sub: "Seus fios estão sobrecarregados — hora de leveza." },
   "Cabelo Poroso":        { nome: "Cacho Poroso 🌊",         sub: "Seus fios absorvem muito mas não retêm — vamos resolver." },
-  "Cabelo sem Rotina":    { nome: "Cacho em Descoberta 🔍",  sub: "Você está prestes a montar a rotina ideal para seus fios." }
+  "Cabelo sem Rotina":    { nome: "Cacho que Precisa de Ritual 🔍",  sub: "Você ainda não achou a rotina ideal — mas o caminho é mais simples do que parece." }
 };
 
 function cleanKey(str) {
@@ -829,10 +829,10 @@ const productMatch = {
     paragrafo: "Seu cabelo está equilibrado — o desafio é fazer a definição durar. O Creme Cachos Definidos potencializa seus cachos com Óleo de Argan e Manteiga de Karité, entregando definição e brilho. O Spray Day After com Efeito Memória reativa os cachos no segundo dia sem desfazer o que você criou. Resultado: a mesma beleza da lavagem no dia seguinte.",
     urgencia: "pessoas com cacho equilibrado já reservaram o kit"
   },
-  "Cacho em Descoberta": {
-    titulo: "O kit para quem quer resultado sem rotina complicada",
-    paragrafo: "Você não tem uma rotina definida — cada lavagem é um resultado diferente. O kit CachoViva resolve: Creme Cachos Definidos no dia da lavagem (leave-in, sem enxaguar), Spray Day After no dia seguinte (borrifar e modelar). Sem mistério, sem 7 produtos, sem cronograma. Resultado: consistência real com o mínimo de esforço.",
-    urgencia: "pessoas sem rotina já encontraram o método com o kit"
+  "Cacho que Precisa de Ritual": {
+    titulo: "Você não precisa entender de capilar — precisa de uma rotina que funcione",
+    paragrafo: "Você ainda não achou uma rotina que funcione para seus cachos. O Kit CachoViva resolve isso em 2 passos: Creme Cachos Definidos no dia da lavagem (leave-in que hidrata, nutre e define) e Spray Day After no dia seguinte (borrifa e modela). Sem cronograma capilar, sem 7 produtos, sem confusão. Resultado: cachos definidos hoje, amanhã e depois.",
+    urgencia: "pessoas que estavam sem rotina já encontraram o método com o kit"
   },
   "Cacho Nutrido": {
     titulo: "O kit que não acumula — ideal para cabelo sobrecarregado",
@@ -855,17 +855,9 @@ async function getContadorPerfil(diagnostico) {
   try {
     const res = await fetch(API_BASE + '/counters');
     const data = await res.json();
-    const real = data[diagnostico] || 0;
-    const semente = {
-      "Cacho Sedento": 23, "Cacho Pesado": 11,
-      "Cacho Poroso": 17, "Cacho Proteico": 9,
-      "Cacho Equilibrado": 31, "Cacho em Descoberta": 14,
-      "Cacho Nutrido": 8, "Cacho em Renascimento": 12,
-      "Cacho Sensível": 7
-    };
-    return real + (semente[diagnostico] || 10);
+    return data[diagnostico] || 0;
   } catch {
-    return Math.floor(Math.random() * 20) + 10;
+    return 0;
   }
 }
 

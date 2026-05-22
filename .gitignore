@@ -3,3 +3,4 @@ server/data/
 server/.env
 *.log
 .DS_Store
+landing/config.js
