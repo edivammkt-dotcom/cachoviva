@@ -15,7 +15,6 @@ services:
   - type: web
     name: cachoviva-landing
     env: static
-    region: oregon
     buildCommand: echo "window.API_BASE = '$API_BASE_URL';" > landing/config.js
     staticPublishPath: landing
     envVars:
