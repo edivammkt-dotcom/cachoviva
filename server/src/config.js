@@ -58,5 +58,8 @@ module.exports = {
     propertyId: process.env.GA4_PROPERTY_ID || '',
     clientEmail: process.env.GA4_CLIENT_EMAIL || '',
     privateKey: process.env.GA4_PRIVATE_KEY || '',
+  },
+  webhook: {
+    fiqonUrl: process.env.FIQON_WEBHOOK_URL || '',
   }
 };

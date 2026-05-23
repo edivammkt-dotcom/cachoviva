@@ -11,6 +11,12 @@ services:
         value: 18
       - key: PORT
         value: 3001
+      - key: UZAPI_BASE_URL
+        value: https://api.uzapi.com.br
+      - key: UZAPI_TOKEN
+        sync: false
+      - key: UZAPI_INSTANCE
+        sync: false
 
   - type: web
     name: cachoviva-landing

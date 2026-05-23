@@ -498,7 +498,7 @@ async function processTelegramMessage(msgId, chatId, text) {
         "Cabelo Sedento": "Cacho Sedento",
         "Cabelo Pesado": "Cacho Nutrido",
         "Cabelo Poroso": "Cacho Poroso",
-        "Cabelo sem Rotina": "Cacho em Descoberta"
+        "Cabelo sem Rotina": "Cacho que Precisa de Ritual"
       };
 
       let msg = '📊 *CachoViva — Leads por perfil*\n\n';

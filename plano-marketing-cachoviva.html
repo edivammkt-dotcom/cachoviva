@@ -1,0 +1,1415 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Plano de Marketing — CachoViva</title>
+<style>
+  :root {
+    --laranja: #E8682A;
+    --laranja-claro: #F5A623;
+    --azul: #4A90D9;
+    --verde: #27AE60;
+    --vermelho: #E74C3C;
+    --bg: #FAFAFA;
+    --card: #FFFFFF;
+    --texto: #2D3436;
+    --cinza: #636E72;
+    --borda: #DFE6E9;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    background: var(--bg);
+    color: var(--texto);
+    line-height: 1.6;
+  }
+  .container { max-width: 1000px; margin: 0 auto; padding: 20px; }
+
+  /* HEADER */
+  .header {
+    background: linear-gradient(135deg, var(--laranja), var(--laranja-claro));
+    color: #fff;
+    padding: 60px 40px;
+    border-radius: 16px;
+    margin-bottom: 40px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+  }
+  .header h1 { font-size: 2.8em; font-weight: 800; letter-spacing: -1px; }
+  .header .sub { font-size: 1.2em; opacity: 0.9; margin-top: 8px; }
+  .header .meta {
+    margin-top: 20px;
+    display: flex; justify-content: center; gap: 30px;
+    font-size: 0.9em; opacity: 0.85;
+  }
+  .header .meta span { display: flex; align-items: center; gap: 6px; }
+
+  /* AVISO */
+  .aviso {
+    background: #FFF3E0;
+    border-left: 4px solid var(--laranja);
+    padding: 16px 20px;
+    border-radius: 8px;
+    margin-bottom: 30px;
+    font-size: 0.95em;
+  }
+  .aviso strong { color: var(--laranja); }
+
+  /* SEÇÕES */
+  .secao {
+    background: var(--card);
+    border-radius: 12px;
+    padding: 32px;
+    margin-bottom: 28px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.06);
+    border: 1px solid var(--borda);
+  }
+  .secao h2 {
+    font-size: 1.6em;
+    margin-bottom: 20px;
+    padding-bottom: 12px;
+    border-bottom: 3px solid var(--laranja);
+    display: flex; align-items: center; gap: 10px;
+  }
+  .secao h2 .num {
+    background: var(--laranja);
+    color: #fff;
+    width: 36px; height: 36px;
+    border-radius: 50%;
+    display: inline-flex; align-items: center; justify-content: center;
+    font-size: 0.8em; font-weight: 700;
+  }
+  .secao h3 {
+    font-size: 1.15em;
+    color: var(--laranja);
+    margin: 20px 0 10px;
+  }
+  .secao h4 {
+    font-size: 1em;
+    margin: 14px 0 6px;
+    color: var(--texto);
+  }
+  .secao p { margin-bottom: 12px; color: var(--cinza); }
+  .secao p strong { color: var(--texto); }
+
+  /* TABELAS */
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 16px 0;
+    font-size: 0.92em;
+  }
+  th {
+    background: var(--laranja);
+    color: #fff;
+    padding: 10px 12px;
+    text-align: left;
+    font-weight: 600;
+    font-size: 0.88em;
+  }
+  th:first-child { border-radius: 6px 0 0 0; }
+  th:last-child { border-radius: 0 6px 0 0; }
+  td {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--borda);
+  }
+  tr:hover td { background: #FFF8F3; }
+  .num-cell { text-align: right; font-family: 'SF Mono', monospace; }
+  .destaque { background: #E8F5E9; font-weight: 600; }
+  .destaque td { border-bottom-color: var(--verde); }
+  .alerta { background: #FFEBEE; }
+  .alerta td { border-bottom-color: var(--vermelho); }
+  .info { background: #E3F2FD; }
+
+  /* LISTAS */
+  ul, ol { margin: 10px 0 10px 20px; }
+  li { margin-bottom: 6px; color: var(--cinza); }
+  li strong { color: var(--texto); }
+
+  /* TAGS */
+  .tag {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 12px;
+    font-size: 0.75em;
+    font-weight: 600;
+  }
+  .tag-bloq { background: #FFEBEE; color: #C62828; }
+  .tag-alta { background: #FFF3E0; color: #E65100; }
+  .tag-media { background: #E3F2FD; color: #1565C0; }
+  .tag-verde { background: #E8F5E9; color: #2E7D32; }
+  .tag-atraso { background: var(--vermelho); color: #fff; }
+  .tag-concluido { background: var(--verde); color: #fff; }
+
+  /* CARDS DE MÉTRICA */
+  .metricas {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+    gap: 14px;
+    margin: 16px 0;
+  }
+  .metrica {
+    background: var(--bg);
+    padding: 16px;
+    border-radius: 10px;
+    border: 1px solid var(--borda);
+    text-align: center;
+  }
+  .metrica .valor {
+    font-size: 1.8em;
+    font-weight: 700;
+    color: var(--laranja);
+  }
+  .metrica .rotulo {
+    font-size: 0.8em;
+    color: var(--cinza);
+    margin-top: 4px;
+  }
+
+  /* CALENDÁRIO */
+  .calendario { margin: 16px 0; }
+
+  .dia {
+    border: 1px solid var(--borda);
+    border-radius: 8px;
+    margin-bottom: 10px;
+    overflow: hidden;
+    transition: border-color 0.3s;
+  }
+  .dia.atrasado { border-left: 4px solid var(--vermelho) !important; }
+  .dia.concluido { border-left: 4px solid var(--verde) !important; }
+
+  .dia-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 16px;
+    background: var(--bg);
+    font-weight: 600;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .dia-header .dia-num { color: var(--laranja); }
+  .dia-header .dia-pri { font-size: 0.75em; }
+
+  .dia-body { padding: 12px 16px; font-size: 0.9em; }
+
+  /* TASK LIST */
+  .task-list { list-style: none; margin: 0; padding: 0; }
+  .task-list li {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+    padding: 6px 0;
+    border-bottom: 1px solid #f0f0f0;
+    font-size: 0.88em;
+    margin: 0;
+    transition: opacity 0.2s;
+  }
+  .task-list li:last-child { border-bottom: none; }
+  .task-list li.done { opacity: 0.7; }
+  .task-list li.done .task-text { text-decoration: line-through; color: var(--verde); }
+  .task-list li input[type="checkbox"] {
+    appearance: none;
+    -webkit-appearance: none;
+    min-width: 18px; height: 18px;
+    border: 2px solid var(--borda);
+    border-radius: 4px;
+    cursor: pointer;
+    margin-top: 2px;
+    position: relative;
+    transition: all 0.2s;
+  }
+  .task-list li input[type="checkbox"]:checked {
+    background: var(--verde);
+    border-color: var(--verde);
+  }
+  .task-list li input[type="checkbox"]:checked::after {
+    content: "✓";
+    color: #fff;
+    position: absolute;
+    top: -2px; left: 2px;
+    font-size: 14px;
+    font-weight: 700;
+  }
+  .task-list li .task-text { flex: 1; }
+  .task-list li .dep { color: var(--cinza); font-size: 0.85em; display: block; margin-top: 2px; }
+
+  /* PROGRESS BAR */
+  .progress-container {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin: 6px 0;
+  }
+  .progress-track {
+    flex: 1;
+    height: 8px;
+    background: #E0E0E0;
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .progress-fill {
+    height: 100%;
+    border-radius: 4px;
+    transition: width 0.4s ease;
+    background: var(--laranja);
+  }
+  .progress-fill.verde { background: var(--verde); }
+  .progress-fill.vermelho { background: var(--vermelho); }
+  .progress-label { font-size: 0.8em; font-weight: 600; min-width: 40px; text-align: right; }
+
+  /* OVERALL PROGRESS */
+  .overall-progress {
+    background: linear-gradient(135deg, #FFF3E0, #FFE0B2);
+    border: 1px solid var(--laranja-claro);
+    border-radius: 12px;
+    padding: 24px;
+    margin-bottom: 24px;
+  }
+  .overall-progress .top-row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 12px;
+  }
+  .overall-progress .top-row h3 { margin: 0; color: var(--laranja); }
+  .overall-progress .stats {
+    display: flex;
+    gap: 20px;
+    font-size: 0.85em;
+  }
+  .overall-progress .stats span { display: flex; align-items: center; gap: 4px; }
+  .overall-progress .progress-track { height: 14px; }
+  .overall-progress .progress-fill { background: var(--laranja); }
+  .overall-progress .progress-label { font-size: 1em; min-width: 50px; }
+
+  /* DATA PICKER */
+  .date-picker {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background: var(--bg);
+    padding: 12px 16px;
+    border-radius: 8px;
+    border: 1px solid var(--borda);
+    margin-bottom: 16px;
+    flex-wrap: wrap;
+  }
+  .date-picker label { font-weight: 600; font-size: 0.9em; }
+  .date-picker input[type="date"] {
+    padding: 6px 10px;
+    border: 1px solid var(--borda);
+    border-radius: 6px;
+    font-size: 0.9em;
+    font-family: inherit;
+  }
+  .date-picker .reset-btn {
+    padding: 6px 14px;
+    background: var(--vermelho);
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 0.8em;
+  }
+  .date-picker .reset-btn:hover { opacity: 0.85; }
+  .date-picker .info-text { font-size: 0.82em; color: var(--cinza); }
+
+  /* FOOTER */
+  .footer {
+    text-align: center;
+    padding: 30px;
+    color: var(--cinza);
+    font-size: 0.85em;
+    border-top: 1px solid var(--borda);
+    margin-top: 40px;
+  }
+  .footer strong { color: var(--texto); }
+
+  /* RESPONSIVO */
+  @media (max-width: 640px) {
+    .header { padding: 40px 20px; }
+    .header h1 { font-size: 1.8em; }
+    .header .meta { flex-direction: column; gap: 8px; }
+    .secao { padding: 20px; }
+    table { font-size: 0.82em; }
+    td, th { padding: 6px 8px; }
+    .metricas { grid-template-columns: 1fr 1fr; }
+    .overall-progress .top-row { flex-direction: column; align-items: flex-start; }
+  }
+  @media print {
+    .header { background: var(--laranja) !important; -webkit-print-color-adjust: exact; }
+    th { background: var(--laranja) !important; -webkit-print-color-adjust: exact; }
+    .secao { break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<div class="container">
+
+<!-- ===== HEADER ===== -->
+<div class="header">
+  <h1>CachoViva</h1>
+  <div class="sub">Plano de Marketing &mdash; Lan&ccedil;amento 2026</div>
+  <div class="sub" style="font-size:1em; opacity:0.8; margin-top:4px;">&ldquo;A Ess&ecirc;ncia de se Sentir Livre e Linda&rdquo;</div>
+  <div class="meta">
+    <span>&#128205; BA + SE</span>
+    <span>&#128230; 1.000 kits em 26 dias</span>
+    <span>&#128202; Maio/Junho 2026</span>
+    <span>&#128100; Edivam &mdash; Aracaju/SE</span>
+  </div>
+</div>
+
+<div class="aviso">
+  <strong>&#9888;&#65039; Nota importante:</strong> Este plano foi atualizado com base em pesquisa de mercado realizada em maio de 2026.
+  As taxas da Shopee foram corrigidas conforme a nova pol&iacute;tica de mar&ccedil;o/2026 (20% + R$ 4 + coparticipa&ccedil;&atilde;o de frete).
+  Os valores originais do briefing foram mantidos como refer&ecirc;ncia, mas substitu&iacute;dos pelos dados reais de mercado.
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ETAPA 1 — DIAGNÓSTICO INICIAL -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2><span class="num">1</span> Diagn&oacute;stico Inicial</h2>
+
+<h3>Respostas do empreendedor</h3>
+<table>
+  <tr><th>Pergunta</th><th>Resposta</th><th>Impacto no plano</th></tr>
+  <tr>
+    <td>Capital de giro dispon&iacute;vel</td>
+    <td><strong>R$ 3.000 a R$ 8.000</strong></td>
+    <td>Or&ccedil;amento enxuto para ads + ferramentas. Produ&ccedil;&atilde;o j&aacute; financiada pela ind&uacute;stria.</td>
+  </tr>
+  <tr>
+    <td>Estoque atual</td>
+    <td><strong>Zero &mdash; produzir do zero</strong></td>
+    <td>800 kits prontos em 30 dias. Vendas come&ccedil;am com lote parcial (~200) e rodam com reposi&ccedil;&atilde;o.</td>
+  </tr>
+  <tr>
+    <td>Ferramentas contratadas</td>
+    <td><strong>Nenhuma</strong></td>
+    <td>Primeira semana dedicada a setup + testes. ManyChat pode come&ccedil;ar no plano gr&aacute;tis.</td>
+  </tr>
+</table>
+
+<h3>Cronograma de produ&ccedil;&atilde;o vs. vendas</h3>
+<p>Com 800 kits em 30 dias, a produ&ccedil;&atilde;o precisa ser escalonada. Sugest&atilde;o de fluxo:</p>
+<table>
+  <tr><th>Dia</th><th>Kits produzidos</th><th>Kits dispon&iacute;veis (acumulado)</th><th>Meta de venda</th></tr>
+  <tr><td>D0&ndash;D3</td><td>200</td><td>200</td><td>&mdash; reserva para pr&eacute;-venda</td></tr>
+  <tr><td>D4&ndash;D7</td><td>100</td><td>300</td><td>~40 (pr&eacute;-venda)</td></tr>
+  <tr><td>D8&ndash;D14</td><td>200</td><td>500</td><td>~270</td></tr>
+  <tr><td>D15&ndash;D21</td><td>200</td><td>700</td><td>~400</td></tr>
+  <tr><td>D22&ndash;D26</td><td>100</td><td>800</td><td>~290</td></tr>
+  <tr class="destaque"><td><strong>Total</strong></td><td><strong>800</strong></td><td><strong>800</strong></td><td><strong>1.000</strong></td></tr>
+</table>
+<p style="font-size:0.9em; color:var(--vermelho);">
+  &#9888;&#65039; Aten&ccedil;&atilde;o: a meta de 1.000 kits supera a produ&ccedil;&atilde;o de 800. Os 200 adicionais
+  v&ecirc;m de <strong>rolagem de caixa</strong> (reinvestimento do lucro das primeiras vendas em nova produ&ccedil;&atilde;o).
+  Se o ciclo de reposi&ccedil;&atilde;o atrasar, o gap &eacute; coberto pelo upsell do reparador (+R$ 64,99).
+</p>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ETAPA 2 — PLANO FINANCEIRO COMPLETO -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2><span class="num">2</span> Plano Financeiro Completo</h2>
+
+<h3>2.1 Custo por kit por canal</h3>
+<table>
+  <tr>
+    <th>Item</th>
+    <th>Shopee (CNPJ)</th>
+    <th>TikTok Shop</th>
+    <th>WhatsApp</th>
+  </tr>
+  <tr>
+    <td>Pre&ccedil;o de venda</td>
+    <td class="num-cell">R$ 49,99</td>
+    <td class="num-cell">R$ 49,99</td>
+    <td class="num-cell">R$ 49,99</td>
+  </tr>
+  <tr>
+    <td>Custo do kit base</td>
+    <td class="num-cell">R$ 16,50</td>
+    <td class="num-cell">R$ 16,50</td>
+    <td class="num-cell">R$ 16,50</td>
+  </tr>
+  <tr>
+    <td>Imposto (Simples ~6%)</td>
+    <td class="num-cell">R$ 3,00</td>
+    <td class="num-cell">R$ 3,00</td>
+    <td class="num-cell">R$ 3,00</td>
+  </tr>
+  <tr>
+    <td>Comiss&atilde;o da plataforma</td>
+    <td class="num-cell">R$ 10,00 <span style="color:var(--cinza); font-size:0.82em;">(20%)</span></td>
+    <td class="num-cell">R$ 3,00 <span style="color:var(--cinza); font-size:0.82em;">(6%)</span></td>
+    <td class="num-cell">R$ 2,50 <span style="color:var(--cinza); font-size:0.82em;">(5% gateway)</span></td>
+  </tr>
+  <tr>
+    <td>Taxa fixa por item</td>
+    <td class="num-cell">R$ 4,00</td>
+    <td class="num-cell">R$ 2,00 <span style="color:var(--cinza); font-size:0.82em;">(&lt;R$79)</span></td>
+    <td class="num-cell">&mdash;</td>
+  </tr>
+  <tr>
+    <td>Frete (m&eacute;dia SE/BA)</td>
+    <td class="num-cell">R$ 5,00 <span style="color:var(--cinza); font-size:0.82em;">(coparticipa&ccedil;&atilde;o)</span></td>
+    <td class="num-cell">R$ 9,00 <span style="color:var(--cinza); font-size:0.82em;">(PAC pr&oacute;prio)</span></td>
+    <td class="num-cell">R$ 9,00 <span style="color:var(--cinza); font-size:0.82em;">(PAC pr&oacute;prio)</span></td>
+  </tr>
+  <tr style="font-weight:600; border-top:2px solid var(--laranja);">
+    <td><strong>Custo total por kit</strong></td>
+    <td class="num-cell"><strong>R$ 38,50</strong></td>
+    <td class="num-cell"><strong>R$ 33,50</strong></td>
+    <td class="num-cell"><strong>R$ 31,00</strong></td>
+  </tr>
+  <tr class="destaque">
+    <td><strong>Margem l&iacute;quida por kit</strong></td>
+    <td class="num-cell"><strong>R$ 11,49 (23%)</strong></td>
+    <td class="num-cell"><strong>R$ 16,49 (33%)</strong></td>
+    <td class="num-cell"><strong>R$ 18,99 (38%)</strong></td>
+  </tr>
+</table>
+
+<div class="aviso" style="margin-top:12px;">
+  <strong>&#128270; Descoberta da pesquisa:</strong> A nova pol&iacute;tica Shopee 2026 (mar&ccedil;o) alterou a comiss&atilde;o na faixa at&eacute; R$ 79,99
+  para <strong>20% + R$ 4</strong>, com coparticipa&ccedil;&atilde;o de 25% no cupom de frete (&aacute;gio de ~R$ 5/kit).
+  O briefing original estimava 14%, mas os dados oficiais mostram que a margem na Shopee &eacute; menor do que o previsto.
+  <strong>Recomenda&ccedil;&atilde;o:</strong> priorizar TikTok Shop e WhatsApp, onde a margem &eacute; 10&ndash;15 pontos maior.
+</div>
+
+<h3>2.2 Custos fixos mensais (assinaturas)</h3>
+<table>
+  <tr><th>Ferramenta</th><th>Fun&ccedil;&atilde;o</th><th>Valor no briefing</th><th>Valor real pesquisado</th><th>Economia / Diferen&ccedil;a</th></tr>
+  <tr>
+    <td>ManyChat</td>
+    <td>Automa&ccedil;&atilde;o DM Instagram</td>
+    <td class="num-cell">R$ 149</td>
+    <td class="num-cell"><strong>Gr&aacute;tis</strong> <span style="color:var(--cinza); font-size:0.82em;">(at&eacute; 1.000 contatos)</span></td>
+    <td class="num-cell" style="color:var(--verde);">Economia de R$ 149</td>
+  </tr>
+  <tr>
+    <td>FiqOn</td>
+    <td>Automa&ccedil;&atilde;o Meta &rarr; WhatsApp</td>
+    <td class="num-cell">R$ 130</td>
+    <td class="num-cell">R$ 129,90 <span style="color:var(--cinza); font-size:0.82em;">(Essential 1.000 ops)</span></td>
+    <td class="num-cell" style="color:var(--verde);">R$ 0,10 de economia</td>
+  </tr>
+  <tr>
+    <td>Uzapi</td>
+    <td>API WhatsApp dedicada</td>
+    <td class="num-cell">R$ 97</td>
+    <td class="num-cell">R$ 97,00 <span style="color:var(--cinza); font-size:0.82em;">(1.000 envios/dia)</span></td>
+    <td class="num-cell">Confirmado</td>
+  </tr>
+  <tr>
+    <td>NemoVideo</td>
+    <td>Cria&ccedil;&atilde;o de v&iacute;deo IA</td>
+    <td class="num-cell">R$ 0</td>
+    <td class="num-cell">R$ 0 (beta)</td>
+    <td class="num-cell">Confirmado</td>
+  </tr>
+  <tr>
+    <td>Gemini Advanced</td>
+    <td>IA estrat&eacute;gica &amp; copy</td>
+    <td class="num-cell">R$ 96,99</td>
+    <td class="num-cell">R$ 96,99</td>
+    <td class="num-cell">Confirmado</td>
+  </tr>
+  <tr class="destaque">
+    <td><strong>Total</strong></td>
+    <td></td>
+    <td class="num-cell"><strong>R$ 472,99</strong></td>
+    <td class="num-cell"><strong>R$ 323,89</strong></td>
+    <td class="num-cell" style="color:var(--verde);"><strong>Economia de R$ 149,10/m&ecirc;s</strong></td>
+  </tr>
+</table>
+<p style="font-size:0.9em;">
+  Usando ManyChat gr&aacute;tis no primeiro m&ecirc;s, voc&ecirc; reduz as assinaturas de R$ 473 para <strong>R$ 324/m&ecirc;s</strong>.
+  O plano Pro do ManyChat (R$ 39/m&ecirc;s ou ~R$ 220 anual) s&oacute; ser&aacute; necess&aacute;rio quando a lista passar de 1.000 contatos.
+</p>
+
+<h3>2.3 Margem por cen&aacute;rio (com influenciadoras)</h3>
+<table>
+  <tr><th>Cen&aacute;rio</th><th>Shopee</th><th>TikTok Shop</th><th>WhatsApp</th></tr>
+  <tr><td>Sem influencer</td><td class="num-cell">R$ 11,49</td><td class="num-cell">R$ 16,49</td><td class="num-cell">R$ 18,99</td></tr>
+  <tr><td>Tipo A (UGC): produto + R$ 100</td><td class="num-cell">R$ 11,49*</td><td class="num-cell">R$ 16,49*</td><td class="num-cell">R$ 18,99*</td></tr>
+  <tr><td>Tipo B (comiss&atilde;o 10%)</td><td class="num-cell">R$ 6,49</td><td class="num-cell">R$ 11,49</td><td class="num-cell">R$ 13,99</td></tr>
+  <tr><td>Tipo B (comiss&atilde;o 15%)</td><td class="num-cell">R$ 3,99</td><td class="num-cell">R$ 8,99</td><td class="num-cell">R$ 11,49</td></tr>
+</table>
+<p style="font-size:0.85em; color:var(--cinza);">*Modelo UGC: custo rateado por kit. A R$ 100/influencer com 50 kits vendidos = R$ 2/kit.</p>
+
+<h3>2.4 Proje&ccedil;&atilde;o para 500 / 750 / 1.000 kits (mix de canais)</h3>
+<p>Mix estimado: 40% Shopee + 30% TikTok + 20% WhatsApp + 10% Instagram. Margem m&eacute;dia ponderada: <strong>~R$ 14,66/kit</strong>.</p>
+<table>
+  <tr><th>M&eacute;trica</th><th>500 kits</th><th>750 kits</th><th>1.000 kits</th></tr>
+  <tr><td>Receita bruta</td><td class="num-cell">R$ 24.995</td><td class="num-cell">R$ 37.493</td><td class="num-cell">R$ 49.990</td></tr>
+  <tr><td>Custo dos kits</td><td class="num-cell">R$ 8.250</td><td class="num-cell">R$ 12.375</td><td class="num-cell">R$ 16.500</td></tr>
+  <tr><td>Taxas + comiss&otilde;es + frete</td><td class="num-cell">R$ 5.170</td><td class="num-cell">R$ 7.755</td><td class="num-cell">R$ 10.340</td></tr>
+  <tr><td>Assinaturas (1 m&ecirc;s)</td><td class="num-cell">R$ 324</td><td class="num-cell">R$ 324</td><td class="num-cell">R$ 324</td></tr>
+  <tr><td>Ads (estimado)</td><td class="num-cell">R$ 1.500</td><td class="num-cell">R$ 2.500</td><td class="num-cell">R$ 4.000</td></tr>
+  <tr><td>Cach&ecirc;s influencer (UGC)</td><td class="num-cell">R$ 800</td><td class="num-cell">R$ 1.200</td><td class="num-cell">R$ 2.000</td></tr>
+  <tr class="destaque"><td><strong>Lucro l&iacute;quido estimado</strong></td><td class="num-cell"><strong>R$ 8.951</strong></td><td class="num-cell"><strong>R$ 13.339</strong></td><td class="num-cell"><strong>R$ 16.826</strong></td></tr>
+  <tr><td>Margem l&iacute;quida sobre receita</td><td class="num-cell">35,8%</td><td class="num-cell">35,6%</td><td class="num-cell">33,7%</td></tr>
+</table>
+
+<h3>2.5 Breakeven</h3>
+<div class="metricas">
+  <div class="metrica"><div class="valor">22</div><div class="rotulo">Kits/m&ecirc;s (apenas custos fixos)</div></div>
+  <div class="metrica"><div class="valor">29</div><div class="rotulo">Kits/m&ecirc;s (com assinaturas + ads m&iacute;nimos)</div></div>
+  <div class="metrica"><div class="valor">R$ 4.000</div><div class="rotulo">Budget m&aacute;x. para ads + parcerias</div></div>
+  <div class="metrica"><div class="valor">30%</div><div class="rotulo">da margem total para parcerias</div></div>
+</div>
+
+<h3>2.6 Aloca&ccedil;&atilde;o do capital de giro (R$ 5.000 m&eacute;dio)</h3>
+<table>
+  <tr><th>Item</th><th>Valor</th><th>% do capital</th></tr>
+  <tr><td>Assinaturas (1&ordm; m&ecirc;s: ManyChat Free + FiqOn + Uzapi + Gemini)</td><td class="num-cell">R$ 324</td><td class="num-cell">6,5%</td></tr>
+  <tr><td>Shopee Ads (teste inicial R$ 30/dia &times; 10 dias)</td><td class="num-cell">R$ 300</td><td class="num-cell">6,0%</td></tr>
+  <tr><td>TikTok Ads (teste inicial R$ 40/dia &times; 10 dias)</td><td class="num-cell">R$ 400</td><td class="num-cell">8,0%</td></tr>
+  <tr><td>Cach&ecirc;s influenciadoras UGC (4 &times; R$ 100)</td><td class="num-cell">R$ 400</td><td class="num-cell">8,0%</td></tr>
+  <tr><td>Embalagens + etiquetas + amostras para influencers</td><td class="num-cell">R$ 300</td><td class="num-cell">6,0%</td></tr>
+  <tr><td>Frete de amostras para criadores de conte&uacute;do</td><td class="num-cell">R$ 200</td><td class="num-cell">4,0%</td></tr>
+  <tr><td>Produ&ccedil;&atilde;o de conte&uacute;do (fotos, v&iacute;deos, edi&ccedil;&atilde;o)</td><td class="num-cell">R$ 300</td><td class="num-cell">6,0%</td></tr>
+  <tr><td>Reserva de seguran&ccedil;a (imprevistos)</td><td class="num-cell">R$ 776</td><td class="num-cell">15,5%</td></tr>
+  <tr class="destaque"><td><strong>Total comprometido</strong></td><td class="num-cell"><strong>R$ 3.000</strong></td><td class="num-cell"><strong>60%</strong></td></tr>
+  <tr><td>Saldo dispon&iacute;vel para reinvestir conforme resultado</td><td class="num-cell">R$ 2.000+</td><td class="num-cell">40%</td></tr>
+</table>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ETAPA 3 — PLANO OPERACIONAL INTERATIVO -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2><span class="num">3</span> Plano Operacional &mdash; D1 a D26</h2>
+
+<!-- OVERALL PROGRESS -->
+<div id="overallProgress" class="overall-progress">
+  <div class="top-row">
+    <h3>&#128202; Progresso Geral do Projeto</h3>
+    <div class="stats">
+      <span>&#9989; <strong id="doneCount">0</strong>/<span id="totalCount">0</span> tarefas</span>
+      <span>&#128197; <strong id="daysStatus">0</strong> dias</span>
+      <span id="atrasoCountSpan" style="color:var(--vermelho); display:none;">&#9888; <strong id="atrasoCount">0</strong> em atraso</span>
+    </div>
+  </div>
+  <div class="progress-container">
+    <div class="progress-track">
+      <div id="overallFill" class="progress-fill" style="width:0%"></div>
+    </div>
+    <span id="overallPercent" class="progress-label">0%</span>
+  </div>
+</div>
+
+<!-- DATA PICKER -->
+<div class="date-picker">
+  <label for="startDate">&#128197; Data de in&iacute;cio (D1):</label>
+  <input type="date" id="startDate">
+  <button class="reset-btn" onclick="resetAll()">&#8635; Redefinir tudo</button>
+  <span class="info-text">Marque as tarefas conclu&iacute;das. Dias passados com tarefas pendentes ficam em <strong style="color:var(--vermelho);">vermelho</strong>.</span>
+</div>
+
+<h3>Legenda</h3>
+<p>
+  <span class="tag tag-bloq">Bloqueante</span>
+  <span class="tag tag-alta">Alta</span>
+  <span class="tag tag-media">M&eacute;dia</span>
+  <span class="tag tag-atraso">Em atraso</span>
+  <span class="tag tag-concluido">Conclu&iacute;do</span>
+</p>
+
+<div class="calendario" id="calendario">
+
+<!-- D1 -->
+<div class="dia" data-dia="1">
+  <div class="dia-header">
+    <span><span class="dia-num">D1</span> &mdash; SEG &mdash; Setup de plataformas</span>
+    <span class="dia-pri"><span class="tag tag-bloq">BLOQUEANTE</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d1-1"><input type="checkbox"> <span class="task-text"><strong>Abrir CNPJ</strong> (se n&atilde;o tiver) &mdash; MEI ou ME Simples Nacional. <span class="dep">Depend&ecirc;ncia: sem CNPJ n&atilde;o vende em marketplace.</span></span></li>
+      <li data-task-id="d1-2"><input type="checkbox"> <span class="task-text"><strong>Criar conta Shopee (CNPJ)</strong> &mdash; configurar perfil, dados banc&aacute;rios, pol&iacute;tica de devolu&ccedil;&atilde;o.</span></li>
+      <li data-task-id="d1-3"><input type="checkbox"> <span class="task-text"><strong>Criar conta TikTok Shop</strong> &mdash; vincular CNPJ, configurar loja.</span></li>
+      <li data-task-id="d1-4"><input type="checkbox"> <span class="task-text"><strong>Criar ManyChat (gr&aacute;tis)</strong> &mdash; conectar Instagram.</span></li>
+      <li data-task-id="d1-5"><input type="checkbox"> <span class="task-text"><strong>Criar Uzapi (R$ 97)</strong> &mdash; solicitar n&uacute;mero dedicado, configurar webhook.</span></li>
+      <li data-task-id="d1-6"><input type="checkbox"> <span class="task-text"><strong>Criar FiqOn (R$ 129,90)</strong> &mdash; conta Essential, testar integra&ccedil;&atilde;o com Uzapi.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D2 -->
+<div class="dia" data-dia="2">
+  <div class="dia-header">
+    <span><span class="dia-num">D2</span> &mdash; TER &mdash; Configura&ccedil;&atilde;o de canais</span>
+    <span class="dia-pri"><span class="tag tag-bloq">BLOQUEANTE</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d2-1"><input type="checkbox"> <span class="task-text"><strong>Configurar Instagram @cachoviva</strong> &mdash; bio, linktree, highlight "Diagn&oacute;stico".</span></li>
+      <li data-task-id="d2-2"><input type="checkbox"> <span class="task-text"><strong>Configurar TikTok @cachoviva</strong> &mdash; vincular TikTok Shop.</span></li>
+      <li data-task-id="d2-3"><input type="checkbox"> <span class="task-text"><strong>Subir an&uacute;ncio Shopee</strong> &mdash; t&iacute;tulo, descri&ccedil;&atilde;o, fotos, varia&ccedil;&atilde;o "Kit + Reparador". <span class="dep">Dep: fotos prontas.</span></span></li>
+      <li data-task-id="d2-4"><input type="checkbox"> <span class="task-text"><strong>Preparar fotos dos produtos</strong> &mdash; fundo branco + lifestyle.</span></li>
+      <li data-task-id="d2-5"><input type="checkbox"> <span class="task-text"><strong>Instalar e configurar NemoVideo</strong> &mdash; gerar primeiros v&iacute;deos de teste.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D3 -->
+<div class="dia" data-dia="3">
+  <div class="dia-header">
+    <span><span class="dia-num">D3</span> &mdash; QUA &mdash; Automa&ccedil;&otilde;es e diagn&oacute;stico</span>
+    <span class="dia-pri"><span class="tag tag-alta">ALTA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d3-1"><input type="checkbox"> <span class="task-text"><strong>Criar funil ManyChat</strong> &mdash; palavra-chave "CACHO" &rarr; capta lead &rarr; envia link do diagn&oacute;stico.</span></li>
+      <li data-task-id="d3-2"><input type="checkbox"> <span class="task-text"><strong>Configurar FiqOn + Uzapi</strong> &mdash; webhook: formul&aacute;rio de diagn&oacute;stico &rarr; disparo WhatsApp.</span></li>
+      <li data-task-id="d3-3"><input type="checkbox"> <span class="task-text"><strong>Testar fluxo completo do diagn&oacute;stico</strong> &mdash; quiz &rarr; resultado &rarr; WhatsApp pr&eacute;-preenchido &rarr; lista VIP.</span></li>
+      <li data-task-id="d3-4"><input type="checkbox"> <span class="task-text"><strong>Criar p&aacute;gina de pr&eacute;-venda</strong> &mdash; "Garanta seu kit com 20% OFF na pr&eacute;-venda".</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D4 -->
+<div class="dia" data-dia="4">
+  <div class="dia-header">
+    <span><span class="dia-num">D4</span> &mdash; QUI &mdash; Primeiro conte&uacute;do + ads</span>
+    <span class="dia-pri"><span class="tag tag-alta">ALTA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d4-1"><input type="checkbox"> <span class="task-text"><strong>Postar 1&ordm; Reels Instagram + TikTok</strong> &mdash; "CACHO DEFINIDO DO BANHO AO SHOW". Produto + diagn&oacute;stico.</span></li>
+      <li data-task-id="d4-2"><input type="checkbox"> <span class="task-text"><strong>Iniciar capta&ccedil;&atilde;o ManyChat</strong> &mdash; story "comenta CACHO" + post no feed.</span></li>
+      <li data-task-id="d4-3"><input type="checkbox"> <span class="task-text"><strong>Ativar Shopee Ads</strong> &mdash; R$ 30/dia, produto destacado, palavras-chave: kit cabelo cacheado, creme defini&ccedil;&atilde;o.</span></li>
+      <li data-task-id="d4-4"><input type="checkbox"> <span class="task-text"><strong>Contatar primeiras 10 influenciadoras</strong> &mdash; DM com proposta UGC. <span class="dep">Dep: briefing pronto.</span></span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D5 -->
+<div class="dia" data-dia="5">
+  <div class="dia-header">
+    <span><span class="dia-num">D5</span> &mdash; SEX &mdash; Expans&atilde;o de conte&uacute;do</span>
+    <span class="dia-pri"><span class="tag tag-alta">ALTA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d5-1"><input type="checkbox"> <span class="task-text"><strong>Postar 2&ordm; Reels</strong> &mdash; "O KIT QUE FAZ O CACHO DURAR" + diagn&oacute;stico + depoimento fict&iacute;cio inicial.</span></li>
+      <li data-task-id="d5-2"><input type="checkbox"> <span class="task-text"><strong>Enviar kits para 3 influenciadoras UGC</strong> &mdash; PAC Aracaju.</span></li>
+      <li data-task-id="d5-3"><input type="checkbox"> <span class="task-text"><strong>Criar campanha TikTok Ads</strong> &mdash; R$ 40/dia, v&iacute;deo UGC, p&uacute;blico: mulheres 22-42 BA/SE.</span></li>
+      <li data-task-id="d5-4"><input type="checkbox"> <span class="task-text"><strong>Ativar FiqOn</strong> &mdash; fluxo autom&aacute;tico: lead do quiz &rarr; WhatsApp &rarr; lista VIP.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D6 -->
+<div class="dia" data-dia="6">
+  <div class="dia-header">
+    <span><span class="dia-num">D6</span> &mdash; S&Aacute;B &mdash; Monitoramento</span>
+    <span class="dia-pri"><span class="tag tag-media">M&Eacute;DIA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d6-1"><input type="checkbox"> <span class="task-text"><strong>Story ao vivo</strong> &mdash; bastidores: "produzindo os primeiros kits".</span></li>
+      <li data-task-id="d6-2"><input type="checkbox"> <span class="task-text"><strong>Monitorar ManyChat</strong> &mdash; quantas ativaram "CACHO"? Quantas iniciaram o diagn&oacute;stico?</span></li>
+      <li data-task-id="d6-3"><input type="checkbox"> <span class="task-text"><strong>Responder DMs</strong> &mdash; atendimento humano para leads qualificados.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D7 -->
+<div class="dia" data-dia="7">
+  <div class="dia-header">
+    <span><span class="dia-num">D7</span> &mdash; DOM &mdash; Revis&atilde;o Semana 1</span>
+    <span class="dia-pri"><span class="tag tag-media">M&Eacute;DIA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d7-1"><input type="checkbox"> <span class="task-text"><strong>Postar Reels 3</strong> &mdash; "3 PASSOS, 2 DIAS DE CACHO" + tutorial r&aacute;pido.</span></li>
+      <li data-task-id="d7-2"><input type="checkbox"> <span class="task-text"><strong>Revisar m&eacute;tricas da semana 1</strong> &mdash; leads, alcance, cliques, vendas.</span></li>
+      <li data-task-id="d7-3"><input type="checkbox"> <span class="task-text"><strong>Ajustar ads</strong> &mdash; pausar o que n&atilde;o converteu, dobrar no melhor.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D8 -->
+<div class="dia" data-dia="8">
+  <div class="dia-header">
+    <span><span class="dia-num">D8</span> &mdash; SEG &mdash; In&iacute;cio oficial das vendas</span>
+    <span class="dia-pri"><span class="tag tag-alta">ALTA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d8-1"><input type="checkbox"> <span class="task-text"><strong>IN&Iacute;CIO OFICIAL DAS VENDAS</strong> &mdash; Shopee + TikTok Shop liberados.</span></li>
+      <li data-task-id="d8-2"><input type="checkbox"> <span class="task-text"><strong>Primeiros kits enviados</strong> &mdash; pr&eacute;-venda D4-D7 agora faturam.</span></li>
+      <li data-task-id="d8-3"><input type="checkbox"> <span class="task-text"><strong>Postar Reels 4</strong> &mdash; resultados das influenciadoras UGC.</span></li>
+      <li data-task-id="d8-4"><input type="checkbox"> <span class="task-text"><strong>Disparo WhatsApp lista VIP</strong> &mdash; "Pr&eacute;-venda liberada, link exclusivo". <span class="dep">Dep: m&iacute;n. 30 leads na lista VIP.</span></span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D9-D13 -->
+<div class="dia" data-dia="13">
+  <div class="dia-header">
+    <span><span class="dia-num">D9&ndash;D13</span> &mdash; TER a S&Aacute;B &mdash; Opera&ccedil;&atilde;o cont&iacute;nua</span>
+    <span class="dia-pri"><span class="tag tag-alta">ALTA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d9-1"><input type="checkbox"> <span class="task-text"><strong>Postagens di&aacute;rias</strong> &mdash; seg/qua/sex Reels + ter/qui stories + depoimentos.</span></li>
+      <li data-task-id="d9-2"><input type="checkbox"> <span class="task-text"><strong>Manter Shopee Ads R$ 30/dia e TikTok Ads R$ 40/dia</strong> &mdash; ajustar CTR e CPA.</span></li>
+      <li data-task-id="d9-3"><input type="checkbox"> <span class="task-text"><strong>ManyChat ativo</strong> &mdash; captar leads continuamente com "comenta CACHO".</span></li>
+      <li data-task-id="d9-4"><input type="checkbox"> <span class="task-text"><strong>FiqOn + Uzapi</strong> &mdash; follow-up autom&aacute;tico para leads que n&atilde;o compraram em 48h.</span></li>
+      <li data-task-id="d9-5"><input type="checkbox"> <span class="task-text"><strong>Contatar novas influenciadoras</strong> &mdash; mais 5-7 UGC para aumentar acervo.</span></li>
+      <li data-task-id="d9-6"><input type="checkbox"> <span class="task-text"><strong>Monitorar avalia&ccedil;&otilde;es Shopee</strong> &mdash; responder TODAS em at&eacute; 2h.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D14 -->
+<div class="dia" data-dia="14" style="border-left: 4px solid var(--vermelho);">
+  <div class="dia-header" style="background: #FFEBEE;">
+    <span><span class="dia-num" style="color:var(--vermelho); font-weight:800;">D14 &mdash; PONTO DE DECISÃO</span></span>
+    <span class="dia-pri"><span class="tag tag-bloq" style="background:var(--vermelho); color:#fff;">DECISÃO CRÍTICA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <p><strong>Checklist de revisão (detalhado na Etapa 7):</strong></p>
+    <ul class="task-list">
+      <li data-task-id="d14-1"><input type="checkbox"> <span class="task-text">Kits vendidos at&eacute; D14 &ge; 250? <span class="dep">Se sim, dobrar canal com melhor performance.</span></span></li>
+      <li data-task-id="d14-2"><input type="checkbox"> <span class="task-text">CPA Shopee &le; R$ 8? <span class="dep">Se n&atilde;o, pausar e migrar or&ccedil;amento para TikTok.</span></span></li>
+      <li data-task-id="d14-3"><input type="checkbox"> <span class="task-text">CPA TikTok &le; R$ 10? <span class="dep">Se n&atilde;o, revisar criativo.</span></span></li>
+      <li data-task-id="d14-4"><input type="checkbox"> <span class="task-text">Lista VIP tem &ge; 100 contatos? <span class="dep">Se n&atilde;o, intensificar diagn&oacute;stico.</span></span></li>
+      <li data-task-id="d14-5"><input type="checkbox"> <span class="task-text">Margem por canal est&aacute; dentro do esperado?</span></li>
+      <li data-task-id="d14-6"><input type="checkbox"> <span class="task-text">Influencers est&atilde;o entregando conte&uacute;do?</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D15-D19 -->
+<div class="dia" data-dia="19">
+  <div class="dia-header">
+    <span><span class="dia-num">D15&ndash;D19</span> &mdash; SEG a SEX &mdash; Acelera&ccedil;&atilde;o p&oacute;s-D14</span>
+    <span class="dia-pri"><span class="tag tag-alta">ALTA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d15-1"><input type="checkbox"> <span class="task-text"><strong>Aplicar decisões do D14</strong> &mdash; realocar budget, ajustar criativos, substituir o que n&atilde;o funcionou.</span></li>
+      <li data-task-id="d15-2"><input type="checkbox"> <span class="task-text"><strong>Campanha de retargeting Meta (Instagram)</strong> &mdash; quem clicou e n&atilde;o comprou, an&uacute;ncio com depoimento.</span></li>
+      <li data-task-id="d15-3"><input type="checkbox"> <span class="task-text"><strong>WhatsApp: oferta de 48h</strong> &mdash; &uacute;ltimo dia do desconto de pr&eacute;-venda para lista VIP.</span></li>
+      <li data-task-id="d15-4"><input type="checkbox"> <span class="task-text"><strong>Postar Reels com antes/depois</strong> &mdash; v&iacute;deo real de cliente.</span></li>
+      <li data-task-id="d15-5"><input type="checkbox"> <span class="task-text"><strong>Ampliar capta&ccedil;&atilde;o ManyChat</strong> &mdash; "comenta CACHO" + "marca uma amiga".</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D20-D25 -->
+<div class="dia" data-dia="25">
+  <div class="dia-header">
+    <span><span class="dia-num">D20&ndash;D25</span> &mdash; S&Aacute;B a QUI &mdash; Reta final</span>
+    <span class="dia-pri"><span class="tag tag-media">M&Eacute;DIA</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d20-1"><input type="checkbox"> <span class="task-text"><strong>Esgotamento de estoque parcial</strong> &mdash; "S&Oacute; AT&Eacute; ACABAR" nos stories.</span></li>
+      <li data-task-id="d20-2"><input type="checkbox"> <span class="task-text"><strong>Upsell para perfil B&ge;9</strong> &mdash; WhatsApp: "Kit + reparador R$ 64,99".</span></li>
+      <li data-task-id="d20-3"><input type="checkbox"> <span class="task-text"><strong>Shopee: cupom rel&acirc;mpago 10% OFF</strong> &mdash; &uacute;ltimos dias.</span></li>
+      <li data-task-id="d20-4"><input type="checkbox"> <span class="task-text"><strong>Coletar depoimentos em v&iacute;deo</strong> &mdash; clientes reais para pr&oacute;ximo ciclo.</span></li>
+      <li data-task-id="d20-5"><input type="checkbox"> <span class="task-text"><strong>Planejar p&oacute;s-lan&ccedil;amento</strong> &mdash; assinatura recorrente, novos produtos.</span></li>
+    </ul>
+  </div>
+</div>
+
+<!-- D26 -->
+<div class="dia" data-dia="26">
+  <div class="dia-header">
+    <span><span class="dia-num">D26</span> &mdash; SEX &mdash; Encerramento</span>
+    <span class="dia-pri"><span class="tag tag-verde">FIM DO LANÇAMENTO</span></span>
+  </div>
+  <div class="dia-body">
+    <span class="progress-container"><span class="progress-track"><span class="progress-fill" style="width:0%"></span></span><span class="progress-label">0%</span></span>
+    <ul class="task-list">
+      <li data-task-id="d26-1"><input type="checkbox"> <span class="task-text"><strong>Encerrar campanhas de lan&ccedil;amento</strong> &mdash; manter apenas o que der ROI positivo.</span></li>
+      <li data-task-id="d26-2"><input type="checkbox"> <span class="task-text"><strong>Apurar resultado final</strong> &mdash; kits vendidos, receita, margem por canal, CAC, ROI.</span></li>
+      <li data-task-id="d26-3"><input type="checkbox"> <span class="task-text"><strong>Relat&oacute;rio p&oacute;s-lan&ccedil;amento</strong> &mdash; o que funcionou, o que n&atilde;o, pr&oacute;ximos passos.</span></li>
+      <li data-task-id="d26-4"><input type="checkbox"> <span class="task-text"><strong>Reabastecer estoque</strong> &mdash; pedido de produ&ccedil;&atilde;o para pr&oacute;ximo m&ecirc;s.</span></li>
+    </ul>
+  </div>
+</div>
+
+</div><!-- /.calendario -->
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ETAPA 4 — ESTRATÉGIA DE INFLUENCERS -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2><span class="num">4</span> Estrat&eacute;gia de Influencers</h2>
+
+<h3>4.1 Modelos de parceria</h3>
+
+<h4>Tipo A &mdash; UGC (User Generated Content)</h4>
+<table>
+  <tr><th>Item</th><th>Valor</th></tr>
+  <tr><td>Kit CachoViva (cortesia)</td><td class="num-cell">R$ 16,50</td></tr>
+  <tr><td>Cach&ecirc; fixo</td><td class="num-cell">R$ 80 a R$ 120</td></tr>
+  <tr><td>Custo total por influencer</td><td class="num-cell"><strong>R$ 96,50 a R$ 136,50</strong></td></tr>
+  <tr><td>Meta de venda por influencer</td><td class="num-cell">Nenhuma (conte&uacute;do apenas)</td></tr>
+  <tr><td>Entreg&aacute;veis</td><td>1 Reels + 1 post feed + 2 stories (direitos de uso)</td></tr>
+</table>
+<p><strong>Rateio:</strong> Se cada UGC gerar 30 vendas, o custo por kit cai para R$ 3,20 a R$ 4,55 &mdash; abaixo da comiss&atilde;o Tipo B.</p>
+
+<h4>Tipo B &mdash; Comiss&atilde;o sobre venda</h4>
+<table>
+  <tr><th>Item</th><th>Valor</th></tr>
+  <tr><td>Kit CachoViva (cortesia)</td><td class="num-cell">R$ 16,50</td></tr>
+  <tr><td>Comiss&atilde;o por venda</td><td class="num-cell">10% (R$ 5,00/kit) ou 15% (R$ 7,50/kit)</td></tr>
+  <tr><td>Margem l&iacute;quida (Shopee) com 10%</td><td class="num-cell">R$ 6,49/kit</td></tr>
+  <tr><td>Margem l&iacute;quida (Shopee) com 15%</td><td class="num-cell">R$ 3,99/kit</td></tr>
+  <tr><td>Garantia de vendas m&iacute;nima</td><td class="num-cell">N&atilde;o (apenas comiss&atilde;o sobre vendas reais)</td></tr>
+</table>
+<p><strong>&#9888;&#65039; Alerta:</strong> Com 15% de comiss&atilde;o na Shopee, a margem cai para R$ 3,99/kit (8%). Limite comiss&atilde;o Tipo B a 10% na Shopee. Para TikTok Shop e WhatsApp, 15% ainda d&aacute; margem.</p>
+
+<h3>4.2 Script de capta&ccedil;&atilde;o via ManyChat</h3>
+<div style="background:var(--bg); border:1px solid var(--borda); border-radius:8px; padding:16px; margin:12px 0; font-size:0.92em;">
+  <p><strong>Gatilho:</strong> Palavra-chave "CACHO" no Instagram DM</p>
+  <p style="color:var(--cinza); margin-top:8px;">&mdash;&mdash;&mdash;</p>
+  <p><strong>Resposta autom&aacute;tica (ManyChat):</strong></p>
+  <p style="margin:8px 0;">
+    "Oi, linda! <strong>&#127800;</strong> Viu que a CachoViva acabou de chegar em Aracaju? A gente tem um kit que faz o cacho durar DOIS DIAS &mdash; e queremos te convidar pra testar antes de todo mundo.<br><br>
+    A gente est&aacute; procurando <strong>mulheres de verdade</strong> pra testar, gravar um v&iacute;deo sincero mostrando o resultado e ganhar um cach&ecirc; + o kit gratuito.<br><br>
+    Curtiu? Responde aqui com seu @ e a gente te chama no direct pra combinar."
+  </p>
+  <p style="color:var(--cinza); margin-top:8px;">&mdash;&mdash;&mdash;</p>
+  <p><strong>Se aceitar</strong> &rarr; entra em contato manualmente (Edivam) para confirmar perfil, enviar briefing e kit.</p>
+  <p><strong>Se n&atilde;o quiser</strong> &rarr; "Sem problema! Faz o diagn&oacute;stico capilar gr&aacute;tis aqui no nosso site, &eacute; rapidinho e voc&ecirc; descobre tudo sobre seu cacho." + link do quiz.</p>
+</div>
+
+<h3>4.3 Sistema de rastreamento anti-fraude</h3>
+<table>
+  <tr><th>Mecanismo</th><th>Como funciona</th></tr>
+  <tr><td>Cupom &uacute;nico por influencer</td><td>Cada parceira recebe um c&oacute;digo (ex: CACHO_NOME10). Cupom v&aacute;lido apenas no canal dela.</td></tr>
+  <tr><td>UTM por parceira</td><td>Link exclusivo: cachoviva.com.br/?utm_source=instagram&utm_medium=influencer&utm_campaign=nome</td></tr>
+  <tr><td>Shopee Influencer ID</td><td>Cadastro no programa de afiliados Shopee com ID &uacute;nico rastre&aacute;vel.</td></tr>
+  <tr><td>Print obrigat&oacute;rio</td><td>Influencer envia print do peri&oacute;do de vendas dela (se for Tipo B).</td></tr>
+  <tr><td>Confer&ecirc;ncia manual</td><td>Edivam confere cupons vs. vendas vs. relat&oacute;rio da plataforma a cada 7 dias.</td></tr>
+</table>
+
+<h3>4.4 Crit&eacute;rios de sele&ccedil;&atilde;o e corte</h3>
+<table>
+  <tr><th>Crit&eacute;rio</th><th>Aceit&aacute;vel</th><th>Corte</th></tr>
+  <tr><td>Seguidores</td><td>1.000 a 50.000 (micro/nano)</td><td>&lt; 1.000 OU seguidores claramente comprados</td></tr>
+  <tr><td>Engajamento</td><td>Taxa &ge; 3% nos &uacute;ltimos 10 posts</td><td>&lt; 1% ou coment&aacute;rios gen&eacute;ricos</td></tr>
+  <tr><td>Localiza&ccedil;&atilde;o</td><td>BA ou SE (p&uacute;blico alvo)</td><td>Outros estados</td></tr>
+  <tr><td>Conte&uacute;do</td><td>Cabelo cacheado/crespo como tema central</td><td>Nunca postou sobre cabelo</td></tr>
+  <tr><td>Autenticidade</td><td>Tom natural, sem roteiro for&ccedil;ado</td><td>Perfil com apenas publis pagas, sem conte&uacute;do org&acirc;nico</td></tr>
+</table>
+
+<h4>Regra de corte (encerrar parceria):</h4>
+<ul>
+  <li><strong>Tipo A:</strong> Se n&atilde;o postar o conte&uacute;do combinado em 10 dias &uacute;teis, cobrar uma vez. Se n&atilde;o responder, bloquear e n&atilde;o renovar.</li>
+  <li><strong>Tipo B:</strong> Se em 14 dias n&atilde;o vender nenhum kit (rastreamento via cupom), suspender comiss&atilde;o e reavaliar. Se em 21 dias vender menos de 5 kits, encerrar.</li>
+</ul>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ETAPA 5 — ESTRATÉGIA DE CONTEÚDO E CANAIS -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2><span class="num">5</span> Estrat&eacute;gia de Conte&uacute;do e Canais</h2>
+
+<h3>5.1 Tom de voz &mdash; "Massa, coloquial, nordestina"</h3>
+<ul>
+  <li><strong>Proibido:</strong> "efeito teia", "tipagens 3A a 4C", "petrolato", "cronograma capilar", "H/N/R/P/B".</li>
+  <li><strong>Usar:</strong> "cacho no pente", "finaliza&ccedil;&atilde;o", "cabelo leve", "defini&ccedil;&atilde;o", "brilho", "umidade", "hidrata&ccedil;&atilde;o".</li>
+  <li><strong>Express&otilde;es nordestinas:</strong> "mainha", "bichinho", "visse?", "oxe", "num instante", "bora".</li>
+  <li><strong>Formato:</strong> frases curtas, interjei&ccedil;&otilde;es, perguntas ret&oacute;ricas, chamada para a&ccedil;&atilde;o direta.</li>
+</ul>
+
+<h3>5.2 Calend&aacute;rio editorial Instagram</h3>
+<table>
+  <tr><th>Dia</th><th>Conte&uacute;do</th><th>Formato</th><th>CTA</th></tr>
+  <tr><td>Segunda</td><td>Tutorial do kit &mdash; "3 passos pro cacho durar 2 dias"</td><td>Reels (30-45s)</td><td>Faz o diagn&oacute;stico</td></tr>
+  <tr><td>Ter&ccedil;a</td><td>Story: pergunta interativa "qual seu maior desafio com o cacho?"</td><td>Enquete + caixa</td><td>Compartilhar</td></tr>
+  <tr><td>Quarta</td><td>Depoimento de cliente ou influencer &mdash; antes/depois</td><td>Reels (15-30s)</td><td>Compra no link</td></tr>
+  <tr><td>Quinta</td><td>Story: "mitos e verdades" sobre cabelo cacheado</td><td>Quiz</td><td>Responder</td></tr>
+  <tr><td>Sexta</td><td>Disruptivo / humor &mdash; "cabelo que n&atilde;o dura vs. CachoViva"</td><td>Reels (20-40s)</td><td>Marca amiga + compra</td></tr>
+  <tr><td>S&aacute;bado</td><td>Story: bastidores da produ&ccedil;&atilde;o / resenha sincera</td><td>Real life</td><td>Pergunte</td></tr>
+  <tr><td>Domingo</td><td>Carrossel: "6 tipos de cacho e o produto certo pra cada"</td><td>Feed (5 slides)</td><td>Salva + compartilha</td></tr>
+</table>
+
+<h3>5.3 Estrat&eacute;gia TikTok Shop</h3>
+<ul>
+  <li><strong>V&iacute;deos nativos UGC:</strong> 3-4 por semana, gravados por influenciadoras + Edivam.</li>
+  <li><strong>Formato:</strong> POV ("mostra a&iacute; o resultado"), antes/depois, "prova real" (lavar e mostrar 2 dias depois).</li>
+  <li><strong>Trilha sonora:</strong> m&uacute;sicas em alta no TikTok, evitando trends muito espec&iacute;ficas.</li>
+  <li><strong>Shop Ads:</strong> anunciar os v&iacute;deos com melhor performance org&acirc;nica como Spark Ads.</li>
+  <li><strong>Frete:</strong> configurar frete pr&oacute;prio via PAC (R$ 7-10). TikTok cobre parte com subs&iacute;dios.</li>
+  <li><strong>Isen&ccedil;&atilde;o de 60 dias:</strong> new sellers t&ecirc;m isen&ccedil;&atilde;o de comiss&atilde;o por 60 dias (at&eacute; R$ 17.000 economizados). <strong>Aproveitar!</strong></li>
+</ul>
+
+<h3>5.4 Estrat&eacute;gia Shopee</h3>
+<table>
+  <tr><th>Elemento</th><th>Otimiza&ccedil;&atilde;o</th></tr>
+  <tr><td>T&iacute;tulo</td><td>"Kit Cabelo Cacheado Crespo 3 Produtos + Brinde | Defini&ccedil;&atilde;o Intensa 48h | CachoViva"</td></tr>
+  <tr><td>Fotos</td><td>1: fundo branco, 2: lifestyle (cabelo cacheado), 3: kit aberto, 4: infogr&aacute;fico "3 passos", 5: antes/depois</td></tr>
+  <tr><td>Descri&ccedil;&atilde;o</td><td>Incluir: o que vem no kit, como usar, para quem &eacute;, garantia Shopee</td></tr>
+  <tr><td>Shopee Ads</td><td>R$ 30-50/dia, palavras-chave: kit cabelo cacheado, creme defini&ccedil;&atilde;o, finalizador, cacho definido</td></tr>
+  <tr><td>Avalia&ccedil;&otilde;es</td><td>Responder todas em at&eacute; 2h. Cliente que reclamou: resolver no privado e pedir para reavaliar.</td></tr>
+  <tr><td>Varia&ccedil;&atilde;o</td><td>Criar varia&ccedil;&atilde;o "Kit + Reparador de Pontas" por R$ 64,99 para upsell autom&aacute;tico.</td></tr>
+</table>
+
+<h3>5.5 Diagn&oacute;stico como canh&atilde;o de leads</h3>
+<ul>
+  <li>Post no feed + stories com "DESCUBRA SEU TIPO DE CACHO EM 2 MINUTOS" &rarr; link do quiz.</li>
+  <li>ManyChat captura quem comentou "CACHO" &rarr; envia link do diagn&oacute;stico no DM.</li>
+  <li>Ap&oacute;s o resultado, FiqOn + Uzapi disparam WhatsApp com: diagn&oacute;stico + recomenda&ccedil;&atilde;o + oferta.</li>
+  <li>Quem finaliza o quiz mas n&atilde;o compra em 48h recebe follow-up autom&aacute;tico: "Ainda com d&uacute;vida? Me chama aqui."</li>
+</ul>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ETAPA 6 — MELHORIAS NO DIAGNÓSTICO CAPILAR -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2><span class="num">6</span> Melhorias no Diagn&oacute;stico Capilar</h2>
+
+<h3>6.1 Perguntas reescritas em linguagem massa</h3>
+<table>
+  <tr><th>Pergunta</th><th>Original (t&eacute;cnica)</th><th>Reescrita (massa)</th></tr>
+  <tr>
+    <td><strong>P3</strong></td>
+    <td>"Com que frequ&ecirc;ncia voc&ecirc; faz cronograma capilar (hidrata&ccedil;&atilde;o, nutri&ccedil;&atilde;o, reconstru&ccedil;&atilde;o)?"</td>
+    <td>"Com que frequ&ecirc;ncia voc&ecirc; faz um tratamento no cabelo? (m&aacute;scara, hidrata&ccedil;&atilde;o, aquela finaliza&ccedil;&atilde;o caprichada)"</td>
+  </tr>
+  <tr>
+    <td><strong>P4</strong></td>
+    <td>"Qual &eacute; sua maior dificuldade com a rotina H/N/R (hidrata&ccedil;&atilde;o, nutri&ccedil;&atilde;o, reconstru&ccedil;&atilde;o)?"</td>
+    <td>"Qual parte do cuidado com o cabelo voc&ecirc; mais tem d&uacute;vida?" <span style="color:var(--cinza); font-size:0.85em;">(op&ccedil;&otilde;es: hidratar / dar brilho / definir / reduzir volume)</span></td>
+  </tr>
+  <tr>
+    <td><strong>P7</strong></td>
+    <td>"Seu cabelo j&aacute; passou por processo de relaxamento, progressiva ou alisamento?"</td>
+    <td>"Seu cabelo j&aacute; passou por qu&iacute;mica? (progressiva, relaxamento, alisamento)"</td>
+  </tr>
+</table>
+
+<h3>6.2 Match de produto para "Cacho em Descoberta"</h3>
+<p><strong>Problema:</strong> O diagn&oacute;stico "Cacho em Descoberta" n&atilde;o tem match de produto direto, deixando a lead sem recomenda&ccedil;&atilde;o.</p>
+<p><strong>Solu&ccedil;&atilde;o:</strong> Criar um fluxo de acolhimento:</p>
+<div style="background:var(--bg); border:1px solid var(--borda); border-radius:8px; padding:16px; margin:12px 0;">
+  <p><strong>Texto do resultado "Cacho em Descoberta":</strong></p>
+  <p style="margin:8px 0;">
+    "Seu cacho est&aacute; <strong>em descoberta</strong> &mdash; e tudo bem! Muita gente passa por isso quando come&ccedil;a a cuidar do cabelo natural.<br><br>
+    O <strong>Kit CachoViva</strong> foi feito justamente pra quem quer come&ccedil;ar com o p&eacute; direito: os 3 passos d&atilde;o conta do essencial (defini&ccedil;&atilde;o, recupera&ccedil;&atilde;o do day after e perfume).<br><br>
+    <strong>Recomenda&ccedil;&atilde;o:</strong> comece com o kit e, se sentir que seu cabelo precisa de mais for&ccedil;a nas pontas, adicione o Reparador de Pontas."
+  </p>
+</div>
+
+<h3>6.3 Quebra da mensagem WhatsApp em 2 envios</h3>
+<p><strong>Problema:</strong> Mensagem &uacute;nica longa enterra o CTA da lista VIP.</p>
+<p><strong>Solu&ccedil;&atilde;o:</strong> Dois envios sequenciais com intervalo de 2 horas:</p>
+<table>
+  <tr><th>Envio</th><th>Momento</th><th>Conte&uacute;do</th></tr>
+  <tr>
+    <td><strong>Mensagem 1</strong></td>
+    <td>Imediato (p&oacute;s-quiz)</td>
+    <td style="font-size:0.9em;">"Oi, [NOME]! Aqui &eacute; da CachoViva. Acabamos de ver seu diagn&oacute;stico capilar: <strong>[DIAGN&Oacute;STICO]</strong>. Com base no seu resultado, o kit ideal pra voc&ecirc; &eacute; o <strong>Kit CachoViva</strong> (Passo 1 + Passo 2 + Perfume Capilar Lavine). Quer saber o pre&ccedil;o e como comprar? &#128073; S&oacute; responder essa mensagem que a gente te explica."</td>
+  </tr>
+  <tr>
+    <td><strong>Mensagem 2</strong></td>
+    <td>2 horas depois</td>
+    <td style="font-size:0.9em;">"[NOME], ainda t&aacute; pensando no kit? O Kit CachoViva sai por <strong>R$ 49,99</strong> (de R$ 89,90). <strong>Quer entrar na nossa lista VIP?</strong> Voc&ecirc; ganha ofertas exclusivas. &#128073; &Eacute; s&oacute; responder SIM."</td>
+  </tr>
+</table>
+
+<h3>6.4 Fluxo de upsell para perfil B&ge;9 (Cacho Equilibrado)</h3>
+<div style="background:#E8F5E9; border:1px solid #A5D6A7; border-radius:8px; padding:16px; margin:12px 0;">
+  <p><strong>Gatilho:</strong> Score B (Brilho/Sa&uacute;de) &ge; 9</p>
+  <p><strong>Fluxo:</strong></p>
+  <ol>
+    <li>Diagn&oacute;stico aponta "Cacho Equilibrado" + texto: "Seu cabelo j&aacute; est&aacute; saud&aacute;vel, que tal dar um upgrade?"</li>
+    <li>WhatsApp 1: "Kit + Reparador de Pontas &eacute; a combina&ccedil;&atilde;o perfeita pra manter os fios fortes e definidos."</li>
+    <li>Oferta: Kit + Reparador por R$ 64,99 (economia de R$ 9,90 vs. compra separada).</li>
+    <li>Mensagem 2 (24h depois): "Ainda d&aacute; tempo de garantir o combo com o precinho especial."</li>
+  </ol>
+  <p><strong>Margem do upsell:</strong> Kit (R$ 16,50) + Reparador (R$ 4,50) = R$ 21,00 custo. Venda R$ 64,99 &rarr; margem bruta extra de R$ 43,99. Com taxas (~25%), margem l&iacute;quida do upsell: ~R$ 33,00.</p>
+</div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- ETAPA 7 — REVISÃO D14 -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2><span class="num">7</span> Revis&atilde;o D14 &mdash; Ponto de Decis&atilde;o</h2>
+
+<h3>7.1 Checklist de m&eacute;tricas para checar</h3>
+<table>
+  <tr><th>M&eacute;trica</th><th>Como medir</th><th>Alvo (D14)</th><th>Sinal vermelho</th></tr>
+  <tr><td>Kits vendidos (total)</td><td>Shopee + TikTok + WhatsApp + Instagram</td><td class="num-cell">&ge; 250</td><td class="num-cell" style="color:var(--vermelho);">&lt; 150</td></tr>
+  <tr><td>CPA Shopee</td><td>Gasto Shopee Ads / pedidos Shopee</td><td class="num-cell">&le; R$ 8</td><td class="num-cell" style="color:var(--vermelho);">&gt; R$ 12</td></tr>
+  <tr><td>CPA TikTok Shop</td><td>Gasto TikTok Ads / pedidos TikTok</td><td class="num-cell">&le; R$ 10</td><td class="num-cell" style="color:var(--vermelho);">&gt; R$ 15</td></tr>
+  <tr><td>Lista VIP</td><td>Contatos na lista Uzapi/FiqOn</td><td class="num-cell">&ge; 100</td><td class="num-cell" style="color:var(--vermelho);">&lt; 40</td></tr>
+  <tr><td>Leads do diagn&oacute;stico</td><td>Quizzes completados</td><td class="num-cell">&ge; 200</td><td class="num-cell" style="color:var(--vermelho);">&lt; 80</td></tr>
+  <tr><td>Engajamento Instagram</td><td>M&eacute;dia de curtidas + coment&aacute;rios &uacute;ltimos 7 posts</td><td class="num-cell">&ge; 200/post</td><td class="num-cell" style="color:var(--vermelho);">&lt; 80/post</td></tr>
+  <tr><td>Influencers ativas</td><td>Quantas j&aacute; postaram conte&uacute;do</td><td class="num-cell">&ge; 3</td><td class="num-cell" style="color:var(--vermelho);">0</td></tr>
+  <tr><td>Margem por canal</td><td>Receita - custos / pedidos</td><td class="num-cell">&ge; 20%</td><td class="num-cell" style="color:var(--vermelho);">&lt; 10%</td></tr>
+</table>
+
+<h3>7.2 Como interpretar</h3>
+<table>
+  <tr><th>Cen&aacute;rio</th><th>Leitura</th><th>Decis&atilde;o</th></tr>
+  <tr class="destaque">
+    <td>4+ m&eacute;tricas no alvo</td>
+    <td>Lan&ccedil;amento no trilho</td>
+    <td><strong>Dobrar:</strong> aumentar budget de ads em 50% no melhor canal, captar mais influencers.</td>
+  </tr>
+  <tr>
+    <td>2-3 m&eacute;tricas no alvo</td>
+    <td>Lan&ccedil;amento parcial</td>
+    <td><strong>Ajustar:</strong> manter o que funciona, pausar o que drena caixa, trocar criativo dos canais fracos.</td>
+  </tr>
+  <tr class="alerta">
+    <td>0-1 m&eacute;trica no alvo</td>
+    <td>Lan&ccedil;amento travado</td>
+    <td><strong>Pivotar:</strong> revisar precifica&ccedil;&atilde;o, p&uacute;blico-alvo, criativo e oferta. Considerar estender prazo.</td>
+  </tr>
+</table>
+
+<h3>7.3 Matriz de decis&atilde;o por canal</h3>
+<table>
+  <tr><th>Canal</th><th>CPA &le; alvo?</th><th>Margem &ge; 20%?</th><th>Volume suficiente?</th><th>Decis&atilde;o</th></tr>
+  <tr>
+    <td>Shopee</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td><span class="tag tag-verde">Dobrar investimento</span></td>
+  </tr>
+  <tr>
+    <td>Shopee</td>
+    <td style="text-align:center;">&#10007;</td>
+    <td style="text-align:center;">&#10007;</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td><span class="tag tag-bloq">Pausar ads, manter org&acirc;nico</span></td>
+  </tr>
+  <tr>
+    <td>TikTok Shop</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td><span class="tag tag-verde">Dobrar: +Spark Ads +UGC</span></td>
+  </tr>
+  <tr>
+    <td>TikTok Shop</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10007;</td>
+    <td><span class="tag tag-alta">Manter ads, criar mais conte&uacute;do</span></td>
+  </tr>
+  <tr>
+    <td>TikTok Shop</td>
+    <td style="text-align:center;">&#10007;</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td><span class="tag tag-bloq">Pausar, revisar criativo e p&uacute;blico</span></td>
+  </tr>
+  <tr>
+    <td>WhatsApp</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10003; (&ge;100 leads)</td>
+    <td><span class="tag tag-verde">Disparo em massa com oferta</span></td>
+  </tr>
+  <tr>
+    <td>WhatsApp</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td style="text-align:center;">&#10003;</td>
+    <td style="text-align:center;">&#10007; (&lt;100 leads)</td>
+    <td><span class="tag tag-alta">Intensificar capta&ccedil;&atilde;o do diagn&oacute;stico</span></td>
+  </tr>
+  <tr>
+    <td>Instagram</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td style="text-align:center;">&#10003; (&ge;200 engajamento)</td>
+    <td><span class="tag tag-verde">Refor&ccedil;ar stories com CTA direto</span></td>
+  </tr>
+  <tr>
+    <td>Instagram</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td style="text-align:center;">&mdash;</td>
+    <td style="text-align:center;">&#10007;</td>
+    <td><span class="tag tag-alta">Mudar formato de conte&uacute;do</span></td>
+  </tr>
+</table>
+
+<h3>7.4 Regra de ouro do D14</h3>
+<div style="background:#FFF3E0; border-left:4px solid var(--laranja); padding:16px 20px; border-radius:8px; margin-top:12px;">
+  <p><strong>N&atilde;o insista no que n&atilde;o funcionou.</strong> Com 14 dias de dados, voc&ecirc; j&aacute; sabe o que converte e o que n&atilde;o converte. O erro mais comum no lan&ccedil;amento &eacute; continuar queimando dinheiro no canal errado por apego ao plano original.</p>
+  <p style="margin-top:8px;"><strong>Regra:</strong> Se o CPA est&aacute; acima de R$ 12 em qualquer canal pago, <strong>pause imediatamente</strong>.</p>
+  <p style="margin-top:8px;"><strong>Plano B:</strong> Se at&eacute; D14 o cen&aacute;rio for "travado": &rarr; Estender prazo para 40 dias. &rarr; Reduzir pre&ccedil;o para R$ 39,99. &rarr; Focar 100% no WhatsApp direto + diagn&oacute;stico.</p>
+</div>
+</div>
+
+
+<!-- ============================================================ -->
+<!-- RESUMO EXECUTIVO -->
+<!-- ============================================================ -->
+<div class="secao">
+<h2 style="border-bottom-color: var(--verde);"><span style="background: var(--verde);" class="num">R</span> Resumo Executivo</h2>
+
+<div class="metricas">
+  <div class="metrica"><div class="valor">1.000</div><div class="rotulo">Kits em 26 dias</div></div>
+  <div class="metrica"><div class="valor">~R$ 16.826</div><div class="rotulo">Lucro l&iacute;quido estimado</div></div>
+  <div class="metrica"><div class="valor">~R$ 324</div><div class="rotulo">Assinaturas/m&ecirc;s</div></div>
+  <div class="metrica"><div class="valor">33,7%</div><div class="rotulo">Margem l&iacute;quida m&eacute;dia</div></div>
+</div>
+
+<table>
+  <tr><th>Canal</th><th>Meta</th><th>Margem/kit</th><th>Estrat&eacute;gia principal</th></tr>
+  <tr><td>Shopee</td><td>400 kits</td><td>R$ 11,49</td><td>Shopee Ads + frete subsidiado</td></tr>
+  <tr><td>TikTok Shop</td><td>300 kits</td><td>R$ 16,49</td><td>UGC nativo + isen&ccedil;&atilde;o 60 dias</td></tr>
+  <tr><td>WhatsApp</td><td>200 kits</td><td>R$ 18,99</td><td>Lista VIP + diagn&oacute;stico</td></tr>
+  <tr><td>Instagram</td><td>100 kits</td><td>R$ 14,66*</td><td>Reels + tr&aacute;fego para Shopee/WhatsApp</td></tr>
+  <tr class="destaque"><td><strong>Total</strong></td><td><strong>1.000 kits</strong></td><td><strong>R$ 14,66*</strong></td><td><strong>Ritmo: 38,5 kits/dia</strong></td></tr>
+</table>
+<p style="font-size:0.85em; color:var(--cinza);">*Margem m&eacute;dia ponderada pelo mix de canais.</p>
+
+<h3>Riscos monitorados</h3>
+<table>
+  <tr><th>Risco</th><th>Prob.</th><th>Impacto</th><th>Mitiga&ccedil;&atilde;o</th></tr>
+  <tr><td>Prazo de produ&ccedil;&atilde;o atrasa</td><td style="color:var(--laranja);">M&eacute;dia</td><td style="color:var(--vermelho);">Alto</td><td>Iniciar pr&eacute;-venda D4-D7. Se atrasar, estender prazo.</td></tr>
+  <tr><td>Shopee 2026 taxa mais alta</td><td style="color:var(--verde);">Confirmado</td><td style="color:var(--laranja);">M&eacute;dio</td><td>Priorizar TikTok Shop e WhatsApp nas campanhas pagas.</td></tr>
+  <tr><td>Influencers n&atilde;o entregam</td><td style="color:var(--laranja);">M&eacute;dia</td><td style="color:var(--laranja);">M&eacute;dio</td><td>Contatar 2x mais. NemoVideo como backup.</td></tr>
+  <tr><td>Avalia&ccedil;&otilde;es negativas Shopee</td><td style="color:var(--laranja);">M&eacute;dia</td><td style="color:var(--laranja);">M&eacute;dio</td><td>Monitorar 2x/dia. Responder em &lt;2h.</td></tr>
+  <tr><td>Capital de giro insuficiente</td><td style="color:var(--laranja);">M&eacute;dia</td><td style="color:var(--laranja);">M&eacute;dio</td><td>Reinvestir lucro das primeiras vendas. N&atilde;o gastar &gt;30% da margem.</td></tr>
+</table>
+</div>
+
+
+<!-- ===== FOOTER ===== -->
+<div class="footer">
+  <p><strong>CachoViva</strong> &mdash; Plano de Marketing vers&atilde;o 2.0 &mdash; Maio 2026</p>
+  <p>Preparado para Edivam &middot; Aracaju/SE</p>
+  <p style="margin-top:8px; font-size:0.8em;">
+    Dados de taxas atualizados conforme pol&iacute;ticas Shopee 2026 e TikTok Shop 2026.
+    Pesquisa realizada em maio de 2026. As tarefas marcadas s&atilde;o salvas no navegador (localStorage).
+  </p>
+</div>
+
+</div><!-- /.container -->
+
+<script>
+(function() {
+  // ===== CONFIG =====
+  const STORAGE_KEY = 'cachoviva_task_state';
+  const DATE_KEY = 'cachoviva_start_date';
+
+  const startDateInput = document.getElementById('startDate');
+  const overallFill = document.getElementById('overallFill');
+  const overallPercent = document.getElementById('overallPercent');
+  const doneCount = document.getElementById('doneCount');
+  const totalCount = document.getElementById('totalCount');
+  const daysStatus = document.getElementById('daysStatus');
+  const atrasoCountSpan = document.getElementById('atrasoCountSpan');
+  const atrasoCount = document.getElementById('atrasoCount');
+
+  const allCheckboxes = document.querySelectorAll('.task-list input[type="checkbox"]');
+  const allDays = document.querySelectorAll('.calendario .dia');
+
+  // ===== LOAD STATE =====
+  function loadState() {
+    const saved = localStorage.getItem(STORAGE_KEY);
+    if (saved) {
+      try {
+        const state = JSON.parse(saved);
+        allCheckboxes.forEach(function(cb) {
+          const id = cb.closest('li').dataset.taskId;
+          if (state[id]) cb.checked = true;
+        });
+      } catch(e) {}
+    }
+    const savedDate = localStorage.getItem(DATE_KEY);
+    if (savedDate && startDateInput) {
+      startDateInput.value = savedDate;
+    } else if (startDateInput && !startDateInput.value) {
+      var today = new Date();
+      startDateInput.value = today.toISOString().split('T')[0];
+      localStorage.setItem(DATE_KEY, startDateInput.value);
+    }
+  }
+
+  // ===== SAVE STATE =====
+  function saveState() {
+    var state = {};
+    allCheckboxes.forEach(function(cb) {
+      var id = cb.closest('li').dataset.taskId;
+      state[id] = cb.checked;
+    });
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+    if (startDateInput) {
+      localStorage.setItem(DATE_KEY, startDateInput.value);
+    }
+  }
+
+  // ===== CALCULATE =====
+  function recalculate() {
+    var totalTasks = allCheckboxes.length;
+    var doneTasks = 0;
+    allCheckboxes.forEach(function(cb) { if (cb.checked) doneTasks++; });
+
+    var pct = totalTasks > 0 ? Math.round((doneTasks / totalTasks) * 100) : 0;
+    overallFill.style.width = pct + '%';
+    overallPercent.textContent = pct + '%';
+    doneCount.textContent = doneTasks;
+    totalCount.textContent = totalTasks;
+
+    if (pct === 100) {
+      overallFill.style.background = 'var(--verde)';
+    } else if (pct > 0) {
+      overallFill.style.background = 'var(--laranja)';
+    } else {
+      overallFill.style.background = 'var(--laranja)';
+    }
+
+    var startVal = startDateInput ? startDateInput.value : null;
+    var startDate = startVal ? new Date(startVal + 'T00:00:00') : null;
+    var today = new Date();
+    today.setHours(0,0,0,0);
+
+    var completedDays = 0;
+    var atrasadoDays = 0;
+    var totalDays = 0;
+
+    allDays.forEach(function(dia) {
+      var checkboxes = dia.querySelectorAll('.task-list input[type="checkbox"]');
+      var total = checkboxes.length;
+      if (total === 0) return;
+      var done = 0;
+      checkboxes.forEach(function(cb) { if (cb.checked) done++; });
+      var dayPct = Math.round((done / total) * 100);
+
+      var bar = dia.querySelector('.progress-fill');
+      var label = dia.querySelector('.progress-container .progress-label');
+      if (bar) {
+        bar.style.width = dayPct + '%';
+        if (dayPct === 100) bar.style.background = 'var(--verde)';
+        else if (dayPct > 0) bar.style.background = 'var(--laranja)';
+        else bar.style.background = 'var(--laranja)';
+      }
+      if (label) label.textContent = dayPct + '%';
+
+      totalDays++;
+
+      var diaNum = parseInt(dia.dataset.dia);
+      var isLate = false;
+      if (startDate && diaNum) {
+        var diaDate = new Date(startDate);
+        diaDate.setDate(diaDate.getDate() + (diaNum - 1));
+        diaDate.setHours(0,0,0,0);
+        if (diaDate < today && dayPct < 100) {
+          isLate = true;
+        }
+      }
+
+      dia.classList.remove('atrasado', 'concluido');
+      if (isLate) {
+        dia.classList.add('atrasado');
+        atrasadoDays++;
+      } else if (dayPct === 100) {
+        dia.classList.add('concluido');
+        completedDays++;
+      }
+
+      var priTag = dia.querySelector('.dia-pri');
+      if (priTag) {
+        var existing = priTag.querySelector('.tag-atraso, .tag-concluido');
+        if (existing) existing.remove();
+        if (isLate) {
+          var tag = document.createElement('span');
+          tag.className = 'tag tag-atraso';
+          tag.textContent = 'EM ATRASO';
+          priTag.appendChild(document.createTextNode(' '));
+          priTag.appendChild(tag);
+        } else if (dayPct === 100) {
+          var tag = document.createElement('span');
+          tag.className = 'tag tag-concluido';
+          tag.textContent = 'CONCLUÍDO';
+          priTag.appendChild(document.createTextNode(' '));
+          priTag.appendChild(tag);
+        }
+      }
+    });
+
+    daysStatus.textContent = completedDays + '/' + totalDays;
+    if (atrasadoDays > 0) {
+      atrasadoCountSpan.style.display = 'inline';
+      atrasoCount.textContent = atrasadoDays;
+    } else {
+      atrasadoCountSpan.style.display = 'none';
+    }
+  }
+
+  // ===== EVENT LISTENERS =====
+  allCheckboxes.forEach(function(cb) {
+    cb.addEventListener('change', function() {
+      saveState();
+      recalculate();
+    });
+  });
+
+  if (startDateInput) {
+    startDateInput.addEventListener('change', function() {
+      saveState();
+      recalculate();
+    });
+  }
+
+  // ===== RESET =====
+  window.resetAll = function() {
+    if (!confirm('Tem certeza? Todas as tarefas marcadas ser\u00e3o desmarcadas e o progresso ser\u00e1 zerado.')) return;
+    localStorage.removeItem(STORAGE_KEY);
+    allCheckboxes.forEach(function(cb) { cb.checked = false; });
+    var today = new Date();
+    if (startDateInput) startDateInput.value = today.toISOString().split('T')[0];
+    saveState();
+    recalculate();
+  };
+
+  // ===== INIT =====
+  loadState();
+  recalculate();
+})();
+</script>
+
+</body>
+</html>

@@ -444,44 +444,42 @@ function showResult(diagnosis) {
     if (ctaEl) ctaEl.remove();
 
     var contadorHtml = contador > 0
-      ? '<div style="display:flex;align-items:center;gap:8px;background:rgba(184,84,26,0.1);border-radius:10px;padding:12px 16px;margin-bottom:14px;">' +
-          '<span style="font-size:14px;">🔥</span>' +
-          '<span style="font-size:13px;color:#2a1a1b;font-weight:600;">' + contador + ' ' + match.urgencia + '</span>' +
+      ? '<div class="urgency-badge">' +
+          '<span class="urgency-badge-icon">🔥</span>' +
+          '<span>' + contador + ' ' + match.urgencia + '</span>' +
         '</div>'
-      : '<div style="background:rgba(197,165,90,0.12);border-radius:10px;padding:14px 16px;margin-bottom:14px;text-align:center;">' +
-          '<div style="font-size:12px;color:#7a6465;margin-bottom:2px;">⭐ Depoimento real</div>' +
-          '<div style="font-size:13px;color:#2a1a1b;font-style:italic;line-height:1.5;">"Nunca segui uma rotina certa. O kit CachoViva mudou meu cabelo em 2 dias de uso."</div>' +
+      : '<div class="urgency-badge-default">' +
+          '<div class="product-match-social-label">⭐ Depoimento real</div>' +
+          '<div class="product-match-social-text">"Nunca segui uma rotina certa. O kit CachoViva mudou meu cabelo em 2 dias de uso."</div>' +
         '</div>';
 
     var precoTitulo = isPremium ? '🔥 GARANTIR KIT + REPARADOR COM DESCONTO' : '🔥 GARANTIR MEU KIT COM DESCONTO';
     var precoHtml = isPremium
-      ? '<p style="font-size:12px;color:#999;text-align:center;margin-top:10px;line-height:1.5;">Kit completo: Creme Cachos Definidos + Spray Day After + <strong>Reparador de Pontas</strong><br>De <s>R$104,90</s> por <strong style="color:#B8541A;font-size:16px;">R$64,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>'
-      : '<p style="font-size:12px;color:#999;text-align:center;margin-top:10px;line-height:1.5;">De R$89,90 por <strong style="color:#B8541A;font-size:16px;">R$49,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>';
+      ? '<p class="cta-kit-preco">Kit completo: Creme Cachos Definidos + Spray Day After + <strong>Reparador de Pontas</strong><br>De <s>R$104,90</s> por <strong>R$64,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>'
+      : '<p class="cta-kit-preco">De R$89,90 por <strong>R$49,99</strong><br>Frete grátis SE e BA · Brinde Perfume Capilar Inspiração Lavine</p>';
 
     var blocoHTML =
-      '<div id="bloco-match" style="background:linear-gradient(135deg,#fff3e8 0%,#ffe8d6 100%);border:2px solid #B8541A;border-radius:16px;padding:22px 24px 18px;margin:20px 0;position:relative;text-align:left;">' +
-        '<div style="position:absolute;top:-10px;left:50%;transform:translateX(-50%);background:#B8541A;color:#fff;font-size:11px;font-weight:700;padding:4px 18px;border-radius:20px;text-transform:uppercase;letter-spacing:0.5px;white-space:nowrap;">' +
-          '🎯 KIT IDEAL PARA SEU PERFIL' +
-        '</div>' +
-        '<p style="font-size:17px;font-weight:800;color:#1a1a1a;margin:14px 0 10px;text-align:center;line-height:1.4;">' + match.titulo + '</p>' +
-        '<p style="font-size:14px;color:#5a2e0e;line-height:1.8;margin-bottom:14px;">' + match.paragrafo + '</p>' +
+      '<div id="bloco-match" class="product-match-card">' +
+        '<div class="product-match-badge">🎯 KIT IDEAL PARA SEU PERFIL</div>' +
+        '<p class="product-match-title">' + match.titulo + '</p>' +
+        '<p class="product-match-desc">' + match.paragrafo + '</p>' +
         contadorHtml +
-        '<div style="display:flex;flex-direction:column;gap:4px;margin-bottom:14px;font-size:13px;color:#4a2a0e;">' +
-          '<span>✅ Desenvolvido para as necessidades do seu cacho</span>' +
-          '<span>✅ 2 passos: Creme Cachos Definidos + Spray Day After</span>' +
-          '<span>✅ Resultado visível desde o primeiro uso</span>' +
+        '<div class="product-match-features">' +
+          '<span>Desenvolvido para as necessidades do seu cacho</span>' +
+          '<span>2 passos: Creme Cachos Definidos + Spray Day After</span>' +
+          '<span>Resultado visível desde o primeiro uso</span>' +
         '</div>' +
-        '<div style="background:rgba(197,165,90,0.12);border-radius:10px;padding:14px 16px;margin-bottom:14px;text-align:center;">' +
-          '<div style="font-size:12px;color:#7a6465;margin-bottom:2px;">⭐ O que estão dizendo</div>' +
-          '<div style="font-size:13px;color:#2a1a1b;font-style:italic;line-height:1.5;">"Meus cachos ficaram definidos por 2 dias sem precisar refazer"</div>' +
+        '<div class="product-match-social">' +
+          '<div class="product-match-social-label">⭐ O que estão dizendo</div>' +
+          '<div class="product-match-social-text">"Meus cachos ficaram definidos por 2 dias sem precisar refazer"</div>' +
         '</div>' +
       '</div>' +
-      '<div id="bloco-cta-kit" style="margin:0 0 20px;text-align:center;">' +
-        '<button onclick="garantirKit(\'' + diagnosticKey + '\')" style="display:block;width:100%;max-width:400px;margin:0 auto;padding:18px 24px;background:linear-gradient(135deg,#B8541A,#D4783A);color:#fff;border:none;border-radius:50px;font-size:17px;font-weight:800;cursor:pointer;text-align:center;box-shadow:0 6px 24px rgba(184,84,26,0.4);transition:all 0.3s ease;letter-spacing:0.3px;">' +
+      '<div id="bloco-cta-kit" class="cta-kit-wrap">' +
+        '<button onclick="garantirKit(\'' + diagnosticKey + '\')" class="cta-kit-btn">' +
           precoTitulo +
         '</button>' +
         precoHtml +
-        '<p style="font-size:11px;color:#bbb;margin-top:4px;">⏳ Pré-lançamento · Estoque limitado</p>' +
+        '<p class="cta-kit-stock">⏳ Pré-lançamento · Estoque limitado</p>' +
       '</div>';
 
     var details = document.querySelector('.result-details');
@@ -634,16 +632,12 @@ async function submitForm(e) {
   var btnExistente = document.getElementById('btn-wa-auto');
   if (!btnExistente && waUrl) {
     var htmlBtn =
-      '<div id="btn-wa-auto" style="margin:20px 0 10px;">' +
-        '<a href="' + waUrlFallback + '" target="_blank" ' +
-           'style="display:flex;align-items:center;justify-content:center;gap:10px;width:100%;padding:18px 20px;' +
-           'background:linear-gradient(135deg,#25D366,#128C7E);color:#fff;border:none;border-radius:50px;' +
-           'font-size:17px;font-weight:800;cursor:pointer;text-align:center;text-decoration:none;' +
-           'box-shadow:0 6px 24px rgba(37,211,102,0.4);transition:all 0.3s ease;letter-spacing:0.3px;">' +
+      '<div id="btn-wa-auto" class="btn-wa-injected-wrap">' +
+        '<a href="' + waUrlFallback + '" target="_blank" class="btn-wa-injected">' +
           '<svg width="22" height="22" viewBox="0 0 24 24" fill="none"><path d="M21 11.5a8.38 8.38 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.38 8.38 0 01-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.38 8.38 0 013.8-.9h.5a8.48 8.48 0 018 8v.5z" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>' +
           'ABRIR WHATSAPP COM MEU DIAGNÓSTICO' +
         '</a>' +
-        '<p style="font-size:12px;color:#888;text-align:center;margin-top:8px;">📋 Mensagem copiada! Cole no WhatsApp se necessário.</p>' +
+        '<p class="btn-wa-injected-note">📋 Mensagem copiada! Cole no WhatsApp se necessário.</p>' +
       '</div>';
 
     var el = document.querySelector('.result-card');
@@ -931,6 +925,7 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   var fieldName = document.getElementById('fieldName');
+  var wppField = document.getElementById('fieldWhatsapp');
   var fieldConsent = document.getElementById('fieldConsent');
   if (fieldName) fieldName.addEventListener('focus', function() { gaEvent('form_field_focus', 'nome'); });
   if (wppField) {
