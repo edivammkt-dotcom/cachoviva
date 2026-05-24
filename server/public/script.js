@@ -287,6 +287,7 @@ function startQuiz() {
     currentQuestion = 0;
     answers = [];
   }
+  document.querySelectorAll('.hide-on-quiz').forEach(el => el.style.display = 'none');
   showScreen('screen-quiz');
   renderQuestion();
 }
@@ -739,6 +740,7 @@ function restartQuiz() {
   currentQuestion = 0;
   answers = [];
   leadData = null;
+  document.querySelectorAll('.hide-on-quiz').forEach(el => el.style.display = '');
   showScreen('screen-hero');
 }
 
