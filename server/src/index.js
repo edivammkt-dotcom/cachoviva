@@ -26,6 +26,7 @@ app.use('/api/ai', require('./routes/ai'));
 app.use('/api/research', require('./routes/research'));
 app.use('/api/leads', require('./routes/leads'));
 app.use('/api/analytics', require('./routes/analytics'));
+app.use('/api/squad', require('./routes/squad-pipeline').router);
 
 app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', version: '1.0.0', timestamp: new Date().toISOString() });
@@ -72,6 +73,19 @@ async function startServer() {
     }
   });
   console.log('[Cron] Ciclo semanal: Seg 07:00');
+
+  // CRON: Pipeline automático do squad a cada 2 dias à meia-noite
+  const { autoCycle } = require('./routes/squad-pipeline');
+  cron.schedule('0 0 */2 * *', async () => {
+    console.log('[Cron] Iniciando pipeline automático do squad...');
+    try {
+      await autoCycle();
+      console.log('[Cron] Pipeline automático concluído.');
+    } catch (err) {
+      console.error('[Cron] Erro no pipeline automático:', err.message);
+    }
+  });
+  console.log('[Cron] Pipeline squad: A cada 2 dias 00:00');
 
   // CRON: Digest de métricas todo dia às 8h
   cron.schedule('0 8 * * *', async () => {

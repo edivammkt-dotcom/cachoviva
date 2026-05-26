@@ -569,6 +569,8 @@ async function submitForm(e) {
   var diagnosticName = (mapaResultados[diagnosis.name] && mapaResultados[diagnosis.name].nome) || diagnosis.name;
   localStorage.setItem('cv_diagnostico', diagnosticName);
   localStorage.setItem('cv_diagnostico_data', new Date().toISOString());
+  localStorage.setItem('cv_diagnostico_id', diagnosis.id);
+  localStorage.setItem('cv_diagnostico_full', JSON.stringify(diagnosis));
   limparProgresso();
   gaConversion('submit_form', diagnosis ? diagnosis.id : 'unknown');
 
@@ -737,6 +739,10 @@ function compartilharResultado() {
 function restartQuiz() {
   gaEvent('restart_quiz', 'btn_refazer');
   limparProgresso();
+  localStorage.removeItem('cv_diagnostico');
+  localStorage.removeItem('cv_diagnostico_data');
+  localStorage.removeItem('cv_diagnostico_id');
+  localStorage.removeItem('cv_diagnostico_full');
   currentQuestion = 0;
   answers = [];
   leadData = null;
@@ -911,6 +917,24 @@ function iniciarContador() {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+  // Restaura tela de resultado se usuário já completou o diagnóstico
+  var savedDiagnosisFull = localStorage.getItem('cv_diagnostico_full');
+  var savedDiagnosisId = localStorage.getItem('cv_diagnostico_id');
+  if (savedDiagnosisFull && savedDiagnosisId) {
+    try {
+      var savedDiagnosis = JSON.parse(savedDiagnosisFull);
+      var savedName = localStorage.getItem('cv_nome');
+      if (savedName) {
+        leadData = { name: savedName };
+      }
+      document.querySelectorAll('.hide-on-quiz').forEach(function(el) {
+        el.style.display = 'none';
+      });
+      showResult(savedDiagnosis);
+      return;
+    } catch(e) {}
+  }
+
   // Verifica se veio do link de confirmação da lista VIP
   var params = new URLSearchParams(window.location.search);
   var confirmarLista = params.get('confirmar_lista');

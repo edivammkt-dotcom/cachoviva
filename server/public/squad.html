@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Squad CachoViva — Pipeline de Conteúdo</title>
+<link rel="stylesheet" href="style.css">
+<link rel="stylesheet" href="squad.css">
+</head>
+<body>
+<div class="container">
+  <header class="squad-header">
+    <div class="squad-header-top">
+      <h1>🤖 Squad CachoViva</h1>
+      <span class="squad-badge" id="statusBadge">🟢 Ativo</span>
+    </div>
+    <p class="squad-subtitle">Pipeline automático de conteúdo — pesquisa, criação, aprovação e publicação</p>
+    <nav class="squad-nav">
+      <button class="squad-nav-btn active" data-tab="dashboard">📊 Dashboard</button>
+      <button class="squad-nav-btn" data-tab="pending">⏳ Aprovação</button>
+      <button class="squad-nav-btn" data-tab="history">📜 Histórico</button>
+      <button class="squad-nav-btn" data-tab="config">⚙️ Config</button>
+      <button class="squad-nav-btn" data-tab="publish">🚀 Publicar</button>
+    </nav>
+  </header>
+
+  <div class="squad-content">
+    <!-- TAB: DASHBOARD -->
+    <section class="tab-content active" id="tab-dashboard">
+      <div class="stats-grid">
+        <div class="stat-card">
+          <span class="stat-label">Briefing Ativo</span>
+          <span class="stat-value" id="briefingText">—</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Keywords</span>
+          <span class="stat-value" id="keywordsCount">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Aguardando Aprovação</span>
+          <span class="stat-value" id="pendingCount">0</span>
+        </div>
+        <div class="stat-card">
+          <span class="stat-label">Ciclo Automático</span>
+          <span class="stat-value" id="cycleInterval">A cada 2 dias</span>
+        </div>
+      </div>
+      <div class="squad-action-bar">
+        <button class="btn btn-primary" id="runPipelineBtn">🚀 Executar Pipeline Agora</button>
+        <span class="pipeline-status" id="pipelineStatus"></span>
+      </div>
+      <div class="logs-section">
+        <h3>📋 Últimas atividades</h3>
+        <div class="logs-list" id="logsList"><p class="empty-state">Nenhum log disponível.</p></div>
+      </div>
+    </section>
+
+    <!-- TAB: APROVAÇÃO -->
+    <section class="tab-content" id="tab-pending">
+      <h2>⏳ Aguardando aprovação</h2>
+      <div class="pending-list" id="pendingList"><p class="empty-state">Nenhum post aguardando aprovação.</p></div>
+    </section>
+
+    <!-- TAB: HISTÓRICO -->
+    <section class="tab-content" id="tab-history">
+      <h2>📜 Histórico de posts</h2>
+      <div class="history-filters">
+        <input type="text" class="input" id="historySearch" placeholder="Buscar por título...">
+        <select class="input" id="historyStageFilter">
+          <option value="">Todos os status</option>
+          <option value="approved">✅ Aprovado</option>
+          <option value="rejected">❌ Rejeitado</option>
+          <option value="pending_approval">⏳ Pendente</option>
+          <option value="draft">📝 Rascunho</option>
+          <option value="publicar">🚀 Publicado</option>
+        </select>
+      </div>
+      <div class="history-list" id="historyList"><p class="empty-state">Nenhum post no histórico.</p></div>
+      <div class="pagination" id="historyPagination"></div>
+    </section>
+
+    <!-- TAB: CONFIG -->
+    <section class="tab-content" id="tab-config">
+      <h2>⚙️ Configurações do Pipeline</h2>
+      <form id="configForm" class="config-form">
+        <div class="form-group">
+          <label>Cron do ciclo automático</label>
+          <input type="text" class="input" name="autoInterval" value="0 0 */2 * *" placeholder="0 0 */2 * *">
+          <small>A cada 2 dias à meia-noite. Use formato cron.</small>
+        </div>
+        <div class="form-group">
+          <label>Máx. posts por ciclo</label>
+          <input type="number" class="input" name="maxPostsPerCycle" value="3" min="1" max="10">
+        </div>
+        <div class="form-group">
+          <label>Score mínimo para aprovação</label>
+          <input type="number" class="input" name="minScore" value="70" min="0" max="100">
+          <small>0-100. Abaixo disso vai para rascunho.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">💾 Salvar Config</button>
+      </form>
+
+      <hr class="divider">
+
+      <h3>📋 Briefing Manual</h3>
+      <form id="briefingForm" class="config-form">
+        <div class="form-group">
+          <label>Digite seu briefing</label>
+          <textarea class="input briefing-textarea" id="briefingInput" rows="4" placeholder="Ex: Foco em festas juninas, mostrando como o cacho dura no forró. Usar Day After como herói. Tom bem nordestino."></textarea>
+          <small>Esse briefing será usado na próxima execução do pipeline.</small>
+        </div>
+        <button type="submit" class="btn btn-primary">📝 Salvar Briefing</button>
+      </form>
+
+      <hr class="divider">
+
+      <h3>🔑 Keywords Ativas</h3>
+      <div class="keywords-display" id="keywordsDisplay">
+        <p class="empty-state">Nenhuma keyword ativa. Envie via Telegram: <code>/keyword sua palavra-chave</code></p>
+      </div>
+    </section>
+
+    <!-- TAB: PUBLICAR -->
+    <section class="tab-content" id="tab-publish">
+      <h2>🚀 Postagens Aprovadas</h2>
+      <p class="section-desc">Posts aprovados, prontos para publicar. Baixe as imagens, copie o texto e marque como publicado.</p>
+      <div class="published-list" id="publishedList"><p class="empty-state">Nenhum post aprovado.</p></div>
+    </section>
+  </div>
+</div>
+
+<script src="squad.js"></script>
+</body>
+</html>

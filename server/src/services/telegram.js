@@ -285,6 +285,53 @@ async function processTelegramMessage(msgId, chatId, text) {
     return;
   }
 
+  // ─── /sq_ok_<code> — Aprovar post do squad pipeline (inline button) ───
+  const sqOkMatch = lower.match(/^\/sq_ok_(\w{4})\b/);
+  if (sqOkMatch) {
+    const code = sqOkMatch[1];
+    runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['sq_approve', msgId]);
+    const posts = queryObjects("SELECT id FROM posts WHERE id LIKE ? AND stage = 'pending_approval' ORDER BY created_at DESC LIMIT 1", [code + '%']);
+    if (posts.length === 0) {
+      await sendTelegramMessage(chatId, '❌ Post não encontrado ou já processado.');
+      return;
+    }
+    const postId = posts[0].id;
+    const now = Math.floor(Date.now() / 1000);
+    runSql('UPDATE posts SET stage = ?, updated_at = ? WHERE id = ?', ['approved', now, postId]);
+    // Executa Squad5
+    try {
+      const post = queryOne('SELECT * FROM posts WHERE id = ?', [postId]);
+      const content = (() => { try { return JSON.parse(post.content || '{}'); } catch { return {}; } })();
+      executeSquad(5, {
+        post_id: postId, plataforma: post.platform,
+        copy: content.copy || post.description,
+        hashtags: JSON.parse(post.hashtags || '[]'),
+        media: content.media || null
+      });
+    } catch (err) {
+      console.warn('[Squad5] Erro após aprovação:', err.message);
+    }
+    await sendTelegramMessage(chatId, `✅ Post aprovado e pronto para postar!\n📄 ID: ${postId.substring(0, 8)}...`);
+    return;
+  }
+
+  // ─── /sq_no_<code> — Rejeitar post do squad pipeline (inline button) ───
+  const sqNoMatch = lower.match(/^\/sq_no_(\w{4})\b/);
+  if (sqNoMatch) {
+    const code = sqNoMatch[1];
+    runSql('UPDATE telegram_messages SET processed = 1, message_type = ? WHERE id = ?', ['sq_reject', msgId]);
+    const posts = queryObjects("SELECT id FROM posts WHERE id LIKE ? AND stage = 'pending_approval' ORDER BY created_at DESC LIMIT 1", [code + '%']);
+    if (posts.length === 0) {
+      await sendTelegramMessage(chatId, '❌ Post não encontrado ou já processado.');
+      return;
+    }
+    const postId = posts[0].id;
+    const now = Math.floor(Date.now() / 1000);
+    runSql('UPDATE posts SET stage = ?, updated_at = ? WHERE id = ?', ['rejected', now, postId]);
+    await sendTelegramMessage(chatId, `❌ Post rejeitado.\n📄 ID: ${postId.substring(0, 8)}...\n💡 O próximo ciclo considerará seus critérios.`);
+    return;
+  }
+
   // ─── /publish_<id> — Publicar post pronto ───
   const publishMatch = lower.match(/^\/publish_(\S+)/);
   if (publishMatch) {

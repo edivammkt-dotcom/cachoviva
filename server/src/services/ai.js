@@ -1,21 +1,9 @@
 const axios = require('axios');
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const config = require('../config');
+const { generateText: vertexGenerateText, generateImage: vertexGenerateImage } = require('./vertexAI');
+const { generateBrandedImage } = require('./brandedImage');
 
 let currentSystemInstruction = '';
-
-function isAIReady() {
-  return !!config.gemini.apiKey && config.gemini.apiKey !== 'sua-chave-da-gemini-aqui';
-}
-
-const MODELS_FALLBACK = [
-  config.gemini.textModel,
-  'gemini-2.5-flash-lite',
-  'gemini-2.5-flash',
-  'gemini-flash-lite-latest',
-  'gemini-2.0-flash-lite',
-  'gemini-2.0-flash'
-];
 
 const POLLINATIONS_TEXT = 'https://text.pollinations.ai';
 
@@ -38,63 +26,9 @@ async function pollinationsText(prompt, systemContext = '') {
 }
 
 async function generateText(prompt, retries = 1) {
-  const modelsToTry = [...new Set([config.gemini.textModel, ...MODELS_FALLBACK])];
-
-  for (const modelName of modelsToTry) {
-    for (let attempt = 0; attempt <= retries; attempt++) {
-      try {
-        const client = new GoogleGenerativeAI(config.gemini.apiKey);
-        const modelConfig = { model: modelName };
-        if (currentSystemInstruction) {
-          modelConfig.systemInstruction = currentSystemInstruction;
-        }
-        const model = client.getGenerativeModel(modelConfig);
-
-        const result = await Promise.race([
-          model.generateContent(prompt),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 90000))
-        ]);
-        const response = result.response;
-        if (!response) {
-          console.error(`[AI] Resposta vazia do modelo ${modelName}`);
-          continue;
-        }
-        if (response.promptFeedback && response.promptFeedback.blockReason) {
-          console.error(`[AI] Prompt bloqueado no ${modelName}:`, response.promptFeedback.blockReason);
-          return await pollinationsText(prompt, currentSystemInstruction) || null;
-        }
-        const text = response.text();
-        if (!text || text.trim().length === 0) {
-          console.error(`[AI] Texto vazio no ${modelName}`);
-          continue;
-        }
-        return text;
-      } catch (err) {
-        const msg = err.message || '';
-        const isQuota = msg.includes('429') || msg.includes('quota') || msg.includes('Quota');
-        const isRateLimit = msg.includes('429') || msg.includes('rate_limit');
-        const isNotFound = msg.includes('404') || msg.includes('not found') || msg.includes('notFound');
-
-        if (isNotFound) {
-          console.log(`[AI] Modelo ${modelName} nao disponivel, tentando proximo...`);
-          break;
-        }
-        if ((isQuota || isRateLimit) && attempt < retries) {
-          const wait = 10;
-          console.log(`[AI] Quota excedida no ${modelName}, tentativa ${attempt + 1}, aguardando ${wait}s...`);
-          await new Promise(r => setTimeout(r, wait * 1000));
-          continue;
-        }
-        if (isQuota || isRateLimit) {
-          console.log(`[AI] Quota excedida no ${modelName}, tentando proximo modelo...`);
-          continue;
-        }
-        console.error(`[AI] Erro no modelo ${modelName}:`, err.name, msg.substring(0, 100));
-        return await pollinationsText(prompt, currentSystemInstruction) || null;
-      }
-    }
-  }
-  console.error('[AI] Todos os modelos excederam cota ou falharam, tentando fallback Pollinations...');
+  const result = await vertexGenerateText(prompt, currentSystemInstruction);
+  if (result) return result;
+  console.warn('[AI] Vertex AI falhou, fallback Pollinations...');
   return await pollinationsText(prompt, currentSystemInstruction) || null;
 }
 
@@ -118,7 +52,7 @@ function parseJSON(text) {
 
 class ContentAI {
   constructor() {
-    this.apiKey = isAIReady() ? config.gemini.apiKey : '';
+    this.apiKey = config.gemini.apiKey || '';
   }
 
   _cachovivaProducts() {
@@ -220,16 +154,13 @@ Responda APENAS o texto final completo, sem explicacoes.`;
   }
 
   async generateImage(prompt, style = 'cachoviva') {
-    const cachovivaStyle = 'warm tones, copper #6B331E, nude #F0C8AA, green #3A5020, gold #B8A060, professional product photography, natural lighting, Brazilian woman 25-35 with curly hair 3B-3C, high quality, 1080x1080, soft shadows, premium aesthetic';
+    const cachovivaStyle = 'Brazilian Black woman 25-35 with loose 3B-3C curly hair, smiling, holding orange 500ml and blue 500ml CachoViva products, tropical beach at golden hour sunset, warm amber sunlight, palm trees, nude #F0C8AA and copper #6B331E palette, professional editorial photography, shallow depth of field, natural glowing skin, premium aesthetic';
     const enhancedPrompt = style === 'cachoviva'
       ? `${prompt}, ${cachovivaStyle}`
       : `${prompt}, ${style} style, high quality, social media`;
-    const useGemini = config.gemini.apiKey && config.gemini.apiKey !== 'sua-chave-da-gemini-aqui' && isAIReady();
-    const useFreeProvider = process.env.IMAGE_PROVIDER !== 'gemini' || !useGemini;
 
-    if (useGemini && !useFreeProvider) {
-      return this._generateImageGemini(enhancedPrompt);
-    }
+    const vertexResult = await this._generateImageVertex(enhancedPrompt);
+    if (vertexResult) return vertexResult;
 
     return await this._generateImagePollinations(enhancedPrompt);
   }
@@ -268,38 +199,14 @@ Responda APENAS o texto final completo, sem explicacoes.`;
     return { imageUrl: fallbackUrl, revisedPrompt: enhancedPrompt, mimeType: 'image/jpeg', data: null, cacheKey: null };
   }
 
-  async _generateImageGemini(enhancedPrompt) {
-    const IMAGE_MODELS = [
-      config.gemini.imageModel,
-      'gemini-2.0-flash-exp-image-generation',
-      'gemini-2.0-flash-001',
-      'gemini-2.0-flash'
-    ].filter(Boolean);
-
-    let lastError = null;
-    for (const modelName of [...new Set(IMAGE_MODELS)]) {
-      try {
-        const response = await axios.post(
-          `https://generativelanguage.googleapis.com/v1beta/models/${modelName}:generateContent?key=${this.apiKey}`,
-          { contents: [{ parts: [{ text: enhancedPrompt }] }], generationConfig: { responseModalities: ['TEXT', 'IMAGE'] } },
-          { timeout: 30000 }
-        );
-        const candidate = response.data?.candidates?.[0];
-        if (!candidate) continue;
-        for (const part of candidate.content.parts) {
-          if (part.inlineData && part.inlineData.mimeType?.startsWith('image/')) {
-            return { imageUrl: `data:${part.inlineData.mimeType};base64,${part.inlineData.data}`, revisedPrompt: enhancedPrompt, mimeType: part.inlineData.mimeType, data: part.inlineData.data };
-          }
-        }
-      } catch (err) {
-        lastError = err.message;
-        if (err.message.includes('not found') || err.message.includes('404')) continue;
-      }
-    }
-    console.error(`[AI Image] Gemini falhou: ${lastError}. Usando fallback Pollinations.`);
-    const encoded = encodeURIComponent(enhancedPrompt.substring(0, 400));
-    const imageUrl = `https://image.pollinations.ai/prompt/${encoded}?width=1080&height=1080&nologo=true`;
-    return { imageUrl, revisedPrompt: enhancedPrompt, mimeType: 'image/jpeg', data: null };
+  async _generateImageVertex(enhancedPrompt) {
+    const apiResult = await vertexGenerateImage(enhancedPrompt);
+    if (apiResult) return apiResult;
+    console.log('[AI Image] Gerando imagem SVG com marca...');
+    const branded = await generateBrandedImage(enhancedPrompt);
+    if (branded) return { imageUrl: branded, revisedPrompt: enhancedPrompt, mimeType: 'image/png', data: null };
+    const fallbackUrl = `https://picsum.photos/seed/cachoviva${Date.now()}/1080/1080`;
+    return { imageUrl: fallbackUrl, revisedPrompt: enhancedPrompt, mimeType: 'image/jpeg', data: null };
   }
 
   async generateCarousel(topic, slides = 5) {

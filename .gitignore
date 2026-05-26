@@ -4,3 +4,4 @@ server/.env
 *.log
 .DS_Store
 landing/config.js
+server/src/cachoviva-sa.json

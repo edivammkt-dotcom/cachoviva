@@ -31,7 +31,7 @@ module.exports = {
   gemini: {
     apiKey: process.env.GEMINI_API_KEY || '',
     textModel: process.env.GEMINI_TEXT_MODEL || 'gemini-2.5-flash-lite',
-    imageModel: process.env.GEMINI_IMAGE_MODEL || 'gemini-2.0-flash-exp-image-generation'
+    imageModel: process.env.GEMINI_IMAGE_MODEL || 'gemini-3.1-flash-image-preview'
   },
   intervals: {
     publishCheck: process.env.PUBLISH_CHECK_INTERVAL || '*/15 * * * *',

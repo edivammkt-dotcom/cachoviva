@@ -1,8 +1,8 @@
-const { GoogleGenerativeAI } = require('@google/generative-ai');
 const axios = require('axios');
 const config = require('../config');
 const { runSql, queryOne, queryObjects } = require('../database');
 const { v4: uuidv4 } = require('uuid');
+const { callVertex } = require('./vertexAI');
 
 const SQUADS = {
   1: {
@@ -11,7 +11,7 @@ const SQUADS = {
   },
   2: {
     name: 'Estratégia',
-    systemPrompt: `Você é um estrategista de conteúdo para a marca CachoViva, kit capilar premium para cachos e crespos, preço R$49,99, público mulheres 22–42 anos SE/BA. Receba o JSON de ganchos e retorne APENAS JSON de plano editorial semanal. Priorize TikTok e Instagram para alcance, WhatsApp para conversão. Máximo 7 posts por semana. Não inclua explicações.`
+    systemPrompt: `Você é um estrategista de conteúdo para a marca CachoViva, kit capilar premium para cachos e crespos, preço R$49,99, público mulheres 22–42 anos SE/BA. Receba o JSON de ganchos e retorne APENAS JSON válido no formato: {"posts":[{"id":"post-1","plataforma":"instagram","tipo":"feed","objetivo":"alcance","gancho_base":"titulo do post","data_hora_sugerida":"Seg 08:00"}]}. Priorize TikTok e Instagram para alcance, WhatsApp para conversão. Máximo 7 posts. Não inclua explicações.`
   },
   3: {
     name: 'Criação',
@@ -31,16 +31,8 @@ const SQUADS = {
   }
 };
 
-const MODEL_FALLBACK = [
-  config.gemini.textModel,
-  'gemini-2.5-flash-lite',
-  'gemini-2.0-flash',
-  'gemini-2.0-flash-lite',
-  'gemini-flash-lite-latest'
-];
-
 function isAIReady() {
-  return !!config.gemini.apiKey && config.gemini.apiKey !== 'sua-chave-da-gemini-aqui' && config.gemini.apiKey !== 'sua-chave-api-gemini';
+  return true;
 }
 
 async function pollinationsText(prompt, systemContext = '') {
@@ -59,71 +51,25 @@ async function pollinationsText(prompt, systemContext = '') {
 }
 
 async function callGemini(systemPrompt, userInput, retries = 2) {
-  if (!isAIReady()) {
-    console.log('[SquadManager] Gemini não configurado, tentando fallback Pollinations...');
-    const fallback = await pollinationsText(userInput, systemPrompt);
-    return fallback;
-  }
-
-  const modelsToTry = [...new Set(MODEL_FALLBACK)];
-
-  for (const modelName of modelsToTry) {
-    for (let attempt = 0; attempt <= retries; attempt++) {
-      try {
-        const client = new GoogleGenerativeAI(config.gemini.apiKey);
-        const model = client.getGenerativeModel({
-          model: modelName,
-          systemInstruction: systemPrompt
-        });
-
-        const result = await Promise.race([
-          model.generateContent(userInput),
-          new Promise((_, reject) => setTimeout(() => reject(new Error('timeout')), 90000))
-        ]);
-
-        const response = result.response;
-        if (!response) continue;
-
-        if (response.promptFeedback && response.promptFeedback.blockReason) {
-          console.error(`[SquadManager] Prompt bloqueado em ${modelName}:`, response.promptFeedback.blockReason);
-          continue;
-        }
-
-        const text = response.text();
-        if (!text || text.trim().length === 0) continue;
-
-        return text;
-      } catch (err) {
-        const msg = err.message || '';
-        const isNotFound = msg.includes('404') || msg.includes('not found') || msg.includes('notFound');
-        const isQuota = msg.includes('429') || msg.includes('quota') || msg.includes('Quota');
-
-        if (isNotFound) {
-          console.log(`[SquadManager] Modelo ${modelName} não disponível`);
-          break;
-        }
-        if (isQuota && attempt < retries) {
-          console.log(`[SquadManager] Quota excedida em ${modelName}, tentativa ${attempt + 1}...`);
-          await new Promise(r => setTimeout(r, 10000));
-          continue;
-        }
-        if (isQuota) {
-          console.log(`[SquadManager] Quota excedida em ${modelName}, próximo modelo...`);
-          continue;
-        }
-        console.error(`[SquadManager] Erro em ${modelName}:`, msg.substring(0, 100));
-        return await pollinationsText(userInput, systemPrompt) || null;
-      }
-    }
-  }
-  console.warn('[SquadManager] Todos os modelos Gemini falharam, tentando fallback Pollinations...');
+  const result = await callVertex(userInput, systemPrompt, undefined, retries);
+  if (result) return result;
+  console.warn('[SquadManager] Vertex AI falhou, fallback Pollinations...');
   return await pollinationsText(userInput, systemPrompt) || null;
 }
 
 function parseJSONStrict(text) {
   if (!text) return null;
   try {
-    const cleaned = text.replace(/```json\s*/gi, '').replace(/```\s*$/g, '').trim();
+    let cleaned = text.replace(/```(?:json|JSON)?\s*/g, '').replace(/```\s*/g, '').trim();
+    const firstBrace = cleaned.indexOf('{');
+    const firstBracket = cleaned.indexOf('[');
+    let start = -1;
+    if (firstBrace >= 0 && (firstBracket < 0 || firstBrace < firstBracket)) {
+      start = firstBrace;
+    } else if (firstBracket >= 0) {
+      start = firstBracket;
+    }
+    if (start > 0) cleaned = cleaned.substring(start);
     return JSON.parse(cleaned);
   } catch {
     return null;

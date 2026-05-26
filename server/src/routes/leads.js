@@ -6,8 +6,8 @@ const { sendToTelegram } = require('../services/telegram');
 const { sendDiagnosisEmail } = require('../services/email');
 const whatsapp = require('../services/whatsapp');
 
-try { db.runSql(`ALTER TABLE leads ADD COLUMN kit_interest INTEGER DEFAULT 0`); } catch (e) {}
-try { db.runSql(`ALTER TABLE leads ADD COLUMN purchased INTEGER DEFAULT 0`); } catch (e) {}
+// Colunas já existem na CREATE TABLE em database.js.
+// Migrações são feitas em database.js initDatabase() para garantir ordem correta.
 
 // Agenda follow-up no WhatsApp (48h após o lead)
 function scheduleFollowUp(leadId, phone, name) {
